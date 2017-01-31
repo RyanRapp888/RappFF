@@ -4,6 +4,13 @@
 *.o
 *.obj
 
+# junk
+*.pdb
+*.ilk
+*.suo
+*.swp
+*.swo
+
 # Precompiled Headers
 *.gch
 *.pch
@@ -11,7 +18,6 @@
 # Compiled Dynamic libraries
 *.so
 *.dylib
-*.dll
 
 # Fortran module files
 *.mod
@@ -20,8 +26,7 @@
 # Compiled Static libraries
 *.lai
 *.la
-*.a
-*.lib
+/lib/*.lib
 
 # Executables
 *.exe
