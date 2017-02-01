@@ -16,6 +16,7 @@
 #include <time.h>       /* time */
 #include <fstream>
 #include <sstream>
+#include "TheGame.h"
 
 static void PrintGLParams();
 
@@ -36,11 +37,7 @@ int get_rand()
    return result;
 }
 
-class GameMap
-{
-   public:
-
-   GameMap(int x_tiles, int y_tiles)
+GameMap::GameMap(int x_tiles, int y_tiles)
    {
       m_xtiles = x_tiles;
       m_ytiles = y_tiles;
@@ -73,43 +70,40 @@ class GameMap
       input_file.close();
    }
 
-   bool GetTileType(int x, int y, TileType &type)
+   bool GameMap::GetTileType(int x, int y, TileType &type)
    {
       int idx = GetTileIdx(x, y);
       if(idx < 0 || idx >= m_tiletypes.size())
       {
+		 type = TileType::GRASS;
          return false;
       }
       
       type = m_tiletypes[idx];
       return true;
    }
-
-   private:
    
-   int m_xtiles;
-   int m_ytiles;
-   std::vector<TileType> m_tiletypes;
-   int GetTileIdx(int xpos, int ypos)
+   int GameMap::GetWorldMaxX(){return m_xtiles;}
+   int GameMap::GetWorldMaxY(){return m_ytiles;}
+   
+    int GameMap::GetTileIdx(int xpos, int ypos)
    {
       return (xpos + (ypos * m_xtiles));
    }
-};
 
-class Character: public DrawableObj
-{
-   public:
-   Character()
+
+DrawnCharacter::DrawnCharacter()
    {
       m_texture = nullptr;
       m_tiletype = TileType::MAINCHAR;
       TextureManager *tm = TextureManager::GetInstance();
       tm->GetTexturePtr(m_tiletype,&m_texture);
    }
-
-   void SetColor(RGB col){m_color = col;}
+   
+  
+   void DrawnCharacter::SetColor(RGB col){m_color = col;}
  
-   void Render()
+   void DrawnCharacter::Render()
    {
       double tile_w( GetRelativeWidth_01() * 2);
       double tile_h( GetRelativeHeight_01() * 2);
@@ -138,26 +132,23 @@ class Character: public DrawableObj
       glBindTexture(GL_TEXTURE_2D, 0);
       Sleep(100);
    }
-   private:
-    Texture *m_texture;
-    TileType m_tiletype;   
-    RGB m_color;
-};
 
-class Tile: public DrawableObj
-{
-
-public:
+   void Character::SetLocation(int x, int y)
+   { 
+      m_worldx = x; 
+	  m_worldy = y;
+	  if(m_worldx < 0) m_worldx = 0;
+	  if(m_worldx >= m_gamemap_ptr->GetWorldMaxX()) m_worldx = m_gamemap_ptr->GetWorldMaxX() -1;
+	  if(m_worldy < 0) m_worldy = 0;
+	  if(m_worldy >= m_gamemap_ptr->GetWorldMaxY()) m_worldy = m_gamemap_ptr->GetWorldMaxY() -1;
+   }	
    
-   Tile()
-   {
-      m_texture = nullptr;
-      m_tiletype = TileType::GRASS;
-   }
+   int Character::GetWorldX(){ return m_worldx; }
+   int Character::GetWorldY(){ return m_worldy; }
 
-   void SetColor(RGB col){m_color = col;}
+   void Tile::SetColor(RGB col){m_color = col;}
 
-   void SetTileType(TileType type)
+   void Tile::SetTileType(TileType type)
    {
       if(type == m_tiletype && m_texture != nullptr)
       {
@@ -169,7 +160,7 @@ public:
       m_tiletype = type;
    }
    
-   void Render()
+   void Tile::Render()
    {
       double tile_w(  GetRelativeWidth_01() * 2);
       double tile_h( GetRelativeHeight_01() * 2);
@@ -196,32 +187,24 @@ public:
       glDisable(GL_TEXTURE_2D);
       glBindTexture(GL_TEXTURE_2D, 0);
    }
+  
+
+   void TiledGameBoard::AttachMainCharacter(Character *mc)
+   { 
+      m_mainchar_ptr = mc; 
+	  AddObject(mc);
+   }	 
+  
+   void TiledGameBoard::SetGameMapPtr(GameMap *gptr){ m_gamemap_ptr = gptr;}
    
-   private:
 
-   Texture *m_texture;
-   TileType m_tiletype;   
-   RGB m_color;
-};
-
-
-
-class TiledGameBoard: public WindowSection
-{
-   public:
-   TiledGameBoard():m_tiles(nullptr),m_gamemap(nullptr){}
-   TiledGameBoard(Viewport *vpt, double origxpct, double origypct, double w_pct, double h_pct):
-      WindowSection(vpt,origxpct,origypct,w_pct,h_pct),m_gamemap(nullptr){}
-   ~TiledGameBoard(){ delete [] m_tiles; m_tiles = nullptr; }
-
-   void SetTileDetails(int xtiles, int ytiles)
+   void TiledGameBoard::SetTileDetails(int xtiles, int ytiles)
    {
       m_xtiles = xtiles;
       m_ytiles = ytiles;
       
       m_tiles = new Tile[m_xtiles * m_ytiles];
-      m_gamemap = new GameMap(m_xtiles, m_ytiles);
-      
+            
       for(int xx = 0; xx < m_xtiles; xx++)
       {
          for(int yy = 0; yy < m_ytiles; yy++)
@@ -229,44 +212,109 @@ class TiledGameBoard: public WindowSection
             Tile *curtile = &(m_tiles[ GetTileIdx(xx, yy)]);
             curtile->SetColor(RGB(255,255,255));
             TileType cur;
-            m_gamemap->GetTileType(xx,yy,cur);
+            m_gamemap_ptr->GetTileType(xx,yy,cur);
             curtile->SetTileType(cur);
             curtile->SetRelativeLocation(xx * (1.0 / m_xtiles), yy * (1.0 / m_ytiles), 1.0 / m_xtiles, 1.0 / m_ytiles);
             AddObject(curtile);
          }         
       }
-
-      m_mainchar.SetColor(RGB(255,255,255));
-      AddObject(&m_mainchar);
+    
    }
    
-   void Refresh()
+   void TiledGameBoard::Refresh()
    {
-      static int cur_column(0);
-      Tile *charloc = &(m_tiles[ GetTileIdx( cur_column, 10 )]);
+      for(int xx = 0; xx < m_xtiles; xx++)
+      {
+         for(int yy = 0; yy < m_ytiles; yy++)
+         {
+            Tile *curtile = &(m_tiles[ GetTileIdx(xx, yy)]);
+            curtile->SetColor(RGB(255,255,255));
+            TileType cur;
+            m_gamemap_ptr->GetTileType(m_mainchar_ptr->GetWorldX() - (m_xtiles / 2) + xx,
+			               m_mainchar_ptr->GetWorldY() - (m_ytiles / 2) + yy,
+						   cur);
+            curtile->SetTileType(cur);
+         }         
+      }
+	  	   
+      int screen_mid_tilex(m_xtiles / 2);
+      int screen_mid_tiley(m_ytiles / 2);	  
+      Tile *center_tile = &(m_tiles[ GetTileIdx( screen_mid_tilex, screen_mid_tiley) ]);
       double ox,oy,w,h;
-      charloc->GetRelativeLocation(ox,oy,w,h);
-      m_mainchar.SetRelativeLocation(ox,oy,w,h);
-      cur_column++;
-      if(cur_column >= m_xtiles) cur_column = 0;
+      center_tile->GetRelativeLocation(ox,oy,w,h);
+      m_mainchar_ptr->SetRelativeLocation(ox,oy,w,h);
       WindowSection::Refresh();
    } 
       
-   private:
-   
-   int GetTileIdx(int xpos, int ypos)
+     
+   int TiledGameBoard::GetTileIdx(int xpos, int ypos)
    {
       return (xpos + (ypos * m_xtiles));
    }
 
-   Character m_mainchar;
-   int m_xtiles;
-   int m_ytiles;
-   Tile *m_tiles;
-   GameMap *m_gamemap;
-};
+  
+void TheGame::KeyHandler(int key, int scancode, int action, int mods)
+{
+	if(key == 263) //left arrow
+	{
+       int xx = m_mainchar_ptr->GetWorldX();
+       int yy = m_mainchar_ptr->GetWorldY();
+       m_mainchar_ptr->SetLocation(xx-1,yy);
+	}
+	else if(key == 262)
+	{
+	   int xx = m_mainchar_ptr->GetWorldX();
+       int yy = m_mainchar_ptr->GetWorldY();
+       m_mainchar_ptr->SetLocation(xx+1,yy);
+	}
+	else if(key == 265)
+	{
+	   int xx = m_mainchar_ptr->GetWorldX();
+       int yy = m_mainchar_ptr->GetWorldY();
+       m_mainchar_ptr->SetLocation(xx,yy+1);
+	}
+	else if(key == 264)
+	{
+	   int xx = m_mainchar_ptr->GetWorldX();
+       int yy = m_mainchar_ptr->GetWorldY();
+       m_mainchar_ptr->SetLocation(xx,yy-1);
+	}
+	std::cout << "key = " << key << std::endl;
+}
+	
+void TheGame::Play()
+{
+	   m_display_ptr = new Display(800, 600, "Cupcake");
+	   if(m_display_ptr == nullptr) return;
+	   SetEvilPtr(this);
+   
+       /*
+	   Tile *lower = new Tile();
+       lower->SetTileType(TileType::PARCHMENT);
+       lower->SetRelativeLocation(.01,.01,.98,.28);
+       lower->SetColor(RGB(255,255,255));
+       display.AddObject(lower);
+       */
+	   //ultimately, I want gamemap to be 256x256
+	   m_gamemap_ptr = new GameMap(40,30);
+       TiledGameBoard *upper = new TiledGameBoard(m_display_ptr,.01,.01,.98,.98,m_gamemap_ptr);
+       upper->SetTileDetails(16,16);
+       m_display_ptr->AddWindowSection(upper);
+	   m_mainchar_ptr = new Character("main_character", CharacterType::CAT, CharMotion(),
+             20, 20, m_gamemap_ptr);
+	   m_mainchar_ptr->SetColor(RGB(255,255,255));
+	   upper->AttachMainCharacter(m_mainchar_ptr);
+				
+       while(!m_display_ptr->WindowShouldClose())
+       {
+          m_display_ptr->Clear(0,0,.2,1);
+          m_display_ptr->Refresh();
+          m_display_ptr->SwapBuffers();     
+          glfwPollEvents();
+	   }
+   }
 
-int main(void)
+ int main(void)
 {
    
    glfwSetErrorCallback(error_callback);
@@ -279,27 +327,9 @@ int main(void)
    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
    
-   Display display(650, 650, "Rapp It Up");
-
-   Tile *lower = new Tile();
-   lower->SetTileType(TileType::PARCHMENT);
-   lower->SetRelativeLocation(.01,.01,.98,.28);
-   lower->SetColor(RGB(255,255,255));
-   display.AddObject(lower);
-
-   TiledGameBoard *upper = new TiledGameBoard(&display,.01,.3,.98,.69);
-   upper->SetTileDetails(40,30);
-   display.AddWindowSection(upper);
-
-   while(!display.WindowShouldClose())
-   {
-      display.Clear(0,0,.2,1);
-      display.Refresh();
-      
-      display.SwapBuffers();     
-      glfwPollEvents();
-   }
-
+   TheGame game;
+   game.Play();
+   
    return 0;
 }
 
