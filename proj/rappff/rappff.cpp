@@ -121,9 +121,10 @@ class Character: public DrawableObj
       x_pos = GetXDrawPos_N11();
       y_pos = GetYDrawPos_N11();
       
-      glColor3f( m_color.GetRed()/255.0,
+      glColor4f( m_color.GetRed()/255.0,
                  m_color.GetGreen()/255.0,
-                 m_color.GetBlue()/255.0 ); 
+                 m_color.GetBlue()/255.0,  
+                 0 ); 
 
       glBegin(GL_TRIANGLES);
       glTexCoord2d( 0.0, 0.0); glVertex3f( x_pos, y_pos, -.01);
@@ -231,13 +232,11 @@ class TiledGameBoard: public WindowSection
             m_gamemap->GetTileType(xx,yy,cur);
             curtile->SetTileType(cur);
             curtile->SetRelativeLocation(xx * (1.0 / m_xtiles), yy * (1.0 / m_ytiles), 1.0 / m_xtiles, 1.0 / m_ytiles);
-            curtile->SetParentWindowSection(this);
             AddObject(curtile);
          }         
       }
 
       m_mainchar.SetColor(RGB(255,255,255));
-      m_mainchar.SetParentWindowSection(this);
       AddObject(&m_mainchar);
    }
    
@@ -285,7 +284,6 @@ int main(void)
    Tile *lower = new Tile();
    lower->SetTileType(TileType::PARCHMENT);
    lower->SetRelativeLocation(.01,.01,.98,.28);
-   lower->SetParentViewport(&display);
    lower->SetColor(RGB(255,255,255));
    display.AddObject(lower);
 

@@ -11,74 +11,93 @@ class Viewport;
 
 class DrawableObj
 {
-   public:
-      DrawableObj():m_rel_originx_01(0),m_rel_originy_01(0),m_rel_width_01(0),m_rel_height_01(0),
-	       m_winsection(nullptr),m_viewport(nullptr){}
+  friend class WindowSection;
+  friend class Viewport;
+public:
+   DrawableObj():m_rel_originx_01(0),
+                 m_rel_originy_01(0),
+                 m_rel_width_01(0),
+                 m_rel_height_01(0),
+                 m_winsection_ptr(nullptr),
+                 m_viewport_ptr(nullptr){}
+   virtual ~DrawableObj(){}
   
-     // This function is meant only for copying the location of two objects
-     // in the same winsection or viewport 
-     void GetRelativeLocation(
+   // This function is meant only for copying the location of two objects
+   // in the same winsection or viewport 
+   void GetRelativeLocation(
       double &originx_01, double &originy_01,
-	  double &width_01,double &height_01);
-	  
-	  void SetParentViewport(Viewport *vp);
-	  void SetParentWindowSection(WindowSection *ws);
-      void SetRelativeLocation(double originx_01,double originy_01,
-	                           double width_01,double height_01);
-	  virtual void Render() = 0;
-	  virtual void Print();
-	  
-   protected:
+      double &width_01,double &height_01);
+     
+   void SetRelativeLocation(
+      double originx_01,double originy_01,
+      double width_01,double height_01);
+
+   virtual void Render() = 0;
+     
+protected:
    
-      double GetRelativeOriginX_01();
-	  double GetRelativeOriginY_01();
-      double GetRelativeWidth_01();
-	  double GetRelativeHeight_01();
-	  double GetXDrawPos_N11();
-	  double GetYDrawPos_N11();
+   double GetRelativeOriginX_01();
+   double GetRelativeOriginY_01();
+   double GetRelativeWidth_01();
+   double GetRelativeHeight_01();
+   double GetXDrawPos_N11();
+   double GetYDrawPos_N11();
       
-      // if not using absolute coords
-	  // then we are drawing relative to a window or viewport
-      double m_rel_originx_01;
-	  double m_rel_originy_01;
-	  double m_rel_width_01;
-      double m_rel_height_01;
-      WindowSection *m_winsection;
-      Viewport *m_viewport;
+   // if not using absolute coords
+   // then we are drawing relative to a window or viewport
+   double m_rel_originx_01;
+   double m_rel_originy_01;
+   double m_rel_width_01;
+   double m_rel_height_01;
+  
+   // DO NOT FREE THESE, owned by parent
+   WindowSection *m_winsection_ptr;
+   Viewport *m_viewport_ptr;
 };
 
 class WindowSection
 {
-   public:
-      WindowSection():m_view_ptr(nullptr),m_originx_01(0),m_originy_01(0),m_width_01(0),m_height_01(0){}
-      WindowSection(Viewport *vpt, double origxpct, double origypct, double w_pct, double h_pct):
-	     m_view_ptr(vpt),m_originx_01(origxpct),m_originy_01(origypct),m_width_01(w_pct),m_height_01(h_pct)
-	  {}
-	  
-	  virtual void Refresh();
-	  double GetOriginX_01();	  
-	  double GetOriginY_01();
-	  double GetWidth_01();
-	  double GetHeight_01();
-	  
-	  void AddObject(DrawableObj *dat);
-	  void RemoveObject(DrawableObj *dat);
-	  void FreeDrawables();
-	  Viewport *GetVP();
-	  
+   friend class Viewport;
+public:
 
-   private:
-      Viewport *m_view_ptr;
-	  // m_originx & m_originy are relative the viewport
-      double m_originx_01, m_originy_01;
-	  double m_width_01, m_height_01;
-	  std::vector<DrawableObj *> m_drawables;  
+   WindowSection():m_view_ptr(nullptr),
+                   m_originx_01(0),
+                   m_originy_01(0),
+                   m_width_01(0),
+                   m_height_01(0){}
+   WindowSection(Viewport *vpt, double origxpct, double origypct, 
+                 double w_pct, double h_pct):m_view_ptr(vpt),
+                                             m_originx_01(origxpct),
+                                             m_originy_01(origypct),
+                                             m_width_01(w_pct),
+                                             m_height_01(h_pct){}
+   virtual ~WindowSection(){}
+   virtual void Refresh();
+   double GetOriginX_01();     
+   double GetOriginY_01();
+   double GetWidth_01();
+   double GetHeight_01();
+    
+   void AddObject(DrawableObj *dat);
+   void RemoveObject(DrawableObj *dat);
+   void FreeDrawables();
+   Viewport *GetVP();
+
+private:
+
+   Viewport *m_view_ptr;
+   // m_originx & m_originy are relative to the viewport
+   double m_originx_01, m_originy_01;
+   double m_width_01, m_height_01;
+   std::vector<DrawableObj *> m_drawables;  
 };
 
 class Viewport
 {
-   public:
-   
+
+public:
+  
+   virtual ~Viewport(){} 
    void SetWindowSize(int win_w, int win_h);
    virtual bool Refresh();
    void AddWindowSection(WindowSection *dat);
@@ -91,8 +110,6 @@ class Viewport
    protected:
    
    WindowSection *FindWindowSection(int x, int y);
-   void FreeDrawables();
-   void FreeWindowSections();
    int m_win_width;
    int m_win_height;
     
