@@ -1,4 +1,4 @@
-setenv MYROOT c:/code/glfw
+setenv MYROOT c:/code/RappFF
 setenv MSDEV c:/VS2013
 setenv WINKITS "c:/PROGRA~2/WI3CF2~1/8.1"
 
