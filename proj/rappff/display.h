@@ -7,6 +7,10 @@
 #include <GLFW/glfw3.h>
 #include <utils/WinViewportUtils.h>
 
+class TheGame;
+
+void SetEvilPtr(TheGame *obj);
+
 class Display : public Viewport
 {
 	
@@ -17,6 +21,7 @@ public:
    void SwapBuffers();
    bool WindowShouldClose();
    bool Refresh();
+   GLFWwindow *GetWindowPtr();
 	
    virtual ~Display();
 protected:

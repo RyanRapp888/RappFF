@@ -1,7 +1,18 @@
 #include "display.h"
 #include <iostream>
+#include <map>
+#include <TheGame.h>
 
 int cd_width, cd_height;
+
+class TheGame;
+
+void *evil_ptr = 0;
+void SetEvilPtr(TheGame *obj)
+{
+	evil_ptr = obj;
+}
+
 
 static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -9,6 +20,13 @@ static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, i
    {
       glfwSetWindowShouldClose(window, GLFW_TRUE);
    }
+   
+   if(evil_ptr != nullptr)
+   {
+	   TheGame *gp = (TheGame *) evil_ptr;
+       gp->KeyHandler(key,scancode,action,mods);
+   }
+   
 }
 
 static void WindowSizeCallback(GLFWwindow *window, int w, int h)
@@ -38,6 +56,11 @@ Display::Display(int width, int height, const std::string& title)
    glEnable(GL_DEPTH_TEST);
    glEnable(GL_CULL_FACE);
    glCullFace(GL_BACK);
+}
+
+GLFWwindow *Display::GetWindowPtr()
+{
+	return m_window;
 }
 
 bool Display::Refresh()
