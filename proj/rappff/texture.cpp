@@ -14,11 +14,11 @@ std::map<TileType, std::string> tiletype_lookup
    {TileType::DESERT, "../../res/desert.jpg"},
    {TileType::GRASS, "../../res/grass.png"},
    {TileType::MAINCHAR, "../../res/cat.png"},
-   {TileType::MTN, "../../res/mtn.jpg"},
-   {TileType::MUD, "../../res/mud.png"},
+   {TileType::MTN, "../../res/mtn.png"},
+   {TileType::PATH, "../../res/grass1.png"},
    {TileType::PARCHMENT, "../../res/parchment.jpg"}, 
    {TileType::ROCKS, "../../res/rocks.jpg"},
-   {TileType::WATER, "../../res/water.jpg"}
+   {TileType::WATER, "../../res/Water.png"}
 };
 
 TextureManager *TextureManager::GetInstance()
