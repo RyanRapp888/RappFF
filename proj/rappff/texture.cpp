@@ -18,7 +18,13 @@ std::map<TileType, std::string> tiletype_lookup
    {TileType::PATH, "../../res/grass1.png"},
    {TileType::PARCHMENT, "../../res/parchment.jpg"}, 
    {TileType::ROCKS, "../../res/rocks.jpg"},
-   {TileType::WATER, "../../res/Water.png"}
+   {TileType::WATER, "../../res/Water.png"},
+   {TileType::FAIRY, "../../res/fairy.jpg"},
+   {TileType::MERMAID, "../../res/mermaid.jpg"},
+   {TileType::OCTOPUS, "../../res/octopus.png"},
+   {TileType::JELLYBEAN, "../../res/jellybean.jpg"},
+   {TileType::PRINCESS, "../../res/princess.jpg"},
+   {TileType::BLACK, "../../res/black.jpg"}
 };
 
 TextureManager *TextureManager::GetInstance()
