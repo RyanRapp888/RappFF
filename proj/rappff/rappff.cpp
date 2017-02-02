@@ -72,10 +72,16 @@ GameMap::GameMap(int x_tiles, int y_tiles)
 
    bool GameMap::GetTileType(int x, int y, TileType &type)
    {
+	  if(x < 0 || x >= m_xtiles ||
+	     y < 0 || y >= m_ytiles )
+	   {
+			type = TileType::BLACK; 
+			 return true;
+		 }
       int idx = GetTileIdx(x, y);
       if(idx < 0 || idx >= m_tiletypes.size())
       {
-		 type = TileType::GRASS;
+		 type = TileType::BLACK;
          return false;
       }
       
@@ -92,7 +98,7 @@ GameMap::GameMap(int x_tiles, int y_tiles)
    }
 
 
-DrawnCharacter::DrawnCharacter()
+   DrawnCharacter::DrawnCharacter()
    {
       m_texture = nullptr;
       m_tiletype = TileType::MAINCHAR;
@@ -230,10 +236,23 @@ DrawnCharacter::DrawnCharacter()
             Tile *curtile = &(m_tiles[ GetTileIdx(xx, yy)]);
             curtile->SetColor(RGB(255,255,255));
             TileType cur;
-            m_gamemap_ptr->GetTileType(m_mainchar_ptr->GetWorldX() - (m_xtiles / 2) + xx,
-			               m_mainchar_ptr->GetWorldY() - (m_ytiles / 2) + yy,
-						   cur);
+            int curtile_wx = m_mainchar_ptr->GetWorldX() - (m_xtiles / 2) + xx;
+            int curtile_wy = m_mainchar_ptr->GetWorldY() - (m_ytiles / 2) + yy;
+            m_gamemap_ptr->GetTileType(curtile_wx, curtile_wy, cur);
             curtile->SetTileType(cur);
+            for(int aa = 0; aa < m_otherchar_ptrs.size(); aa++)
+            {
+               Character *cur = m_otherchar_ptrs[aa];
+               int col = cur->GetWorldX();
+               int row = cur->GetWorldY();
+               if(curtile_wx == col && curtile_wy == row)
+               {
+                  double ox,oy,w,h;
+                  curtile->GetRelativeLocation(ox,oy,w,h);
+                  cur->SetRelativeLocation(ox,oy,w,h);
+                  cur->Render();
+               }
+            }
          }         
       }
 	  	   
@@ -245,8 +264,7 @@ DrawnCharacter::DrawnCharacter()
       m_mainchar_ptr->SetRelativeLocation(ox,oy,w,h);
       WindowSection::Refresh();
    } 
-      
-     
+   
    int TiledGameBoard::GetTileIdx(int xpos, int ypos)
    {
       return (xpos + (ypos * m_xtiles));
@@ -279,7 +297,7 @@ void TheGame::KeyHandler(int key, int scancode, int action, int mods)
        int yy = m_mainchar_ptr->GetWorldY();
        m_mainchar_ptr->SetLocation(xx,yy-1);
 	}
-	std::cout << "key = " << key << std::endl;
+	
 }
 	
 void TheGame::Play()
@@ -288,6 +306,7 @@ void TheGame::Play()
 	   if(m_display_ptr == nullptr) return;
 	   SetEvilPtr(this);
    
+       Sleep(10000);
        /*
 	   Tile *lower = new Tile();
        lower->SetTileType(TileType::PARCHMENT);
@@ -300,10 +319,24 @@ void TheGame::Play()
        TiledGameBoard *upper = new TiledGameBoard(m_display_ptr,.01,.01,.98,.98,m_gamemap_ptr);
        upper->SetTileDetails(16,16);
        m_display_ptr->AddWindowSection(upper);
-	   m_mainchar_ptr = new Character("main_character", CharacterType::CAT, CharMotion(),
+	   m_mainchar_ptr = new Character("main_character", TileType::MAINCHAR, CharMotion(),
              20, 20, m_gamemap_ptr);
 	   m_mainchar_ptr->SetColor(RGB(255,255,255));
 	   upper->AttachMainCharacter(m_mainchar_ptr);
+
+       int n_chars(5);
+       Character *otherchars = new Character[n_chars];
+       otherchars[0] = Character("Emi",TileType::PRINCESS,CharMotion(),6,6,m_gamemap_ptr);
+       otherchars[1] = Character("Lily",TileType::FAIRY,CharMotion(),8,6,m_gamemap_ptr);
+       //otherchars.Character("Sally",TileType::QUEEN,CharMotion(),6,6,m_gamemap_ptr);
+       otherchars[2] = Character("Jerry",TileType::OCTOPUS,CharMotion(),10,6,m_gamemap_ptr);
+       otherchars[3] = Character("Bella",TileType::JELLYBEAN,CharMotion(),12,6,m_gamemap_ptr);
+       otherchars[4] = Character("Maddy",TileType::MERMAID,CharMotion(),12,6,m_gamemap_ptr);
+         
+       for( int bb = 0; bb < n_chars; bb++ )
+       {
+          upper->AttachCharacter(&(otherchars[bb]));
+       }    
 				
        while(!m_display_ptr->WindowShouldClose())
        {

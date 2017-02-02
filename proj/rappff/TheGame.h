@@ -38,6 +38,7 @@ class DrawnCharacter: public DrawableObj
    public:
    DrawnCharacter();
    virtual ~DrawnCharacter(){}
+   void SetTileType(TileType tt){ m_tiletype = tt; }
   //we may want to eventually do reference counting on the texture
    void SetColor(RGB col);
    void Render();
@@ -67,11 +68,6 @@ class TheGame
    Display *m_display_ptr;
 };
 
-enum class CharacterType
-{
-   CAT, SOLDIER, ROBOT, CUPCAKE, NURSE, HORSE, N_CHARTYPES
-};
-
 enum class CharMotionType
 {
 	USER, STATIC, RANDOAREA, PATHREPEATER
@@ -91,17 +87,18 @@ class CharMotion
 class Character: public DrawnCharacter
 {
    public:
-   Character(const std::string &name, CharacterType ctype, CharMotion cmot,
+   Character(){}
+   Character(const std::string &name, TileType ctype, CharMotion cmot,
              int worldx, int worldy, GameMap *gamemap_ptr): 
-			    m_name(name), m_char_type(ctype), m_char_motion(cmot),
-				m_worldx(worldx), m_worldy(worldy), m_gamemap_ptr(gamemap_ptr){}
+			    m_name(name), m_char_motion(cmot),
+				m_worldx(worldx), m_worldy(worldy), m_gamemap_ptr(gamemap_ptr)
+              { SetTileType(ctype);}
    void SetLocation(int x, int y);
    int GetWorldX();
    int GetWorldY();
    private:
-   Character(){}
+   
    std::string m_name;
-   CharacterType m_char_type;
    CharMotion m_char_motion;
    GameMap *m_gamemap_ptr;
    int m_worldx, m_worldy;
@@ -136,6 +133,11 @@ class TiledGameBoard: public WindowSection
                   double h_pct, GameMap *gamemap_ptr):
          WindowSection(vpt,origxpct,origypct,w_pct,h_pct),m_gamemap_ptr(gamemap_ptr){}
    void AttachMainCharacter(Character *mc);
+   void AttachCharacter(Character *otherchar)
+   {
+      otherchar->SetWindowSectionPtr(this);
+      m_otherchar_ptrs.emplace_back(otherchar);
+   }
    ~TiledGameBoard(){ delete [] m_tiles; m_tiles = nullptr; }
    void SetGameMapPtr(GameMap *gptr);
    void SetTileDetails(int xtiles, int ytiles);
@@ -147,6 +149,7 @@ class TiledGameBoard: public WindowSection
    int GetTileIdx(int xpos, int ypos);
   
    Character *m_mainchar_ptr;
+   std::vector<Character *> m_otherchar_ptrs;
    // maybe have a list of pointers to other character that "TheGame" knows about.
    int m_xtiles;
    int m_ytiles;
