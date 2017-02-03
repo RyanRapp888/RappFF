@@ -21,9 +21,8 @@ void TheGame::KeyHandler(int key, int scancode, int action, int mods)
 		key == GLFW_KEY_UP || key == GLFW_KEY_LEFT || key == GLFW_KEY_DOWN || key == GLFW_KEY_RIGHT) )
 	{
 		
-		
-		int xx = m_mainchar_ptr->GetWorldX();
-		int yy = m_mainchar_ptr->GetWorldY();
+		int xx = m_mainchar.GetX();
+		int yy = m_mainchar.GetY();
 		
 		switch (key)
 		{
@@ -46,7 +45,15 @@ void TheGame::KeyHandler(int key, int scancode, int action, int mods)
 		default:
 			break;
 		}
-		m_mainchar_ptr->SetLocation(xx, yy);
+		m_mainchar.SetLocation(xx, yy);
+	}
+	else if (action == GLFW_PRESS && key == GLFW_KEY_ENTER)
+	{
+		
+
+		Interact(m_mainchar.GetX(), m_mainchar.GetY());
+		
+		
 	}
 }
 
@@ -63,27 +70,25 @@ void TheGame::Play()
 	display.AddObject(lower);
 	*/
 	//ultimately, I want gamemap to be 256x256
-	m_gamemap_ptr = new GameMap(40, 30);
+	m_gamemap_ptr =  new GameMap(40, 30, &m_mainchar);
+	m_mainchar = Character("main_character", CharacterType::MAINCHAR, CharMotion(), 22, 4);
+	m_mainchar.SetColor(RGB(255, 255, 255));
 	TiledGameBoard *upper = new TiledGameBoard(m_display_ptr, .01, .01, .98, .98, m_gamemap_ptr);
 	upper->SetTileDetails(16, 16);
 	m_display_ptr->AddWindowSection(upper);
-	m_mainchar_ptr = new Character("main_character", CharacterType::MAINCHAR, CharMotion(),
-		22, 0, m_gamemap_ptr);
-	m_mainchar_ptr->SetColor(RGB(255, 255, 255));
-	upper->AttachMainCharacter(m_mainchar_ptr);
-
+	
+	
 	int n_chars(5);
 	Character *otherchars = new Character[n_chars];
-	otherchars[0] = Character("Emme", CharacterType::EMMY, CharMotion(), 36, 4, m_gamemap_ptr);
-	otherchars[1] = Character("Lily", CharacterType::FAIRY, CharMotion(), 26, 28, m_gamemap_ptr);
-	//otherchars.Character("Sally",TileType::QUEEN,CharMotion(),6,6,m_gamemap_ptr);
-	otherchars[2] = Character("Jerry", CharacterType::OCTOPUS, CharMotion(), 11, 5, m_gamemap_ptr);
-	otherchars[3] = Character("Bella", CharacterType::JELLYBEAN, CharMotion(), 2, 28, m_gamemap_ptr);
-	otherchars[4] = Character("Maddy", CharacterType::MERMAID, CharMotion(), 22, 17, m_gamemap_ptr);
+	otherchars[0] = Character("Emme", CharacterType::EMMY, CharMotion(), 36, 4);
+	otherchars[1] = Character("Lily", CharacterType::FAIRY, CharMotion(), 26, 28);
+	otherchars[2] = Character("Jerry", CharacterType::OCTOPUS, CharMotion(), 11, 5);
+	otherchars[3] = Character("Bella", CharacterType::JELLYBEAN, CharMotion(), 2, 28);
+	otherchars[4] = Character("Maddy", CharacterType::MERMAID, CharMotion(), 22, 17);
 
 	for (int bb = 0; bb < n_chars; bb++)
 	{
-		upper->AttachCharacter(&(otherchars[bb]));
+		m_gamemap_ptr->AttachCharacter(&(otherchars[bb]));
 	}
 
 	while (!m_display_ptr->WindowShouldClose())
@@ -92,5 +97,39 @@ void TheGame::Play()
 		m_display_ptr->Refresh();
 		m_display_ptr->SwapBuffers();
 		glfwPollEvents();
+	}
+}
+
+std::string ToText(ProxRel dat)
+{
+	if (dat == ProxRel::FOUND_TO_LEFT) return "on your left!";
+	else if (dat == ProxRel::FOUND_TO_RIGHT) return "on your right!";
+	else if (dat == ProxRel::FOUND_ABOVE) return "to the NORTH of you!";
+	else if (dat == ProxRel::FOUND_BELOW) return "to the SOUTH of you!";
+	return "";
+}
+
+void TheGame::Interact(int x, int y)
+{
+	std::vector<Character *> foundchars;
+	std::vector< ProxRel > proximities;
+
+	m_gamemap_ptr->FindTouchingCharacters(
+		m_mainchar.GetX(),
+		m_mainchar.GetY(),
+		foundchars, proximities);
+
+	for (int aa = 0; aa < foundchars.size(); aa++)
+	{
+		std::cout << "YOU FOUND " << foundchars[aa]->GetName() << "!!!" << std::endl;
+		std::cout << foundchars[aa]->GetName() << " is " << ToText(proximities[aa]) << std::endl
+			      << "!! How FUN!!" << std::endl;
+		/*
+		Tile *lower = new Tile();
+		lower->SetTileType(TileType::PARCHMENT);
+		lower->SetRelativeLocation(.01,.01,.98,.28);
+		lower->SetColor(RGB(255,255,255));
+		display.AddObject(lower);
+		*/
 	}
 }

@@ -10,6 +10,7 @@ class DrawnCharacter : public DrawableObj
 public:
 
 	DrawnCharacter();
+	DrawnCharacter &operator=(const DrawnCharacter & other);
 	virtual ~DrawnCharacter() {}
 	void SetTileType(TileType tt);
 	//we may want to eventually do reference counting on the texture

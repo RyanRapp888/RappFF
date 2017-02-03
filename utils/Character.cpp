@@ -19,16 +19,22 @@ static std::map<CharacterType, TileType> CTypeToTileType
 };
 
 Character::Character(const std::string &name, CharacterType ctype, CharMotion cmot,
-	                 int worldx, int worldy, GameMap *gamemap_ptr):
+	                 int worldx, int worldy):
 	   m_name(name),
 	   m_chartype(ctype),
 	   m_char_motion(cmot),
 	   m_worldx(worldx),
 	   m_worldy(worldy),
-	   m_gamemap_ptr(gamemap_ptr)
+	   m_gamemap_ptr(nullptr)
 {
 	SetTileType(CTypeToTileType[ctype]);
 }
+
+void Character::SetGameMapPtr(GameMap *gm_ptr)
+{
+	m_gamemap_ptr = gm_ptr;
+}
+
 	
 static void InitTravelPermissions()
 {
@@ -54,26 +60,35 @@ static void InitTravelPermissions()
 	permission_initialized = true;
 }
 
-bool Character::CanOccupyTileType(TileType tt)
+bool Character::CanOccupyLocation(int x, int y)
 {
 	if (!permission_initialized) InitTravelPermissions();
+	
+	TileType typ;
+	m_gamemap_ptr->GetTileType(x, y, typ);
+	//First, we see if our character is allowed to be on the given tiletype
 	std::vector<TileType> &vv = travel_permissions[m_chartype];
-	auto iter = std::find(vv.begin(), vv.end(), tt);
-	if (iter != vv.end()) return true;
-	return false;
+	auto iter = std::find(vv.begin(), vv.end(), typ);
+	if (iter == vv.end())
+	{
+		return false;
+	}
+
+	//then we make sure no other players are occupying the space
+	return !(m_gamemap_ptr->HasACharacter(x, y));
 }
 
 void Character::SetLocation(int x, int y)
 {
+	if (m_gamemap_ptr == nullptr) return;
 	if (x < 0) x = 0;
 	if (x >= m_gamemap_ptr->GetWorldMaxX()) x = m_gamemap_ptr->GetWorldMaxX() - 1;
 	if (y < 0) y = 0;
 	if (y >= m_gamemap_ptr->GetWorldMaxY()) y = m_gamemap_ptr->GetWorldMaxY() - 1;
 
-	TileType tt;
-	m_gamemap_ptr->GetTileType(x, y, tt);
-
-	if (CanOccupyTileType(tt))
+	//CanOccupyLocation looks to see if our character can step on the desired
+	//tile type AND makes sure its not occupied.
+	if (CanOccupyLocation(x, y))
 	{
 		m_worldx = x;
 		m_worldy = y;
@@ -81,6 +96,23 @@ void Character::SetLocation(int x, int y)
 
 }
 
-int Character::GetWorldX() { return m_worldx; }
+Character &Character::operator=(const Character & other)
+{
+	if (this != &other) // protect against invalid self-assignment
+	{
+		this->m_chartype = other.m_chartype;
+		this->m_name = other.m_name;
+		this->m_char_motion = other.m_char_motion;
+		if (other.m_gamemap_ptr != nullptr) this->m_gamemap_ptr = other.m_gamemap_ptr;
+		this->m_worldx = other.m_worldx;
+		this->m_worldy = other.m_worldy;
+		DrawnCharacter::operator=(other);
 
-int Character::GetWorldY() { return m_worldy; }
+	}
+
+	return *this;
+}
+
+int Character::GetX() { return m_worldx; }
+
+int Character::GetY() { return m_worldy; }

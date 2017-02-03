@@ -17,6 +17,9 @@ public:
                  m_rel_height_01(0),
                  m_winsection_ptr(nullptr),
                  m_viewport_ptr(nullptr){}
+
+	DrawableObj &operator=(const DrawableObj & other);
+
    virtual ~DrawableObj(){}
   
    // This function is meant only for copying the location of two objects
@@ -30,6 +33,8 @@ public:
       double width_01,double height_01);
 
    virtual void Render() = 0;
+
+   
     
     void SetWindowSectionPtr(WindowSection *obj)
 	{

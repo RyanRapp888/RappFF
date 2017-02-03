@@ -20,16 +20,23 @@ enum class CharacterType
 
 class Character: public DrawnCharacter
 {
+   friend class GameMap;
    public:
 
    Character(){}
-   Character(const std::string &name, CharacterType ctype, CharMotion cmot,
-	   int worldx, int worldy, GameMap *gamemap_ptr);
-   bool CanOccupyTileType(TileType tt);
+   Character(const std::string &name, CharacterType ctype, CharMotion cmot, int worldx, int worldy);
+   bool CanOccupyLocation(int x, int y);
    void SetLocation(int x, int y);
-   int GetWorldX();
-   int GetWorldY();
+   int GetX();
+   int GetY();
+   std::string GetName() { return m_name; }
+   Character &operator=(const Character & other);
+  
+
    
+protected:
+	void SetGameMapPtr(GameMap *gm_ptr);
+
    private:
    
    CharacterType m_chartype;

@@ -8,20 +8,19 @@
 class TheGame
 {
 public:
-	TheGame() {}
+	TheGame(){}
 	void KeyHandler(int key, int scancode, int action, int mods);
 	void Play();
 	~TheGame()
 	{
-		delete m_display_ptr; m_display_ptr = nullptr;
-		delete m_gamemap_ptr; m_gamemap_ptr = nullptr;
+		//clean all the stuff
 	}
 
 private:
-
-	GameMap *m_gamemap_ptr;
-	Character *m_mainchar_ptr;
+	void Interact(int x, int y);
+	Character m_mainchar;
 	Display *m_display_ptr;
+	GameMap *m_gamemap_ptr;
 };
 
 #endif

@@ -1,2 +1,4 @@
-﻿  RappFF.vcxproj -> C:\devstuff\RappFF\x64\Debug\RappFF.exe
+﻿  TheGame.cpp
+c:\devstuff\rappff\thegame.cpp(96): warning C4305: 'argument': truncation from 'double' to 'float'
+  RappFF.vcxproj -> C:\devstuff\RappFF\x64\Debug\RappFF.exe
   RappFF.vcxproj -> C:\devstuff\RappFF\x64\Debug\RappFF.pdb (Full PDB)

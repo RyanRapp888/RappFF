@@ -1,5 +1,20 @@
 #include "DrawableObj.h"
 
+DrawableObj &DrawableObj::operator=(const DrawableObj & other)
+{
+   if (this != &other) // protect against invalid self-assignment
+   {
+	  this->m_rel_originx_01 = other.m_rel_originx_01;
+	  this->m_rel_originy_01 = other.m_rel_originy_01;
+	  this->m_rel_width_01 = other.m_rel_width_01;
+	  this->m_rel_height_01 = other.m_rel_height_01;
+	  if (other.m_winsection_ptr != nullptr) this->m_winsection_ptr = other.m_winsection_ptr;
+	  if (other.m_viewport_ptr != nullptr) this->m_viewport_ptr = other.m_viewport_ptr;
+   }
+   
+   return *this;
+}
+
 void DrawableObj::SetRelativeLocation(
 	double originx_01, double originy_01,
 	double width_01, double height_01)

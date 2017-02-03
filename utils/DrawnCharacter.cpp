@@ -4,8 +4,6 @@ DrawnCharacter::DrawnCharacter()
 {
 	m_texture = nullptr;
 	m_color = RGB(255, 255, 255);
-	TextureManager *tm = TextureManager::GetInstance();
-	tm->GetTexturePtr(m_tiletype, &m_texture);
 }
 
 void DrawnCharacter::SetTileType(TileType tt)
@@ -18,6 +16,18 @@ void DrawnCharacter::SetTileType(TileType tt)
 	TextureManager *tm = TextureManager::GetInstance();
 	tm->GetTexturePtr(tt, &m_texture);
 	m_tiletype = tt;
+}
+
+DrawnCharacter &DrawnCharacter::operator=(const DrawnCharacter & other)
+{
+	if (this != &other)
+	{
+		this->m_texture = other.m_texture;
+		this->m_tiletype = other.m_tiletype;
+		this->m_color = other.m_color;
+     	DrawableObj::operator=(other);
+	}
+	return *this;
 }
 
 void DrawnCharacter::SetColor(RGB col) { m_color = col; }

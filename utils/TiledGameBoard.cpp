@@ -1,11 +1,5 @@
 #include "TiledGameBoard.h"
 
-void TiledGameBoard::AttachMainCharacter(Character *mc)
-{
-	m_mainchar_ptr = mc;
-	AddObject(mc);
-}
-
 void TiledGameBoard::SetGameMapPtr(GameMap *gptr)
 {
 	m_gamemap_ptr = gptr;
@@ -32,10 +26,31 @@ void TiledGameBoard::SetTileDetails(int xtiles, int ytiles)
 		}
 	}
 
+	if (m_gamemap_ptr->GetMainCharPtr() != nullptr)
+	{
+		AddObject(m_gamemap_ptr->GetMainCharPtr());
+	}
+	
 }
 
 void TiledGameBoard::Refresh()
 {
+	if (m_gamemap_ptr->GetMainCharPtr() == nullptr)
+	{
+		std::cout << "Error: GameMap Ptr not set" << std::endl;
+		return;
+	}
+
+	int maincharx, mainchary;
+	Character *mainchar = m_gamemap_ptr->GetMainCharPtr();
+	maincharx = mainchar->GetX();
+	mainchary = mainchar->GetY();
+	std::vector< Character *> close_chars;
+	m_gamemap_ptr->FindCharactersInRange
+	   (maincharx - (m_xtiles / 2), mainchary - (m_ytiles / 2),
+		maincharx + (m_xtiles / 2), mainchary + (m_ytiles / 2),
+		close_chars);
+	
 	for (int xx = 0; xx < m_xtiles; xx++)
 	{
 		for (int yy = 0; yy < m_ytiles; yy++)
@@ -43,15 +58,16 @@ void TiledGameBoard::Refresh()
 			Tile *curtile = &(m_tiles[GetTileIdx(xx, yy)]);
 			curtile->SetColor(RGB(255, 255, 255));
 			TileType cur;
-			int curtile_wx = m_mainchar_ptr->GetWorldX() - (m_xtiles / 2) + xx;
-			int curtile_wy = m_mainchar_ptr->GetWorldY() - (m_ytiles / 2) + yy;
+			int curtile_wx = maincharx - (m_xtiles / 2) + xx;
+			int curtile_wy = mainchary - (m_ytiles / 2) + yy;
 			m_gamemap_ptr->GetTileType(curtile_wx, curtile_wy, cur);
 			curtile->SetTileType(cur);
-			for (int aa = 0; aa < m_otherchar_ptrs.size(); aa++)
+			for (int aa = 0; aa < close_chars.size(); aa++)
 			{
-				Character *cur = m_otherchar_ptrs[aa];
-				int col = cur->GetWorldX();
-				int row = cur->GetWorldY();
+				Character *cur = close_chars[aa];
+				cur->SetWindowSectionPtr(this);
+				int col = cur->GetX();
+				int row = cur->GetY();
 				if (curtile_wx == col && curtile_wy == row)
 				{
 					double ox, oy, w, h;
@@ -68,7 +84,7 @@ void TiledGameBoard::Refresh()
 	Tile *center_tile = &(m_tiles[GetTileIdx(screen_mid_tilex, screen_mid_tiley)]);
 	double ox, oy, w, h;
 	center_tile->GetRelativeLocation(ox, oy, w, h);
-	m_mainchar_ptr->SetRelativeLocation(ox, oy, w, h);
+	mainchar->SetRelativeLocation(ox, oy, w, h);
 	WindowSection::Refresh();
 }
 
