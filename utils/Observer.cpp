@@ -1,4 +1,4 @@
-#include "utils/Observer.h"
+#include "Observer.h"
 
 void Entity::SetName(const std::string &name)
 {

@@ -1,0 +1,44 @@
+﻿  Viewport.cpp
+c:\devstuff\rappff\utils\viewport.cpp(85): warning C4018: '<': signed/unsigned mismatch
+  TiledGameBoard.cpp
+c:\devstuff\rappff\utils\tiledgameboard.cpp(50): warning C4018: '<': signed/unsigned mismatch
+  Tile.cpp
+  Texture.cpp
+  Shader.cpp
+  Observer.cpp
+  ObjLoader.cpp
+c:\devstuff\rappff\utils\objloader.cpp(378): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+  Mesh.cpp
+  GameMap.cpp
+c:\devstuff\rappff\utils\gamemap.cpp(19): warning C4551: function call missing argument list
+c:\devstuff\rappff\utils\gamemap.cpp(56): warning C4018: '>=': signed/unsigned mismatch
+  DrawnCharacter.cpp
+c:\devstuff\rappff\utils\drawncharacter.cpp(40): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+c:\devstuff\rappff\utils\drawncharacter.cpp(43): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\devstuff\rappff\utils\drawncharacter.cpp(43): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+c:\devstuff\rappff\utils\drawncharacter.cpp(44): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\devstuff\rappff\utils\drawncharacter.cpp(44): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+c:\devstuff\rappff\utils\drawncharacter.cpp(45): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\devstuff\rappff\utils\drawncharacter.cpp(45): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+c:\devstuff\rappff\utils\drawncharacter.cpp(46): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\devstuff\rappff\utils\drawncharacter.cpp(46): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+c:\devstuff\rappff\utils\drawncharacter.cpp(47): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\devstuff\rappff\utils\drawncharacter.cpp(47): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+c:\devstuff\rappff\utils\drawncharacter.cpp(48): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\devstuff\rappff\utils\drawncharacter.cpp(48): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+  DrawableObj.cpp
+  Display.cpp
+  Character.cpp
+  Generating Code...
+  StbImage.c
+c:\devstuff\rappff\utils\stbimage.c(300): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
+c:\devstuff\rappff\utils\stbimage.c(362): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
+c:\devstuff\rappff\utils\stbimage.c(400): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
+c:\devstuff\rappff\utils\stbimage.c(4293): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
+  glad.c
+  Generating Code...
+  Utils.vcxproj -> C:\devstuff\RappFF\Debug\Utils.lib
