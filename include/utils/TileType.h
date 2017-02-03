@@ -23,7 +23,8 @@ enum class TileType
 	ROCKS = 17,
 	ROOF = 18,
 	WATER = 19,
-	WOOD = 20
+	WOOD = 20,
+	NTILETYPES = 21
 };
 
 #endif

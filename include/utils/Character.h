@@ -5,24 +5,34 @@
 #include "CharMotion.h"
 #include "DrawnCharacter.h"
 #include <string>
-#include "TileType.h"
+
+enum class CharacterType
+{
+	EMMY,
+	FAIRY,
+	JELLYBEAN,
+	MAINCHAR,
+	MERMAID,
+	OCTOPUS,
+	PRINCESS,
+	SIZE
+};
 
 class Character: public DrawnCharacter
 {
    public:
 
    Character(){}
-   Character(const std::string &name, TileType ctype, CharMotion cmot,
-             int worldx, int worldy, GameMap *gamemap_ptr): 
-			    m_name(name), m_char_motion(cmot),
-				m_worldx(worldx), m_worldy(worldy), m_gamemap_ptr(gamemap_ptr)
-              { SetTileType(ctype);}
+   Character(const std::string &name, CharacterType ctype, CharMotion cmot,
+	   int worldx, int worldy, GameMap *gamemap_ptr);
+   bool CanOccupyTileType(TileType tt);
    void SetLocation(int x, int y);
    int GetWorldX();
    int GetWorldY();
    
    private:
    
+   CharacterType m_chartype;
    std::string m_name;
    CharMotion m_char_motion;
    GameMap *m_gamemap_ptr;

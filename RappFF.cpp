@@ -13,6 +13,7 @@ static void error_callback(int error, const char* description);
 static void PrintCurrentPath();
 TheGame rappff;
 
+
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 	rappff.KeyHandler(key, scancode, action, mods);
@@ -20,7 +21,6 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 
 int main(void)
 {
-	PrintCurrentPath();
 	SetKeyCallbackFunc(KeyCallback);
 	glfwSetErrorCallback(error_callback);
 

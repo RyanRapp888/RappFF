@@ -9,17 +9,6 @@ using namespace std;
 
 GameMap::GameMap(int x_tiles, int y_tiles)
 {
-	char cCurrentPath[FILENAME_MAX];
-
-	if (!_getcwd(cCurrentPath, sizeof(cCurrentPath)))
-	{
-		return;
-	}
-
-	cCurrentPath[sizeof(cCurrentPath) - 1] = '\0';
-	printf("The current working directory is %s\n\n", cCurrentPath);
-
-
 	m_xtiles = x_tiles;
 	m_ytiles = y_tiles;
 	m_tiletypes.resize(x_tiles * y_tiles);

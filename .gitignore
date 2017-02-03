@@ -10,6 +10,14 @@
 *.suo
 *.swp
 *.swo
+*.enc
+*.idb
+*.log
+*.tlog
+*.idb
+
+# intellisense?
+*.db
 
 # Precompiled Headers
 *.gch
