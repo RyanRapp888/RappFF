@@ -1,10 +1,10 @@
+#ifndef OBSERVER_H__
+#define OBSERVER_H__
+
 #include <string>
 #include <list>
 
-
 enum class Event{ ENTITY_KILLED, ENTITY_OTHER};
-
-
 
 class Entity
 {
@@ -36,7 +36,6 @@ class Broadcaster
    std::list<Observer *> m_observers;
 };
 
-
 /* Example
 class BigBrother : public Observer
 {
@@ -51,6 +50,7 @@ class BigBrother : public Observer
       }
    }
 };
+
 class StatBoy : public Observer
 {
    public:
@@ -67,6 +67,7 @@ class StatBoy : public Observer
    private:
    int m_n_killed = 0;
 };
+
 class TownCrier : public Broadcaster
 {
    public:
@@ -77,3 +78,5 @@ class TownCrier : public Broadcaster
 };
 
 */
+
+#endif

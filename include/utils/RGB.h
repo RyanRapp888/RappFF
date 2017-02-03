@@ -1,9 +1,11 @@
-#ifndef UTIL_RGB_H
-#define UTIL_RGB_H
+#ifndef RGB_H__
+#define RGB_H__
 
 #define RGB_GREEN_BITS  8
 #define RGB_BLUE_BITS   16
 #define RGB_MASK        255
+
+#include <iostream>
 
 #ifdef RGB
 #undef RGB
