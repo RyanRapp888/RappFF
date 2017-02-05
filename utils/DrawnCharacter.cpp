@@ -38,7 +38,6 @@ void DrawnCharacter::Render()
 	double tile_h(GetRelativeHeight_01() * 2);
 	double x_pos, y_pos;
 
-	glEnable(GL_TEXTURE_2D);
 	m_texture->Bind();
 
 	x_pos = GetXDrawPos_N11();
@@ -57,6 +56,6 @@ void DrawnCharacter::Render()
 	glTexCoord2d(0.0, 1.0); glVertex3f(x_pos, y_pos + tile_h, -0.01);
 	glTexCoord2d(0.0, 0.0); glVertex3f(x_pos, y_pos, -0.01);
 	glEnd();
-	glDisable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, 0);
+
+	m_texture->UnBind();
 }

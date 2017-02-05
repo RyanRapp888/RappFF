@@ -9,15 +9,17 @@
 
 class Texture
 {
+	friend class TextureManager;
 public:
-
-	Texture(const std::string& fileName);
+	// To get a new texture, use the texture manager class below
 	void Bind();
+	void UnBind();
 	virtual ~Texture();
 
 protected:
 
 private:
+	Texture(const std::string& fileName);
 	Texture(const Texture& texture) {}
 	void operator=(const Texture& texture) {}
 
@@ -30,6 +32,7 @@ class TextureManager
 
    static TextureManager *GetInstance();
    bool GetTexturePtr(TileType type, Texture **texture);
+   bool GetTexturePtr(const std::string &filename, Texture **texture);
 
    private:
 

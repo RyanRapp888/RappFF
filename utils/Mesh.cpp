@@ -9,6 +9,23 @@
 Mesh::Mesh(const std::string& fileName)
 {
 	InitMesh(OBJModel(fileName).ToIndexedModel());
+	m_texture = nullptr;
+}
+
+Mesh::Mesh(IndexedModel &model, bool calcNormalsForMe)
+{
+	if (calcNormalsForMe) model.CalcNormals();
+	InitMesh(model);
+	m_texture = nullptr;
+}
+
+bool Mesh::UseTexture(std::string &texture_filename)
+{
+   if (texture_filename.size() == 0) return false;
+   TextureManager *tm = TextureManager::GetInstance();
+   tm->GetTexturePtr(texture_filename, &m_texture);
+   if (m_texture != nullptr) return true;
+   return false;
 }
 
 void Mesh::InitMesh(const IndexedModel& model)
@@ -41,23 +58,6 @@ void Mesh::InitMesh(const IndexedModel& model)
 	glBindVertexArray(0);
 }
 
-Mesh::Mesh(Vertex* vertices, unsigned int numVertices, unsigned int* indices, unsigned int numIndices)
-{
-	IndexedModel model;
-
-	for (unsigned int i = 0; i < numVertices; i++)
-	{
-		model.positions.push_back(*vertices[i].GetPos());
-		model.texCoords.push_back(*vertices[i].GetTexCoord());
-		model.normals.push_back(*vertices[i].GetNormal());
-	}
-
-	for (unsigned int i = 0; i < numIndices; i++)
-		model.indices.push_back(indices[i]);
-
-	InitMesh(model);
-}
-
 Mesh::~Mesh()
 {
 	glDeleteBuffers(NUM_BUFFERS, m_vertexArrayBuffers);
@@ -66,10 +66,17 @@ Mesh::~Mesh()
 
 void Mesh::Render()
 {
+	glColor3f(static_cast<GLfloat> (1),	static_cast<GLfloat> (1),
+		static_cast<GLfloat> (1));
+	
+	if (m_texture != nullptr) m_texture->Bind();
+	
 	glBindVertexArray(m_vertexArrayObject);
 
-	//glDrawElements(GL_TRIANGLES, m_numIndices, GL_UNSIGNED_INT, 0);
-	glDrawElementsBaseVertex(GL_TRIANGLES, m_numIndices, GL_UNSIGNED_INT, 0, 0);
+	glDrawElements(GL_TRIANGLES, m_numIndices, GL_UNSIGNED_INT, 0);
+	//glDrawElementsBaseVertex(GL_TRIANGLES, m_numIndices, GL_UNSIGNED_INT, 0, 0);
+	//glDrawArrays(GL_TRIANGLES,0,3);
 
 	glBindVertexArray(0);
+	if (m_texture != nullptr)  m_texture->UnBind();
 }

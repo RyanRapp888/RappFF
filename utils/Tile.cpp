@@ -21,7 +21,6 @@ void Tile::Render()
 	GLfloat tile_h( static_cast<GLfloat> (GetRelativeHeight_01() * 2 ));
 	GLfloat x_pos, y_pos;
 
-	glEnable(GL_TEXTURE_2D);
 	m_texture->Bind();
 
 	x_pos = static_cast<GLfloat> (GetXDrawPos_N11());
@@ -39,6 +38,5 @@ void Tile::Render()
 	glTexCoord2d(0.0, 1.0); glVertex3f(x_pos, y_pos + tile_h, 0);
 	glTexCoord2d(0.0, 0.0); glVertex3f(x_pos, y_pos, 0);
 	glEnd();
-	glDisable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	m_texture->UnBind();
 }

@@ -7,26 +7,8 @@
 #include <vector>
 #include "ObjLoader.h"
 #include "DrawableObj.h"
+#include "Texture.h"
 
-struct Vertex
-{
-public:
-	Vertex(const glm::vec3& pos, const glm::vec2& texCoord, const glm::vec3& normal)
-	{
-		this->pos = pos;
-		this->texCoord = texCoord;
-		this->normal = normal;
-	}
-
-	glm::vec3* GetPos() { return &pos; }
-	glm::vec2* GetTexCoord() { return &texCoord; }
-	glm::vec3* GetNormal() { return &normal; }
-
-private:
-	glm::vec3 pos;
-	glm::vec2 texCoord;
-	glm::vec3 normal;
-};
 
 enum MeshBufferPositions
 {
@@ -40,7 +22,8 @@ class Mesh : public DrawableObj
 {
 public:
 	Mesh(const std::string& fileName);
-	Mesh(Vertex* vertices, unsigned int numVertices, unsigned int* indices, unsigned int numIndices);
+	Mesh(IndexedModel &model, bool calcNormalsForMe);
+	bool UseTexture(std::string &texture);
 	void Render();
 	virtual ~Mesh();
 
@@ -56,6 +39,7 @@ private:
 	GLuint m_vertexArrayObject;
 	GLuint m_vertexArrayBuffers[NUM_BUFFERS];
 	unsigned int m_numIndices;
+	Texture *m_texture;
 };
 
 #endif

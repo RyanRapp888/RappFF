@@ -20,6 +20,11 @@ static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, i
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
 	}
 
+	if (kcallbackfunc == nullptr)
+	{  
+	   std::cout << "ERROR: No callback function specified" << std::endl;
+	   return;
+	}
 	kcallbackfunc(window, key, scancode, action, mods);
 
 }
@@ -49,8 +54,11 @@ Display::Display(int width, int height, const std::string& title)
    gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
    glfwSwapInterval(1);
    glEnable(GL_DEPTH_TEST);
+   
+   /*
    glEnable(GL_CULL_FACE);
    glCullFace(GL_BACK);
+   */
 }
 
 GLFWwindow *Display::GetWindowPtr()

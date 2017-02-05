@@ -56,6 +56,11 @@ OBJModel::OBJModel(const std::string& fileName)
 
 void IndexedModel::CalcNormals()
 {
+	if (normals.size() != positions.size() )
+	{
+		normals.resize(positions.size());
+	}
+
     for(unsigned int i = 0; i < indices.size(); i += 3)
     {
         int i0 = indices[i];

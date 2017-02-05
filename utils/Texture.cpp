@@ -52,22 +52,34 @@ bool TextureManager::GetTexturePtr(TileType type, Texture **texture)
 {
    auto iter = tiletype_lookup.find(type);
    if(iter != tiletype_lookup.end())
-   {  
-      auto iter2 = m_lookup.find( iter->second );
-      if(iter2 != m_lookup.end())
-      {
-         *texture = iter2->second;
-         return true;
+   { 
+	   if(GetTexturePtr(iter->second, texture))
+	   {
+		  return true;
       }
    }
-
-   *texture = new Texture(tiletype_lookup[type]);
-   m_lookup[tiletype_lookup[type]] = *texture;
+   
    return false;
+}
+
+bool TextureManager::GetTexturePtr(const std::string &filename, Texture **texture)
+{
+	auto iter2 = m_lookup.find(filename);
+	if (iter2 != m_lookup.end())
+	{
+		*texture = iter2->second;
+		return true;
+	}
+
+	*texture = new Texture(filename);
+	if (*texture == nullptr) return false;
+	m_lookup[filename] = *texture;
+	return true;
 }
 
 Texture::Texture(const std::string& fileName)
 {
+	// don't use this directly, go through the TextureManager
    int width, height, numComponents;
    unsigned char* data = stbi_load((fileName).c_str(), &width, &height, &numComponents, 4);
 
@@ -96,4 +108,10 @@ void Texture::Bind()
 {
    glEnable(GL_TEXTURE_2D);
    glBindTexture(GL_TEXTURE_2D, m_texture);
+}
+
+void Texture::UnBind()
+{
+	glDisable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, 0);
 }

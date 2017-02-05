@@ -1,10 +1,11 @@
 
 #include <glad.h>
 #include "TiledGameBoard.h"
-
+#include "Shader.h"
 #include "GameMap.h"
 #include "Character.h"
 #include "Display.h"
+#include "Mesh.h"
 
 class Sandbox
 {
@@ -33,7 +34,35 @@ void Sandbox::Play()
 {
 	m_display_ptr = new Display(800, 600, "Sandbox");
 	if (m_display_ptr == nullptr) return;
+	
+	IndexedModel tmpmod;
+	tmpmod.positions.emplace_back(glm::vec3(-.5f, -1, 0));
+	tmpmod.positions.emplace_back(glm::vec3(.5f, -1, 0));
+	tmpmod.positions.emplace_back(glm::vec3(.5f, 1, 0));
+	tmpmod.positions.emplace_back(glm::vec3(-.5f, 1, 0));
 
+	tmpmod.texCoords.emplace_back(0, 0);
+	tmpmod.texCoords.emplace_back(1, 0);
+	tmpmod.texCoords.emplace_back(1, 1);
+	tmpmod.texCoords.emplace_back(0, 1);
+
+	tmpmod.indices.emplace_back(0);
+	tmpmod.indices.emplace_back(2);
+	tmpmod.indices.emplace_back(1);
+	tmpmod.indices.emplace_back(3);
+	tmpmod.indices.emplace_back(0);
+	tmpmod.indices.emplace_back(2);
+	
+	tmpmod.normals.emplace_back(glm::vec3(0, 0, -1));
+	tmpmod.normals.emplace_back(glm::vec3(0, 0, -1));
+	tmpmod.normals.emplace_back(glm::vec3(0, 0, -1));
+	tmpmod.normals.emplace_back(glm::vec3(0, 0, -1));
+		
+	
+	Mesh abc(tmpmod,false);
+	//Mesh abc(("res\\monkey3.obj"));
+	abc.UseTexture(std::string("res\\mtn.png"));
+	m_display_ptr->AddObject(&abc);
 	/*
 	Tile *lower = new Tile();
 	lower->SetTileType(TileType::MTNSNOW);
@@ -41,10 +70,16 @@ void Sandbox::Play()
 	lower->SetColor(RGB(255,255,255));
 	m_display_ptr->AddObject(lower);
 	*/
+	Shader testShader("res\\basicShader");
+	testShader.Bind();
+	Transform transform;
+	Camera camera(glm::vec3(0.0f, 0.0f, -5.0f), 70.0f, 800/600, 0.1f, 100.0f);
 
 	while (!m_display_ptr->WindowShouldClose())
 	{
 		m_display_ptr->Clear(0, 0, .2, 1);
+		testShader.Bind();
+		testShader.Update(transform, camera);
 		m_display_ptr->Refresh();
 		m_display_ptr->SwapBuffers();
 		glfwPollEvents();
