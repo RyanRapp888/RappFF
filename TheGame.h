@@ -21,6 +21,7 @@ private:
 	Character m_mainchar;
 	Display *m_display_ptr;
 	GameMap *m_gamemap_ptr;
+	int m_xrot, m_yrot, m_zrot;
 };
 
 #endif

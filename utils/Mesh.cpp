@@ -6,9 +6,88 @@
 #include <iostream>
 #include <stdlib.h>
 
+bool MeshManager::m_instance_created = false;
+MeshManager *MeshManager::m_instance = 0;
+
+static std::map<TileType, std::string> tiletype_lookup
+{
+	{ TileType::BLACK, "res\\flat.robj" },
+	{ TileType::BRICKS, "res\\flat.robj" },
+	{ TileType::DESERT, "res\\flat.robj" },
+	{ TileType::EMMY, "res\\flat.robj" },
+	{ TileType::FAIRY, "res\\flat.robj" },
+	{ TileType::GRASS, "res\\flat.robj" },
+	{ TileType::GRASS2, "res\\flat.robj" },
+	{ TileType::JELLYBEAN, "res\\flat.robj" },
+	{ TileType::MAINCHAR, "res\\flat.robj" },
+	{ TileType::MERMAID, "res\\flat.robj" },
+	{ TileType::MTN, "res\\mtn.robj" },
+	{ TileType::MTNSNOW, "res\\mtn.robj" },
+	{ TileType::MUD, "res\\flat.robj" },
+	{ TileType::OCTOPUS, "res\\flat.robj" },
+	{ TileType::PARCHMENT, "res\\flat.robj" },
+	{ TileType::PLANK, "res\\flat.robj" },
+	{ TileType::PRINCESS, "res\\flat.robj" },
+	{ TileType::ROCKS, "res\\flat.robj" },
+	{ TileType::ROOF, "res\\flat.robj" },
+	{ TileType::WATER, "res\\flat.robj" },
+	{ TileType::WOOD, "res\\flat.robj" }
+};
+
+bool GetPrefabModel(const std::string &str, IndexedModel &dat);
+
+MeshManager *MeshManager::GetInstance()
+{
+	if (m_instance_created)
+	{
+		return m_instance;
+	}
+
+	m_instance = new MeshManager();
+	m_instance_created = true;
+	return m_instance;
+}
+
+bool MeshManager::GetMeshPtr(TileType type, Mesh **mesh)
+{
+	auto iter = tiletype_lookup.find(type);
+	if (iter != tiletype_lookup.end() && iter->second != "")
+	{
+		if (GetMeshPtr(iter->second, mesh))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool MeshManager::GetMeshPtr(const std::string &filename, Mesh **mesh)
+{
+	auto iter2 = m_lookup.find(filename);
+	if (iter2 != m_lookup.end())
+	{
+		*mesh = iter2->second;
+		return true;
+	}
+
+	*mesh = new Mesh(filename);
+	if (*mesh == nullptr) return false;
+	m_lookup[filename] = *mesh;
+	return true;
+}
+
 Mesh::Mesh(const std::string& fileName)
 {
-	InitMesh(OBJModel(fileName).ToIndexedModel());
+	IndexedModel tmp_model;
+	if (GetPrefabModel(fileName, tmp_model))
+	{
+		InitMesh(tmp_model);
+	}
+	else
+	{
+		InitMesh(OBJModel(fileName).ToIndexedModel());
+	}
 	m_texture = nullptr;
 }
 
@@ -17,6 +96,14 @@ Mesh::Mesh(IndexedModel &model, bool calcNormalsForMe)
 	if (calcNormalsForMe) model.CalcNormals();
 	InitMesh(model);
 	m_texture = nullptr;
+}
+
+bool Mesh::UseTexture(TileType &ttype)
+{
+	TextureManager *tm = TextureManager::GetInstance();
+	tm->GetTexturePtr(ttype, &m_texture);
+	if (m_texture != nullptr) return true;
+	return false;
 }
 
 bool Mesh::UseTexture(std::string &texture_filename)
@@ -79,4 +166,111 @@ void Mesh::Render()
 
 	glBindVertexArray(0);
 	if (m_texture != nullptr)  m_texture->UnBind();
+}
+
+bool GetPrefabModel(const std::string &str, IndexedModel &dat)
+{
+	if (str == "res\\mtn.robj")
+	{
+		dat.Clear();
+		dat.positions.emplace_back(glm::vec3(-.5f, -1, 0)); //LL
+		dat.positions.emplace_back(glm::vec3(.5f, -1, 0)); //LR
+		dat.positions.emplace_back(glm::vec3(0, 0, -.5)); //CENTRE
+
+		dat.positions.emplace_back(glm::vec3(.5f, -1, 0)); //LR
+		dat.positions.emplace_back(glm::vec3(.5f, 1, 0)); //UR
+		dat.positions.emplace_back(glm::vec3(0, 0, -.5)); //CENTRE
+
+		dat.positions.emplace_back(glm::vec3(0, 0, -.5)); //CENTRE
+		dat.positions.emplace_back(glm::vec3(.5f, 1, 0)); //UR
+		dat.positions.emplace_back(glm::vec3(-.5f, 1, 0)); //UL
+
+		dat.positions.emplace_back(glm::vec3(-.5f, -1, 0)); //LL
+		dat.positions.emplace_back(glm::vec3(0, 0, -.5)); //CENTRE
+		dat.positions.emplace_back(glm::vec3(-.5f, 1, 0)); //UL
+
+		dat.texCoords.emplace_back(0, 0); //LL
+		dat.texCoords.emplace_back(1, 0); //LR
+		dat.texCoords.emplace_back(0, 0); //C
+
+		dat.texCoords.emplace_back(1, 0); //LR
+		dat.texCoords.emplace_back(1, 1); //UR
+		dat.texCoords.emplace_back(0, 0); //C
+
+		dat.texCoords.emplace_back(0, 0); //C
+		dat.texCoords.emplace_back(1, 1); //UR
+		dat.texCoords.emplace_back(0, 1); //UL
+
+		dat.texCoords.emplace_back(0, 0); //LL
+		dat.texCoords.emplace_back(0, 0); //C
+		dat.texCoords.emplace_back(0, 1); //UL
+
+		dat.indices.emplace_back(0);
+		dat.indices.emplace_back(1);
+		dat.indices.emplace_back(2);
+		dat.indices.emplace_back(3);
+		dat.indices.emplace_back(4);
+		dat.indices.emplace_back(5);
+		dat.indices.emplace_back(6);
+		dat.indices.emplace_back(7);
+		dat.indices.emplace_back(8);
+		dat.indices.emplace_back(9);
+		dat.indices.emplace_back(10);
+		dat.indices.emplace_back(11);
+
+		dat.normals.emplace_back(glm::vec3(0, 0, -1));
+		dat.normals.emplace_back(glm::vec3(0, 0, -1));
+		dat.normals.emplace_back(glm::vec3(0, 0, -1));
+		dat.normals.emplace_back(glm::vec3(0, 0, -1));
+		dat.normals.emplace_back(glm::vec3(0, 0, -1));
+		dat.normals.emplace_back(glm::vec3(0, 0, -1));
+		dat.normals.emplace_back(glm::vec3(0, 0, -1));
+		dat.normals.emplace_back(glm::vec3(0, 0, -1));
+		dat.normals.emplace_back(glm::vec3(0, 0, -1));
+		dat.normals.emplace_back(glm::vec3(0, 0, -1));
+		dat.normals.emplace_back(glm::vec3(0, 0, -1));
+		dat.normals.emplace_back(glm::vec3(0, 0, -1));
+		return true;
+	}
+	else if (str == "res\\flat.robj")
+	{
+		dat.Clear();
+		dat.positions.emplace_back(glm::vec3(-.5f, -1, 0)); //LL
+		dat.positions.emplace_back(glm::vec3(.5f, -1, 0)); //LR
+		dat.positions.emplace_back(glm::vec3(.5f, -1, 0)); //LR
+		dat.positions.emplace_back(glm::vec3(.5f, 1, 0)); //UR
+		dat.positions.emplace_back(glm::vec3(.5f, 1, 0)); //UR
+		dat.positions.emplace_back(glm::vec3(-.5f, 1, 0)); //UL
+     	dat.positions.emplace_back(glm::vec3(-.5f, -1, 0)); //LL
+		dat.positions.emplace_back(glm::vec3(-.5f, 1, 0)); //UL
+
+		dat.texCoords.emplace_back(0, 0); //LL
+		dat.texCoords.emplace_back(1, 0); //LR
+		dat.texCoords.emplace_back(1, 0); //LR
+		dat.texCoords.emplace_back(1, 1); //UR
+		dat.texCoords.emplace_back(1, 1); //UR
+		dat.texCoords.emplace_back(0, 1); //UL
+		dat.texCoords.emplace_back(0, 0); //LL
+		dat.texCoords.emplace_back(0, 1); //UL
+
+		dat.indices.emplace_back(0);
+		dat.indices.emplace_back(1);
+		dat.indices.emplace_back(2);
+		dat.indices.emplace_back(3);
+		dat.indices.emplace_back(4);
+		dat.indices.emplace_back(5);
+		dat.indices.emplace_back(6);
+		dat.indices.emplace_back(7);
+	
+		dat.normals.emplace_back(glm::vec3(0, 0, -1));
+		dat.normals.emplace_back(glm::vec3(0, 0, -1));
+		dat.normals.emplace_back(glm::vec3(0, 0, -1));
+		dat.normals.emplace_back(glm::vec3(0, 0, -1));
+		dat.normals.emplace_back(glm::vec3(0, 0, -1));
+		dat.normals.emplace_back(glm::vec3(0, 0, -1));
+		dat.normals.emplace_back(glm::vec3(0, 0, -1));
+		dat.normals.emplace_back(glm::vec3(0, 0, -1));
+		return true;
+	}
+	return false;
 }

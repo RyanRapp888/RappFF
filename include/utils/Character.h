@@ -31,9 +31,7 @@ class Character: public DrawnCharacter
    int GetY();
    std::string GetName() { return m_name; }
    Character &operator=(const Character & other);
-  
-
-   
+     
 protected:
 	void SetGameMapPtr(GameMap *gm_ptr);
 

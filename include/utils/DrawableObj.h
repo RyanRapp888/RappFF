@@ -33,9 +33,7 @@ public:
       double width_01,double height_01);
 
    virtual void Render() = 0;
-
-   
-    
+       
     void SetWindowSectionPtr(WindowSection *obj)
 	{
 		m_winsection_ptr = obj;

@@ -5,24 +5,27 @@ void Tile::SetColor(RGB col) { m_color = col; }
 
 void Tile::SetTileType(TileType type)
 {
-	if (type == m_tiletype && m_texture != nullptr)
+	if (type == m_tiletype && m_mesh_ptr != nullptr)
 	{
 		return;
 	}
 
-	TextureManager *tm = TextureManager::GetInstance();
-	tm->GetTexturePtr(type, &m_texture);
 	m_tiletype = type;
+	MeshManager *tm = MeshManager::GetInstance();
+	tm->GetMeshPtr(type, &m_mesh_ptr);
+	m_mesh_ptr->UseTexture(m_tiletype);
 }
 
 void Tile::Render()
 {
-	GLfloat tile_w( static_cast<GLfloat> (GetRelativeWidth_01() * 2 ));
-	GLfloat tile_h( static_cast<GLfloat> (GetRelativeHeight_01() * 2 ));
-	GLfloat x_pos, y_pos;
-
-	m_texture->Bind();
-
+	//GLfloat tile_w( static_cast<GLfloat> (GetRelativeWidth_01() * 2 ));
+	//GLfloat tile_h( static_cast<GLfloat> (GetRelativeHeight_01() * 2 ));
+	//GLfloat x_pos, y_pos;
+	if (m_mesh_ptr != nullptr)
+	{
+		m_mesh_ptr->Render();
+	}
+/*
 	x_pos = static_cast<GLfloat> (GetXDrawPos_N11());
 	y_pos = static_cast<GLfloat> (GetYDrawPos_N11());
 
@@ -38,5 +41,6 @@ void Tile::Render()
 	glTexCoord2d(0.0, 1.0); glVertex3f(x_pos, y_pos + tile_h, 0);
 	glTexCoord2d(0.0, 0.0); glVertex3f(x_pos, y_pos, 0);
 	glEnd();
-	m_texture->UnBind();
+	*/
+	//m_mesh_ptr->UnBind();
 }

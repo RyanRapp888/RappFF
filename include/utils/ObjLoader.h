@@ -17,6 +17,13 @@ struct OBJIndex
 class IndexedModel
 {
 public:
+	void Clear()
+	{
+		positions.clear();
+		texCoords.clear();
+		normals.clear();
+		indices.clear();
+	}
     std::vector<glm::vec3> positions;
     std::vector<glm::vec2> texCoords;
     std::vector<glm::vec3> normals;

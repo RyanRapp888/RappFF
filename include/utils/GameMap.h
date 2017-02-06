@@ -15,8 +15,6 @@ enum class ProxRel
    FOUND_BELOW
 };
 
-
-
 class GameMap
 {
 public:

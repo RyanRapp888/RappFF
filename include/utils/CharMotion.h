@@ -8,7 +8,6 @@ enum class CharMotionType
 
 class CharMotion
 {
-
 public:
 
 	CharMotion():m_charmotion_type(CharMotionType::STATIC){}

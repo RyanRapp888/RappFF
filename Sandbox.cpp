@@ -23,11 +23,27 @@ private:
 	Character m_mainchar;
 	Display *m_display_ptr;
 	GameMap *m_gamemap_ptr;
+	int m_xrot, m_yrot, m_zrot;
 };
+
+Sandbox abc;
 
 void Sandbox::KeyHandler(int key, int scancode, int action, int mods)
 {
-	int abc = 0;
+	switch (key)
+	{
+	case(GLFW_KEY_X):
+		m_xrot++;
+		break;
+	case(GLFW_KEY_Y):
+		m_yrot++;
+		break;
+	case(GLFW_KEY_Z):
+		m_zrot++;
+	
+	default:
+		break;
+	}
 }
 
 void Sandbox::Play()
@@ -35,55 +51,42 @@ void Sandbox::Play()
 	m_display_ptr = new Display(800, 600, "Sandbox");
 	if (m_display_ptr == nullptr) return;
 	
-	IndexedModel tmpmod;
-	tmpmod.positions.emplace_back(glm::vec3(-.5f, -1, 0));
-	tmpmod.positions.emplace_back(glm::vec3(.5f, -1, 0));
-	tmpmod.positions.emplace_back(glm::vec3(.5f, 1, 0));
-	tmpmod.positions.emplace_back(glm::vec3(-.5f, 1, 0));
-
-	tmpmod.texCoords.emplace_back(0, 0);
-	tmpmod.texCoords.emplace_back(1, 0);
-	tmpmod.texCoords.emplace_back(1, 1);
-	tmpmod.texCoords.emplace_back(0, 1);
-
-	tmpmod.indices.emplace_back(0);
-	tmpmod.indices.emplace_back(2);
-	tmpmod.indices.emplace_back(1);
-	tmpmod.indices.emplace_back(3);
-	tmpmod.indices.emplace_back(0);
-	tmpmod.indices.emplace_back(2);
-	
-	tmpmod.normals.emplace_back(glm::vec3(0, 0, -1));
-	tmpmod.normals.emplace_back(glm::vec3(0, 0, -1));
-	tmpmod.normals.emplace_back(glm::vec3(0, 0, -1));
-	tmpmod.normals.emplace_back(glm::vec3(0, 0, -1));
-		
-	
-	Mesh abc(tmpmod,false);
-	//Mesh abc(("res\\monkey3.obj"));
-	abc.UseTexture(std::string("res\\mtn.png"));
-	m_display_ptr->AddObject(&abc);
 	/*
-	Tile *lower = new Tile();
-	lower->SetTileType(TileType::MTNSNOW);
-	lower->SetRelativeLocation(.01,.01,.98,.98);
-	lower->SetColor(RGB(255,255,255));
-	m_display_ptr->AddObject(lower);
+	Mesh *theMesh;
+	MeshManager *mm = MeshManager::GetInstance();
+	mm->GetMeshPtr(std::string("res\\mtn.robj"),&theMesh);
+	theMesh->UseTexture(std::string("res\\mtn.png"));
+	m_display_ptr->AddObject(theMesh);
 	*/
+	Tile tmptile;
+	tmptile.SetColor(RGB(255, 255, 255));
+	tmptile.SetTileType(TileType::MTN);
+	m_display_ptr->AddObject(&tmptile);
+
 	Shader testShader("res\\basicShader");
 	testShader.Bind();
 	Transform transform;
 	Camera camera(glm::vec3(0.0f, 0.0f, -5.0f), 70.0f, 800/600, 0.1f, 100.0f);
-
+	
 	while (!m_display_ptr->WindowShouldClose())
 	{
 		m_display_ptr->Clear(0, 0, .2, 1);
 		testShader.Bind();
+		transform.GetRot()->x = m_xrot;
+		transform.GetRot()->y = m_yrot;
+		transform.GetRot()->z = m_zrot;
+		std::cout << "xyz rot" << m_xrot << "," << m_yrot << "," << m_zrot << std::endl;
 		testShader.Update(transform, camera);
 		m_display_ptr->Refresh();
 		m_display_ptr->SwapBuffers();
 		glfwPollEvents();
+		
 	}
+}
+
+void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	abc.KeyHandler(key, scancode, action, mods);
 }
 
 std::string ToText(ProxRel dat)
@@ -100,7 +103,7 @@ void Sandbox::Interact(int x, int y)
 	int aa = 0;
 }
 
-Sandbox abc;
+
 
 static void error_callback(int error, const char* description)
 {
@@ -109,6 +112,7 @@ static void error_callback(int error, const char* description)
 
 int main()
 {
+	SetKeyCallbackFunc(KeyCallback);
 	glfwSetErrorCallback(error_callback);
 
 	if (!glfwInit())
