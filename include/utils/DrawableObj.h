@@ -38,16 +38,17 @@ public:
 	{
 		m_winsection_ptr = obj;
 	} 
+	
+	double GetRelativeWidth_01();
+	double GetRelativeHeight_01();
 
 protected:
    
-   double GetRelativeOriginX_01();
-   double GetRelativeOriginY_01();
-   double GetRelativeWidth_01();
-   double GetRelativeHeight_01();
    double GetXDrawPos_N11();
    double GetYDrawPos_N11();
-      
+   double GetRelativeOriginX_01();
+   double GetRelativeOriginY_01();
+
    // if not using absolute coords
    // then we are drawing relative to a window or viewport
    double m_rel_originx_01;

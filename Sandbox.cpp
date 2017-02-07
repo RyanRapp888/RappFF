@@ -66,7 +66,7 @@ void Sandbox::Play()
 	Shader testShader("res\\basicShader");
 	testShader.Bind();
 	Transform transform;
-	Camera camera(glm::vec3(0.0f, 0.0f, -5.0f), 70.0f, 800/600, 0.1f, 100.0f);
+	Camera camera(glm::vec3(0.0f, 0.0f, -2.0f), 70.0f, 800/600, 0.1f, 100.0f);
 	
 	while (!m_display_ptr->WindowShouldClose())
 	{

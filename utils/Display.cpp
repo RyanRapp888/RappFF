@@ -11,7 +11,6 @@ void SetKeyCallbackFunc( void (*foo)(GLFWwindow *, int, int, int, int))
 	kcallbackfunc = foo;
 }
 
-
 static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 
@@ -26,7 +25,6 @@ static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, i
 	   return;
 	}
 	kcallbackfunc(window, key, scancode, action, mods);
-
 }
 
 static void WindowSizeCallback(GLFWwindow *window, int w, int h)

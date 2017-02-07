@@ -42,6 +42,8 @@ public:
 	bool UseTexture(std::string &texture);
 	bool UseTexture(TileType &ttype);
 	void Render();
+	void RenderInstanced();
+	void InitializeInstancing(glm::vec3 *translations, int ntrans);
 	virtual ~Mesh();
 
 protected:
@@ -49,16 +51,17 @@ protected:
 private:
 	Mesh(const std::string& fileName);
 	Mesh(IndexedModel &model, bool calcNormalsForMe);
-	static const unsigned int NUM_BUFFERS = 4;
+	int m_nbuffers;
 	void operator=(const Mesh& mesh) {}
 	Mesh(const Mesh& mesh) {}
 
 	void InitMesh(const IndexedModel& model);
 
 	GLuint m_vertexArrayObject;
-	GLuint m_vertexArrayBuffers[NUM_BUFFERS];
+	std::vector<GLuint> m_VBO_ids;
 	unsigned int m_numIndices;
 	Texture *m_texture;
+	bool m_instancing_enabled;
 };
 
 

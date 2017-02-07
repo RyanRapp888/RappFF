@@ -16,11 +16,17 @@ void Tile::SetTileType(TileType type)
 	m_mesh_ptr->UseTexture(m_tiletype);
 }
 
+Mesh *Tile::GetMeshPtr()
+{
+	return m_mesh_ptr;
+}
+
 void Tile::Render()
 {
-	//GLfloat tile_w( static_cast<GLfloat> (GetRelativeWidth_01() * 2 ));
-	//GLfloat tile_h( static_cast<GLfloat> (GetRelativeHeight_01() * 2 ));
-	//GLfloat x_pos, y_pos;
+	GLfloat tile_w( static_cast<GLfloat> (GetRelativeWidth_01() * 2 ));
+	GLfloat tile_h( static_cast<GLfloat> (GetRelativeHeight_01() * 2 ));
+	GLfloat x_pos, y_pos;
+
 	if (m_mesh_ptr != nullptr)
 	{
 		m_mesh_ptr->Render();

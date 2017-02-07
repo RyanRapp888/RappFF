@@ -89,6 +89,7 @@ Mesh::Mesh(const std::string& fileName)
 		InitMesh(OBJModel(fileName).ToIndexedModel());
 	}
 	m_texture = nullptr;
+	m_instancing_enabled = false;
 }
 
 Mesh::Mesh(IndexedModel &model, bool calcNormalsForMe)
@@ -96,6 +97,7 @@ Mesh::Mesh(IndexedModel &model, bool calcNormalsForMe)
 	if (calcNormalsForMe) model.CalcNormals();
 	InitMesh(model);
 	m_texture = nullptr;
+	m_instancing_enabled = false;
 }
 
 bool Mesh::UseTexture(TileType &ttype)
@@ -115,31 +117,65 @@ bool Mesh::UseTexture(std::string &texture_filename)
    return false;
 }
 
+void Mesh::InitializeInstancing(glm::vec3 *translations, int n_instances)
+{
+	if (!m_instancing_enabled)
+	{
+		GLuint vboid;
+		glGenBuffers(1, &vboid);
+		m_VBO_ids.emplace_back(vboid);
+		m_instancing_enabled = true;
+
+		glBindBuffer(GL_ARRAY_BUFFER, vboid);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * n_instances , translations, GL_STATIC_DRAW);
+		glEnableVertexAttribArray(vboid);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		glEnableVertexAttribArray(3); // may need to be 4
+		glBindBuffer(GL_ARRAY_BUFFER, m_VBO_ids.back());
+		glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glVertexAttribDivisor(3, 1);
+	}
+
+}
+
 void Mesh::InitMesh(const IndexedModel& model)
 {
 	m_numIndices = model.indices.size();
 
 	glGenVertexArrays(1, &m_vertexArrayObject);
 	glBindVertexArray(m_vertexArrayObject);
+	
+	GLuint vboid;
+	glGenBuffers(1, &vboid);
+	m_VBO_ids.emplace_back(vboid);
 
-	glGenBuffers(NUM_BUFFERS, m_vertexArrayBuffers);
-
-	glBindBuffer(GL_ARRAY_BUFFER, m_vertexArrayBuffers[POSITION_VB]);
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBO_ids[POSITION_VB]);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(model.positions[0]) * model.positions.size(), &model.positions[0], GL_STATIC_DRAW);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-	glBindBuffer(GL_ARRAY_BUFFER, m_vertexArrayBuffers[TEXCOORD_VB]);
+	glGenBuffers(1, &vboid);
+	m_VBO_ids.emplace_back(vboid);
+
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBO_ids[TEXCOORD_VB]);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(model.texCoords[0]) * model.texCoords.size(), &model.texCoords[0], GL_STATIC_DRAW);
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
-	glBindBuffer(GL_ARRAY_BUFFER, m_vertexArrayBuffers[NORMAL_VB]);
+	glGenBuffers(1, &vboid);
+	m_VBO_ids.emplace_back(vboid);
+
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBO_ids[NORMAL_VB]);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(model.normals[0]) * model.normals.size(), &model.normals[0], GL_STATIC_DRAW);
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_vertexArrayBuffers[INDEX_VB]);
+	glGenBuffers(1, &vboid);
+	m_VBO_ids.emplace_back(vboid);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_VBO_ids[INDEX_VB]);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(model.indices[0]) * model.indices.size(), &model.indices[0], GL_STATIC_DRAW);
 
 	glBindVertexArray(0);
@@ -147,7 +183,10 @@ void Mesh::InitMesh(const IndexedModel& model)
 
 Mesh::~Mesh()
 {
-	glDeleteBuffers(NUM_BUFFERS, m_vertexArrayBuffers);
+	for (int aa = m_VBO_ids.size() -1; aa >= 0; aa--)
+	{
+		glDeleteBuffers(1, &(m_VBO_ids[aa]));
+	}
 	glDeleteVertexArrays(1, &m_vertexArrayObject);
 }
 
@@ -161,6 +200,23 @@ void Mesh::Render()
 	glBindVertexArray(m_vertexArrayObject);
 
 	glDrawElements(GL_TRIANGLES, m_numIndices, GL_UNSIGNED_INT, 0);
+	//glDrawElementsBaseVertex(GL_TRIANGLES, m_numIndices, GL_UNSIGNED_INT, 0, 0);
+	//glDrawArrays(GL_TRIANGLES,0,3);
+
+	glBindVertexArray(0);
+	if (m_texture != nullptr)  m_texture->UnBind();
+}
+
+void Mesh::RenderInstanced()
+{
+	glColor3f(static_cast<GLfloat> (1), static_cast<GLfloat> (1),
+		static_cast<GLfloat> (1));
+
+	if (m_texture != nullptr) m_texture->Bind();
+
+	glBindVertexArray(m_vertexArrayObject);
+
+	glDrawArraysInstanced(GL_TRIANGLES, m_numIndices, GL_UNSIGNED_INT, 0);
 	//glDrawElementsBaseVertex(GL_TRIANGLES, m_numIndices, GL_UNSIGNED_INT, 0, 0);
 	//glDrawArrays(GL_TRIANGLES,0,3);
 

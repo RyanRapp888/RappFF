@@ -44,7 +44,6 @@
     <ClInclude Include="..\include\utils\DrawableObj.h" />
     <ClInclude Include="..\include\utils\DrawnCharacter.h" />
     <ClInclude Include="..\include\utils\GameMap.h" />
-    <ClInclude Include="..\include\utils\Glad.h" />
     <ClInclude Include="..\include\utils\linmath.h" />
     <ClInclude Include="..\include\utils\Math3d.h" />
     <ClInclude Include="..\include\utils\Mesh.h" />
@@ -61,6 +60,12 @@
     <ClInclude Include="..\include\utils\Util.h" />
     <ClInclude Include="..\include\utils\Viewport.h" />
     <ClInclude Include="..\include\utils\WindowSection.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\res\basicShader.fs" />
+    <None Include="..\res\basicShader.vs" />
+    <None Include="..\res\InstanceShader.fs" />
+    <None Include="..\res\InstanceShader.vs" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{29FF5A95-0FC0-48D7-9D4E-438F8AB6F11A}</ProjectGuid>

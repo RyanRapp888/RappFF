@@ -19,6 +19,7 @@ public:
    void SetColor(RGB col);
    void SetTileType(TileType type);
    void Render();
+   Mesh *GetMeshPtr();
       
    private:
 

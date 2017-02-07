@@ -14,17 +14,17 @@ class TiledGameBoard: public WindowSection
       
    TiledGameBoard(Viewport *vpt, double origxpct, double origypct, double w_pct, 
                   double h_pct, GameMap *gamemap_ptr):
-         WindowSection(vpt,origxpct,origypct,w_pct,h_pct),m_gamemap_ptr(gamemap_ptr){}
+         WindowSection(vpt,origxpct,origypct,w_pct,h_pct),m_tiles(nullptr),m_gamemap_ptr(gamemap_ptr),m_translations(nullptr){}
    
    
-   ~TiledGameBoard(){ delete [] m_tiles; m_tiles = nullptr; }
+   ~TiledGameBoard(){ delete [] m_tiles; delete [] m_translations, m_tiles = nullptr; }
    void SetGameMapPtr(GameMap *gptr);
    void SetTileDetails(int xtiles, int ytiles);
    void Refresh();
    
    private:
    
-   TiledGameBoard():m_tiles(nullptr),m_gamemap_ptr(nullptr){}
+   TiledGameBoard():m_tiles(nullptr),m_translations(nullptr),m_gamemap_ptr(nullptr){}
    int GetTileIdx(int xpos, int ypos);
   
    
@@ -32,6 +32,7 @@ class TiledGameBoard: public WindowSection
    int m_ytiles;
    Tile *m_tiles;
    GameMap *m_gamemap_ptr;
+   glm::vec3 *m_translations;
 };
 
 #endif

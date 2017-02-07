@@ -4,6 +4,17 @@
 #include <string>
 #include <glad.h>
 #include "transform.h"
+#include <vector>
+
+
+class InstancedShader : public Shader
+{
+   InstancedShader(const std::string &filename);
+   void UpdateTranslations(glm::vec3 *translations, int ntrans);
+
+	
+};
+
 
 class Shader
 {
@@ -11,13 +22,14 @@ public:
 	Shader(const std::string& fileName);
 
 	void Bind();
+	void Detach();
 	void Update(const Transform& transform, const Camera& camera);
 
 	virtual ~Shader();
 protected:
 private:
-	static const unsigned int NUM_SHADERS = 2;
-	static const unsigned int NUM_UNIFORMS = 3;
+	int m_num_shaders;
+	int m_num_uniforms;
 	void operator=(const Shader& shader) {}
 	Shader(const Shader& shader) {}
 
@@ -26,8 +38,8 @@ private:
 	GLuint CreateShader(const std::string& text, unsigned int type);
 
 	GLuint m_program;
-	GLuint m_shaders[NUM_SHADERS];
-	GLuint m_uniforms[NUM_UNIFORMS];
+	std::vector< GLuint > m_shaderids;
+	std::vector< GLuint > m_uniformids;
 };
 
 #endif

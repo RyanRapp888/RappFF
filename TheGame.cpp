@@ -19,47 +19,43 @@ prev_mvmt_key = cur;
 
 void TheGame::KeyHandler(int key, int scancode, int action, int mods)
 {
-	if (action == GLFW_PRESS && (key == GLFW_KEY_W || key == GLFW_KEY_A || key == GLFW_KEY_S || key == GLFW_KEY_D ||
-		key == GLFW_KEY_UP || key == GLFW_KEY_LEFT || key == GLFW_KEY_DOWN || key == GLFW_KEY_RIGHT) )
+	if (action == GLFW_PRESS)
 	{
-		
 		int xx = m_mainchar.GetX();
 		int yy = m_mainchar.GetY();
-		
+
 		switch (key)
 		{
-		case(GLFW_KEY_W):
-		case(GLFW_KEY_UP):
-			yy++;
-			break;
-		case(GLFW_KEY_A):
-		case(GLFW_KEY_LEFT):
-			xx--;
-			break;
-		case(GLFW_KEY_S):
-		case(GLFW_KEY_DOWN):
-			yy--;
-			break;
-		case(GLFW_KEY_D):
-		case(GLFW_KEY_RIGHT):
-			xx++;
-			break;
-		case(GLFW_KEY_X):
-			m_xrot++;
-			break;
-		case(GLFW_KEY_Y):
-			m_yrot++;
-			break;
-		case(GLFW_KEY_Z):
-			m_zrot++;
-		default:
-			break;
+			case(GLFW_KEY_W):
+			case(GLFW_KEY_UP):
+				yy++;
+				break;
+			case(GLFW_KEY_A):
+			case(GLFW_KEY_LEFT):
+				xx--;
+				break;
+			case(GLFW_KEY_S):
+			case(GLFW_KEY_DOWN):
+				yy--;
+				break;
+			case(GLFW_KEY_D):
+			case(GLFW_KEY_RIGHT):
+				xx++;
+				break;
+			case(GLFW_KEY_X):
+				m_xrot++;
+				break;
+			case(GLFW_KEY_Y):
+				m_yrot++;
+				break;
+			case(GLFW_KEY_Z):
+				m_zrot++;
+			case(GLFW_KEY_ENTER):
+				Interact(m_mainchar.GetX(), m_mainchar.GetY());
+			default:
+				break;
 		}
 		m_mainchar.SetLocation(xx, yy);
-	}
-	else if (action == GLFW_PRESS && key == GLFW_KEY_ENTER)
-	{
-		Interact(m_mainchar.GetX(), m_mainchar.GetY());
 	}
 }
 
@@ -68,11 +64,13 @@ void TheGame::Play()
 	m_display_ptr = new Display(800, 600, "Cupcake");
 	if (m_display_ptr == nullptr) return;
 	
+	
 	//ultimately, I want gamemap to be 256x256
 	m_gamemap_ptr =  new GameMap(40, 30, &m_mainchar);
 	m_mainchar = Character("main_character", CharacterType::MAINCHAR, CharMotion(), 22, 4);
 	m_mainchar.SetColor(RGB(255, 255, 255));
 	TiledGameBoard *upper = new TiledGameBoard(m_display_ptr, .01, .01, .98, .98, m_gamemap_ptr);
+	Shader testShader("res\\InstanceShader");
 	upper->SetTileDetails(16, 16);
 	m_display_ptr->AddWindowSection(upper);
 	
@@ -88,16 +86,28 @@ void TheGame::Play()
 	{
 		m_gamemap_ptr->AttachCharacter(&(otherchars[bb]));
 	}
-
+	
+	/*
+	Tile tmptile;
+	tmptile.SetColor(RGB(255, 255, 255));
+	tmptile.SetTileType(TileType::MTN);
+	m_display_ptr->AddObject(&tmptile);
+	*/
 	Shader testShader("res\\basicShader");
+	
 	testShader.Bind();
 	Transform transform;
-	Camera camera(glm::vec3(0.0f, 0.0f, -5.0f), 70.0f, 800 / 600, 0.1f, 100.0f);
+	Camera camera(glm::vec3(0.0f, 0.0f, -1.5f), 70.0f, 800 / 600, 0.1f, 100.0f);
+
+	RGB background(255, 182, 193);
 
 	while (!m_display_ptr->WindowShouldClose())
 	{
-
-		m_display_ptr->Clear(0, 0, .2, 1);
+		m_display_ptr->Clear(
+			background.GetRed()/255.0,
+			background.GetGreen()/255.0,
+			background.GetBlue()/255.0,
+			1);
 		testShader.Bind();
 		transform.GetRot()->x = m_xrot;
 		transform.GetRot()->y = m_yrot;
