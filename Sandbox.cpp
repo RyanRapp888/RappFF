@@ -65,20 +65,18 @@ void Sandbox::Play()
 	tmptile.SetTileType(TileType::MTN);
 	m_display_ptr->AddObject(&tmptile);
 
-	Shader testShader("res\\basicShader");
+	Shader testShader("res\\pyramid_examp");
 	testShader.Bind();
-	Transform transform;
-	Camera camera(glm::vec3(0.0f, 0.0f, -2.0f), 70.0f, 800/600, 0.1f, 100.0f);
+	//Transform transform;
+	//Camera camera(glm::vec3(0.0f, 0.0f, -2.0f), 70.0f, 800/600, 0.1f, 100.0f);
+	GLint projectionLoc = glGetUniformLocation(testShader.GetProgramId(), "projection");
+	glm::mat4 projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
+	glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, &projection[0][0]);
 	
 	while (!m_display_ptr->WindowShouldClose())
 	{
 		m_display_ptr->Clear(0, 0, .2, 1);
 		testShader.Bind();
-		transform.GetRot()->x = m_xrot;
-		transform.GetRot()->y = m_yrot;
-		transform.GetRot()->z = m_zrot;
-		std::cout << "xyz rot" << m_xrot << "," << m_yrot << "," << m_zrot << std::endl;
-		testShader.Update(transform, camera);
 		m_display_ptr->Refresh();
 		m_display_ptr->SwapBuffers();
 		glfwPollEvents();
@@ -89,15 +87,6 @@ void Sandbox::Play()
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 	abc.KeyHandler(key, scancode, action, mods);
-}
-
-std::string ToText(ProxRel dat)
-{
-	if (dat == ProxRel::FOUND_TO_LEFT) return "on your left!";
-	else if (dat == ProxRel::FOUND_TO_RIGHT) return "on your right!";
-	else if (dat == ProxRel::FOUND_ABOVE) return "to the NORTH of you!";
-	else if (dat == ProxRel::FOUND_BELOW) return "to the SOUTH of you!";
-	return "";
 }
 
 void Sandbox::Interact(int x, int y)
@@ -119,7 +108,7 @@ int main()
 	{
 		exit(EXIT_FAILURE);
 	}
-	Display *display_ptr = new Display(800, 600, "Sandbox");
+	
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 	

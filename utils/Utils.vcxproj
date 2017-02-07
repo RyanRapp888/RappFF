@@ -66,6 +66,8 @@
     <None Include="..\res\basicShader.vs" />
     <None Include="..\res\InstanceShader.fs" />
     <None Include="..\res\InstanceShader.vs" />
+    <None Include="..\res\pyramid_examp.fs" />
+    <None Include="..\res\pyramid_examp.vs" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{29FF5A95-0FC0-48D7-9D4E-438F8AB6F11A}</ProjectGuid>

@@ -5,6 +5,8 @@
 #include <fstream>
 #include <iostream>
 #include <stdlib.h>
+#include <glm/glm.hpp>
+#include <glm/gtx/transform.hpp>
 
 bool MeshManager::m_instance_created = false;
 MeshManager *MeshManager::m_instance = 0;
@@ -21,7 +23,7 @@ static std::map<TileType, std::string> tiletype_lookup
 	{ TileType::JELLYBEAN, "res\\flat.robj" },
 	{ TileType::MAINCHAR, "res\\flat.robj" },
 	{ TileType::MERMAID, "res\\flat.robj" },
-	{ TileType::MTN, "res\\mtn.robj" },
+	{ TileType::MTN, "res\\pyramid.robj" },
 	{ TileType::MTNSNOW, "res\\mtn.robj" },
 	{ TileType::MUD, "res\\flat.robj" },
 	{ TileType::OCTOPUS, "res\\flat.robj" },
@@ -79,14 +81,14 @@ bool MeshManager::GetMeshPtr(const std::string &filename, Mesh **mesh)
 
 Mesh::Mesh(const std::string& fileName)
 {
-	IndexedModel tmp_model;
-	if (GetPrefabModel(fileName, tmp_model))
+	if (GetPrefabModel(fileName, m_model))
 	{
-		InitMesh(tmp_model);
+		InitMesh(m_model);
 	}
 	else
 	{
-		InitMesh(OBJModel(fileName).ToIndexedModel());
+		m_model = OBJModel(fileName).ToIndexedModel();
+		InitMesh(m_model);
 	}
 	m_texture = nullptr;
 	m_instancing_enabled = false;
@@ -117,86 +119,116 @@ bool Mesh::UseTexture(std::string &texture_filename)
    return false;
 }
 
-void Mesh::InitializeInstancing(glm::vec3 *translations, int n_instances)
+static double get_rand(int boundy)
 {
-	if (!m_instancing_enabled)
+	static bool is_seeded(false);
+	if (!is_seeded)
 	{
-		GLuint vboid;
-		glBindVertexArray(m_vertexArrayObject);
-
-		glGenBuffers(1, &vboid);
-		m_VBO_ids.emplace_back(vboid);
-		m_instancing_enabled = true;
-
-		glBindBuffer(GL_ARRAY_BUFFER, vboid);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * n_instances , translations, GL_STATIC_DRAW);
-		glEnableVertexAttribArray(4);
-		glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);
-		glVertexAttribDivisor(4, 1);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		
-		glBindVertexArray(0);
-   }
+		srand(14);
+		is_seeded = true;
+	}
+	int result = rand() % boundy;
+	return result;
 }
 
 void Mesh::InitMesh(const IndexedModel& model)
 {
 	m_numIndices = model.indices.size();
 
-	glGenVertexArrays(1, &m_vertexArrayObject);
-	glBindVertexArray(m_vertexArrayObject);
+	glGenVertexArrays(1, &m_VAO);
+	glBindVertexArray(m_VAO);
 	
-	GLuint vboid;
-	glGenBuffers(1, &vboid);
-	m_VBO_ids.emplace_back(vboid);
+	glGenBuffers(4, m_VBO_ids);
+	
+	if ((sizeof(GLfloat) * 3) != sizeof(glm::vec3))
+	{
+		std::cout << "potential sizing problem" << std::endl;
+	}
 
-	glBindBuffer(GL_ARRAY_BUFFER, m_VBO_ids[POSITION_VB]);
+	// Spatial Positions (-1 to 1)
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBO_ids[static_cast<int>(BufferIdx::POS_IDX)]);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(model.positions[0]) * model.positions.size(), &model.positions[0], GL_STATIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(static_cast<int>(AttributeIdx::POS_LOC));
+	glVertexAttribPointer(static_cast<int>(AttributeIdx::POS_LOC), 3, GL_FLOAT, GL_FALSE, 0, 0);
+		
+	// Tri-Indices
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_VBO_ids[static_cast<int>(BufferIdx::IDX_IDX)]);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLushort) * model.indices.size(), &model.indices[0], GL_STATIC_DRAW);
 
-	glGenBuffers(1, &vboid);
-	m_VBO_ids.emplace_back(vboid);
+#define NINST 12
 
-	glBindBuffer(GL_ARRAY_BUFFER, m_VBO_ids[TEXCOORD_VB]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(model.texCoords[0]) * model.texCoords.size(), &model.texCoords[0], GL_STATIC_DRAW);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
+	static GLfloat *colors = nullptr;
+	if (colors == nullptr)
+	{
+		// Note: this 256 is the number of tile instances we will draw
+		colors = new GLfloat[3 * NINST]; //256 instances * 3colors per instance
+		for (int aa = 0; aa < 3 * NINST; aa++)
+		{
+			colors[aa] = get_rand(256) / 256.0;
+		}
+	}
+	
+	// Colors
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBO_ids[static_cast<int>(BufferIdx::COLOR_IDX)]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * NINST , colors, GL_STATIC_DRAW);
+	glVertexAttribPointer(static_cast<int>(AttributeIdx::COLOR_LOC), 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glVertexAttribDivisor(static_cast<int>(AttributeIdx::COLOR_LOC), 1);
+	glEnableVertexAttribArray(static_cast<int>(AttributeIdx::COLOR_LOC));
 
-	glGenBuffers(1, &vboid);
-	m_VBO_ids.emplace_back(vboid);
+	static glm::mat4 *translations = nullptr;
+	if(translations ==  nullptr)
+	{
+		translations = new glm::mat4[NINST];
+		translations[0] = glm::translate(glm::mat4(1.0f), glm::vec3(-4.0f, -3.0f, -14.0f));
+		translations[1] = glm::translate(glm::mat4(1.0f), glm::vec3(3.0f, -1.0f, -17.0f));
+		translations[2] = glm::translate(glm::mat4(1.0f), glm::vec3(2.0f, -2.0f, -9.0f));
+		for (int bb = 3; bb < NINST; bb++)
+		{
+		   translations[bb] = glm::translate(glm::mat4(1.0f), glm::vec3(get_rand(10)-5, get_rand(10)-5, get_rand(20)-20));
+		}
+	}
 
-	glBindBuffer(GL_ARRAY_BUFFER, m_VBO_ids[NORMAL_VB]);
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBO_ids[static_cast<int>(BufferIdx::TRANS_IDX)]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat4)*NINST, translations, GL_STATIC_DRAW);
+
+	for (int i = 0; i < 4; ++i)
+	{
+		glVertexAttribPointer(static_cast<int>(AttributeIdx::TRANSLATION_LOC) + i, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (GLvoid *)(i * sizeof(glm::vec4)));
+		glVertexAttribDivisor(static_cast<int>(AttributeIdx::TRANSLATION_LOC) + i, 1);
+		glEnableVertexAttribArray(static_cast<int>(AttributeIdx::TRANSLATION_LOC) + i);
+	}
+
+	glBindVertexArray(0);
+	/*
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBO_ids[MeshBufferPositionsNORMAL_VB]);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(model.normals[0]) * model.normals.size(), &model.normals[0], GL_STATIC_DRAW);
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-	glGenBuffers(1, &vboid);
-	m_VBO_ids.emplace_back(vboid);
+	
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_VBO_ids[INDEX_VB]);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(model.indices[0]) * model.indices.size(), &model.indices[0], GL_STATIC_DRAW);
-
-	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBO_ids[static_cast<int>(BufferIdx::TEXTURE_IDX)]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(model.texCoords[0]) * model.texCoords.size(), &model.texCoords[0], GL_STATIC_DRAW);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
+	*/
 }
 
 Mesh::~Mesh()
 {
-	for (int aa = m_VBO_ids.size() -1; aa >= 0; aa--)
-	{
-		glDeleteBuffers(1, &(m_VBO_ids[aa]));
-	}
-	glDeleteVertexArrays(1, &m_vertexArrayObject);
+	
 }
 
 void Mesh::Render()
 {
+	RenderInstanced();
+	/*
 	glColor3f(static_cast<GLfloat> (1),	static_cast<GLfloat> (1),
 		static_cast<GLfloat> (1));
 	
 	if (m_texture != nullptr) m_texture->Bind();
 	
-	glBindVertexArray(m_vertexArrayObject);
+	glBindVertexArray(m_VAO);
 
 	glDrawElements(GL_TRIANGLES, m_numIndices, GL_UNSIGNED_INT, 0);
 	//glDrawElementsBaseVertex(GL_TRIANGLES, m_numIndices, GL_UNSIGNED_INT, 0, 0);
@@ -204,28 +236,23 @@ void Mesh::Render()
 
 	glBindVertexArray(0);
 	if (m_texture != nullptr)  m_texture->UnBind();
+	*/
 }
 
-void Mesh::RenderInstanced(glm::vec3 *translations, int n_instances)
+void Mesh::RenderInstanced()
 {
-	if (!m_instancing_enabled)
-	{
-		InitializeInstancing(translations, n_instances);
-	}
-	glColor3f(static_cast<GLfloat> (1), static_cast<GLfloat> (1),
-		static_cast<GLfloat> (1));
+	//if (m_texture != nullptr) m_texture->Bind();
 
-	if (m_texture != nullptr) m_texture->Bind();
+	glBindVertexArray(m_VAO);
 
-	glBindVertexArray(m_vertexArrayObject);
-
-	glDrawElementsInstanced(GL_TRIANGLES, m_numIndices, GL_UNSIGNED_INT, 0, n_instances);
+	glDrawElementsInstanced(GL_TRIANGLES, m_numIndices, GL_UNSIGNED_SHORT, NULL, NINST);
 		
 	//glDrawElementsBaseVertex(GL_TRIANGLES, m_numIndices, GL_UNSIGNED_INT, 0, 0);
 	//glDrawArrays(GL_TRIANGLES,0,3);
 
-	glBindVertexArray(0);
-	if (m_texture != nullptr)  m_texture->UnBind();
+	glFlush();
+	//glBindVertexArray(0);
+	//if (m_texture != nullptr)  m_texture->UnBind();
 }
 
 bool GetPrefabModel(const std::string &str, IndexedModel &dat)
@@ -330,6 +357,30 @@ bool GetPrefabModel(const std::string &str, IndexedModel &dat)
 		dat.normals.emplace_back(glm::vec3(0, 0, -1));
 		dat.normals.emplace_back(glm::vec3(0, 0, -1));
 		dat.normals.emplace_back(glm::vec3(0, 0, -1));
+		return true;
+	}
+	else if (str == "res\\pyramid.robj")
+	{
+		dat.Clear();
+		dat.positions.emplace_back(glm::vec3(-1, 0, 2)); 
+		dat.positions.emplace_back(glm::vec3(1, 0, 2));
+		dat.positions.emplace_back(glm::vec3(1, 0, 0)); 
+		dat.positions.emplace_back(glm::vec3(-1, 0, 0)); 
+		dat.positions.emplace_back(glm::vec3(0, 1, 1)); 
+		
+		dat.indices.emplace_back(0);
+		dat.indices.emplace_back(1);
+		dat.indices.emplace_back(4);
+		dat.indices.emplace_back(1);
+		dat.indices.emplace_back(2);
+		dat.indices.emplace_back(4);
+		dat.indices.emplace_back(2);
+		dat.indices.emplace_back(3);
+		dat.indices.emplace_back(4);
+		dat.indices.emplace_back(3);
+		dat.indices.emplace_back(0);
+		dat.indices.emplace_back(4);
+
 		return true;
 	}
 	return false;

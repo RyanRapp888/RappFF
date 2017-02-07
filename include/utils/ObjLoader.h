@@ -1,9 +1,11 @@
 #ifndef OBJ_LOADER_H__
 #define OBJ_LOADER_H__
 
-#include <glm/glm.hpp>
+#include <glad.h>
 #include <vector>
 #include <string>
+#include <glm/glm.hpp>
+#include <glm/gtx/transform.hpp>
 
 struct OBJIndex
 {
@@ -27,7 +29,7 @@ public:
     std::vector<glm::vec3> positions;
     std::vector<glm::vec2> texCoords;
     std::vector<glm::vec3> normals;
-    std::vector<unsigned int> indices;
+    std::vector<GLushort> indices;
     
     void CalcNormals();
 };

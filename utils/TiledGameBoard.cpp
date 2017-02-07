@@ -118,7 +118,7 @@ void TiledGameBoard::Refresh()
 		{
 			Tile *curtile = &(m_tiles[it1->second[aa]]);
 			Mesh *m1 = curtile->GetMeshPtr();
-			m1->RenderInstanced(m_translations,m_xtiles * m_ytiles);
+			//m1->RenderInstanced(m_translations, m_xtiles * m_ytiles);
 		}
 	}
 

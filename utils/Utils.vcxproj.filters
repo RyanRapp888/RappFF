@@ -148,5 +148,11 @@
     <None Include="..\res\InstanceShader.vs">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="..\res\pyramid_examp.fs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\res\pyramid_examp.vs">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
