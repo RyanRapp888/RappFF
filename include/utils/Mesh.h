@@ -42,7 +42,7 @@ public:
 	bool UseTexture(std::string &texture);
 	bool UseTexture(TileType &ttype);
 	void Render();
-	void RenderInstanced();
+	void RenderInstanced(glm::vec3 *translations, int ntrans);
 	void InitializeInstancing(glm::vec3 *translations, int ntrans);
 	virtual ~Mesh();
 
@@ -51,7 +51,6 @@ protected:
 private:
 	Mesh(const std::string& fileName);
 	Mesh(IndexedModel &model, bool calcNormalsForMe);
-	int m_nbuffers;
 	void operator=(const Mesh& mesh) {}
 	Mesh(const Mesh& mesh) {}
 

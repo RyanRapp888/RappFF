@@ -122,22 +122,21 @@ void Mesh::InitializeInstancing(glm::vec3 *translations, int n_instances)
 	if (!m_instancing_enabled)
 	{
 		GLuint vboid;
+		glBindVertexArray(m_vertexArrayObject);
+
 		glGenBuffers(1, &vboid);
 		m_VBO_ids.emplace_back(vboid);
 		m_instancing_enabled = true;
 
 		glBindBuffer(GL_ARRAY_BUFFER, vboid);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * n_instances , translations, GL_STATIC_DRAW);
-		glEnableVertexAttribArray(vboid);
+		glEnableVertexAttribArray(4);
+		glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);
+		glVertexAttribDivisor(4, 1);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-		glEnableVertexAttribArray(3); // may need to be 4
-		glBindBuffer(GL_ARRAY_BUFFER, m_VBO_ids.back());
-		glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glVertexAttribDivisor(3, 1);
-	}
-
+		
+		glBindVertexArray(0);
+   }
 }
 
 void Mesh::InitMesh(const IndexedModel& model)
@@ -207,8 +206,12 @@ void Mesh::Render()
 	if (m_texture != nullptr)  m_texture->UnBind();
 }
 
-void Mesh::RenderInstanced()
+void Mesh::RenderInstanced(glm::vec3 *translations, int n_instances)
 {
+	if (!m_instancing_enabled)
+	{
+		InitializeInstancing(translations, n_instances);
+	}
 	glColor3f(static_cast<GLfloat> (1), static_cast<GLfloat> (1),
 		static_cast<GLfloat> (1));
 
@@ -216,7 +219,8 @@ void Mesh::RenderInstanced()
 
 	glBindVertexArray(m_vertexArrayObject);
 
-	glDrawArraysInstanced(GL_TRIANGLES, m_numIndices, GL_UNSIGNED_INT, 0);
+	glDrawElementsInstanced(GL_TRIANGLES, m_numIndices, GL_UNSIGNED_INT, 0, n_instances);
+		
 	//glDrawElementsBaseVertex(GL_TRIANGLES, m_numIndices, GL_UNSIGNED_INT, 0, 0);
 	//glDrawArrays(GL_TRIANGLES,0,3);
 

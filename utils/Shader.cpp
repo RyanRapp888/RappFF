@@ -3,27 +3,6 @@
 #include <fstream>
 #include <sstream>
 
-InstancedShader::InstancedShader()
-{
-}
-
-void InstancedShader::UpdateTranslations(glm::vec3 *translations,int ntrans)
-{
-	Bind();
-	for (GLuint aa = 0; aa < ntrans; aa++)
-	{
-	   std::stringstream ss;
-       std::string index;
-       ss << aa;
-       index = ss.str();
-       GLint location = glGetUniformLocation(m_program, ("offsets[" + index + "]").c_str())
-				glUniform2f(location, translations[i].x, translations[i].y);
-		}
-	}
-	//glUniform3f(m_uniformids[2], 0.0f, 0.0f, 1.0f);
-}
-
-
 Shader::Shader(const std::string& fileName)
 {
 	m_program = glCreateProgram();

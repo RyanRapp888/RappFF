@@ -64,7 +64,6 @@ void TheGame::Play()
 	m_display_ptr = new Display(800, 600, "Cupcake");
 	if (m_display_ptr == nullptr) return;
 	
-	
 	//ultimately, I want gamemap to be 256x256
 	m_gamemap_ptr =  new GameMap(40, 30, &m_mainchar);
 	m_mainchar = Character("main_character", CharacterType::MAINCHAR, CharMotion(), 22, 4);
@@ -93,7 +92,7 @@ void TheGame::Play()
 	tmptile.SetTileType(TileType::MTN);
 	m_display_ptr->AddObject(&tmptile);
 	*/
-	Shader testShader("res\\basicShader");
+	//Shader testShader("res\\basicShader");
 	
 	testShader.Bind();
 	Transform transform;

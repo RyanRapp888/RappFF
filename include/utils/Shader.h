@@ -5,16 +5,7 @@
 #include <glad.h>
 #include "transform.h"
 #include <vector>
-
-
-class InstancedShader : public Shader
-{
-   InstancedShader(const std::string &filename);
-   void UpdateTranslations(glm::vec3 *translations, int ntrans);
-
-	
-};
-
+#include "Shader.h"
 
 class Shader
 {
@@ -24,6 +15,7 @@ public:
 	void Bind();
 	void Detach();
 	void Update(const Transform& transform, const Camera& camera);
+	GLuint GetProgramId() { return m_program; }
 
 	virtual ~Shader();
 protected:

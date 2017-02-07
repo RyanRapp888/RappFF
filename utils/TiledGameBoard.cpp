@@ -41,7 +41,7 @@ void TiledGameBoard::SetTileDetails(int xtiles, int ytiles)
 			glm::vec3 *cur_transloc = &(m_translations[GetTileIdx(xx, yy)]);
 			cur_transloc->x = (translation.x * 2.0) - 1;
 			cur_transloc->y = (translation.y * 2.0) - 1;
-			cur_transloc->z = (translation.z * 2.0) - 1;
+			cur_transloc->z = 0;
 			//AddObject(curtile);
 		}
 	}
@@ -117,7 +117,8 @@ void TiledGameBoard::Refresh()
 		for (int aa = 0; aa < it1->second.size(); aa++)
 		{
 			Tile *curtile = &(m_tiles[it1->second[aa]]);
-
+			Mesh *m1 = curtile->GetMeshPtr();
+			m1->RenderInstanced(m_translations,m_xtiles * m_ytiles);
 		}
 	}
 

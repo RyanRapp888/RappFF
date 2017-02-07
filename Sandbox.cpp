@@ -6,6 +6,8 @@
 #include "Character.h"
 #include "Display.h"
 #include "Mesh.h"
+#include <glm/glm.hpp>
+#include <glm/gtx/transform.hpp>
 
 class Sandbox
 {
@@ -103,8 +105,6 @@ void Sandbox::Interact(int x, int y)
 	int aa = 0;
 }
 
-
-
 static void error_callback(int error, const char* description)
 {
 	fprintf(stderr, "Error: %s\n", description);
@@ -114,17 +114,14 @@ int main()
 {
 	SetKeyCallbackFunc(KeyCallback);
 	glfwSetErrorCallback(error_callback);
-
+	
 	if (!glfwInit())
 	{
 		exit(EXIT_FAILURE);
 	}
-
+	Display *display_ptr = new Display(800, 600, "Sandbox");
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-
+	
 	abc.Play();
-		
-    return 0;
 }
-
