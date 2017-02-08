@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 14 for Windows Desktop
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RappFF", "RappFF.vcxproj", "{36ADB873-FBE5-46D0-A43C-3978C44DF451}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -24,24 +24,33 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
 		Release|x64 = Release|x64
+		vs2013|x64 = vs2013|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{36ADB873-FBE5-46D0-A43C-3978C44DF451}.Debug|x64.ActiveCfg = Debug|x64
 		{36ADB873-FBE5-46D0-A43C-3978C44DF451}.Debug|x64.Build.0 = Debug|x64
 		{36ADB873-FBE5-46D0-A43C-3978C44DF451}.Release|x64.ActiveCfg = Release|x64
 		{36ADB873-FBE5-46D0-A43C-3978C44DF451}.Release|x64.Build.0 = Release|x64
+		{36ADB873-FBE5-46D0-A43C-3978C44DF451}.vs2013|x64.ActiveCfg = vs2013|x64
+		{36ADB873-FBE5-46D0-A43C-3978C44DF451}.vs2013|x64.Build.0 = vs2013|x64
 		{29FF5A95-0FC0-48D7-9D4E-438F8AB6F11A}.Debug|x64.ActiveCfg = Debug|x64
 		{29FF5A95-0FC0-48D7-9D4E-438F8AB6F11A}.Debug|x64.Build.0 = Debug|x64
 		{29FF5A95-0FC0-48D7-9D4E-438F8AB6F11A}.Release|x64.ActiveCfg = Release|x64
 		{29FF5A95-0FC0-48D7-9D4E-438F8AB6F11A}.Release|x64.Build.0 = Release|x64
+		{29FF5A95-0FC0-48D7-9D4E-438F8AB6F11A}.vs2013|x64.ActiveCfg = vs2013|x64
+		{29FF5A95-0FC0-48D7-9D4E-438F8AB6F11A}.vs2013|x64.Build.0 = vs2013|x64
 		{43DBDD54-C4CE-4687-A7F9-23BD59C4A812}.Debug|x64.ActiveCfg = Debug|x64
 		{43DBDD54-C4CE-4687-A7F9-23BD59C4A812}.Debug|x64.Build.0 = Debug|x64
 		{43DBDD54-C4CE-4687-A7F9-23BD59C4A812}.Release|x64.ActiveCfg = Release|x64
 		{43DBDD54-C4CE-4687-A7F9-23BD59C4A812}.Release|x64.Build.0 = Release|x64
+		{43DBDD54-C4CE-4687-A7F9-23BD59C4A812}.vs2013|x64.ActiveCfg = vs2013|x64
+		{43DBDD54-C4CE-4687-A7F9-23BD59C4A812}.vs2013|x64.Build.0 = vs2013|x64
 		{E8438790-8E22-474F-95DC-2CCAAF8ACB32}.Debug|x64.ActiveCfg = Debug|x64
 		{E8438790-8E22-474F-95DC-2CCAAF8ACB32}.Debug|x64.Build.0 = Debug|x64
 		{E8438790-8E22-474F-95DC-2CCAAF8ACB32}.Release|x64.ActiveCfg = Release|x64
 		{E8438790-8E22-474F-95DC-2CCAAF8ACB32}.Release|x64.Build.0 = Release|x64
+		{E8438790-8E22-474F-95DC-2CCAAF8ACB32}.vs2013|x64.ActiveCfg = vs2013|x64
+		{E8438790-8E22-474F-95DC-2CCAAF8ACB32}.vs2013|x64.Build.0 = vs2013|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

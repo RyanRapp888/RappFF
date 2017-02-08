@@ -138,7 +138,7 @@ void Mesh::InitMesh(const IndexedModel& model)
 	glGenVertexArrays(1, &m_VAO);
 	glBindVertexArray(m_VAO);
 	
-	glGenBuffers(4, m_VBO_ids);
+	glGenBuffers(5, m_VBO_ids);
 	
 	if ((sizeof(GLfloat) * 3) != sizeof(glm::vec3))
 	{
@@ -155,37 +155,35 @@ void Mesh::InitMesh(const IndexedModel& model)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_VBO_ids[static_cast<int>(BufferIdx::IDX_IDX)]);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLushort) * model.indices.size(), &model.indices[0], GL_STATIC_DRAW);
 
+	// Texture Coords
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBO_ids[static_cast<int>(BufferIdx::TEXTURE_IDX)]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(model.texCoords[0]) * model.texCoords.size(), &model.texCoords[0], GL_STATIC_DRAW);
+	glEnableVertexAttribArray(static_cast<int>(AttributeIdx::TEXTURE_LOC));
+	glVertexAttribPointer(static_cast<int>(AttributeIdx::TEXTURE_LOC), 2, GL_FLOAT, GL_FALSE, 0, 0);
+
 #define NINST 12
-
-	static GLfloat *colors = nullptr;
-	if (colors == nullptr)
-	{
-		// Note: this 256 is the number of tile instances we will draw
-		colors = new GLfloat[3 * NINST]; //256 instances * 3colors per instance
-		for (int aa = 0; aa < 3 * NINST; aa++)
-		{
-			colors[aa] = get_rand(256) / 256.0;
-		}
-	}
+	// Normals
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBO_ids[static_cast<int>(BufferIdx::NORMAL_IDX)]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(model.normals[0]) * model.normals.size(), &model.normals[0], GL_STATIC_DRAW);
+	glEnableVertexAttribArray(static_cast<int>(AttributeIdx::NORMAL_LOC));
+	glVertexAttribPointer(static_cast<int>(AttributeIdx::NORMAL_LOC), 3, GL_FLOAT, GL_FALSE, 0, 0);
 	
-	// Colors
-	glBindBuffer(GL_ARRAY_BUFFER, m_VBO_ids[static_cast<int>(BufferIdx::COLOR_IDX)]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * NINST , colors, GL_STATIC_DRAW);
-	glVertexAttribPointer(static_cast<int>(AttributeIdx::COLOR_LOC), 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glVertexAttribDivisor(static_cast<int>(AttributeIdx::COLOR_LOC), 1);
-	glEnableVertexAttribArray(static_cast<int>(AttributeIdx::COLOR_LOC));
-
 	static glm::mat4 *translations = nullptr;
 	if(translations ==  nullptr)
 	{
 		translations = new glm::mat4[NINST];
-		translations[0] = glm::translate(glm::mat4(1.0f), glm::vec3(-4.0f, -3.0f, -14.0f));
-		translations[1] = glm::translate(glm::mat4(1.0f), glm::vec3(3.0f, -1.0f, -17.0f));
-		translations[2] = glm::translate(glm::mat4(1.0f), glm::vec3(2.0f, -2.0f, -9.0f));
-		for (int bb = 3; bb < NINST; bb++)
-		{
-		   translations[bb] = glm::translate(glm::mat4(1.0f), glm::vec3(get_rand(10)-5, get_rand(10)-5, get_rand(20)-20));
-		}
+		translations[0] = glm::translate(glm::mat4(1.0f), glm::vec3(-10.0f, -5.0f, -14.0f));
+		translations[1] = glm::translate(glm::mat4(1.0f), glm::vec3(-9.0f, -1.0f, -17.0f));
+		translations[2] = glm::translate(glm::mat4(1.0f), glm::vec3(-8.0f, -2.0f, -9.0f));
+		translations[3] = glm::translate(glm::mat4(1.0f), glm::vec3(-7.0f, -3.0f, -14.0f));
+		translations[4] = glm::translate(glm::mat4(1.0f), glm::vec3(-6.0f, -1.0f, -17.0f));
+		translations[5] = glm::translate(glm::mat4(1.0f), glm::vec3(-5.0f, -2.0f, -9.0f));
+		translations[6] = glm::translate(glm::mat4(1.0f), glm::vec3(-4.0f, -3.0f, -14.0f));
+		translations[7] = glm::translate(glm::mat4(1.0f), glm::vec3(-3.0f, -1.0f, -17.0f));
+		translations[8] = glm::translate(glm::mat4(1.0f), glm::vec3(-2.0f, -2.0f, -9.0f));
+		translations[9] = glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, -3.0f, -14.0f));
+		translations[10] = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, -1.0f, -17.0f));
+		translations[11] = glm::translate(glm::mat4(1.0f), glm::vec3(3.0f, -2.0f, -9.0f));
 	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO_ids[static_cast<int>(BufferIdx::TRANS_IDX)]);
@@ -199,19 +197,6 @@ void Mesh::InitMesh(const IndexedModel& model)
 	}
 
 	glBindVertexArray(0);
-	/*
-	glBindBuffer(GL_ARRAY_BUFFER, m_VBO_ids[MeshBufferPositionsNORMAL_VB]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(model.normals[0]) * model.normals.size(), &model.normals[0], GL_STATIC_DRAW);
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, 0);
-
-	
-
-	glBindBuffer(GL_ARRAY_BUFFER, m_VBO_ids[static_cast<int>(BufferIdx::TEXTURE_IDX)]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(model.texCoords[0]) * model.texCoords.size(), &model.texCoords[0], GL_STATIC_DRAW);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
-	*/
 }
 
 Mesh::~Mesh()
@@ -241,7 +226,8 @@ void Mesh::Render()
 
 void Mesh::RenderInstanced()
 {
-	//if (m_texture != nullptr) m_texture->Bind();
+	glColor3f(1, 1, 1);
+	if (m_texture != nullptr) m_texture->Bind();
 
 	glBindVertexArray(m_VAO);
 
@@ -252,7 +238,7 @@ void Mesh::RenderInstanced()
 
 	glFlush();
 	//glBindVertexArray(0);
-	//if (m_texture != nullptr)  m_texture->UnBind();
+	if (m_texture != nullptr)  m_texture->UnBind();
 }
 
 bool GetPrefabModel(const std::string &str, IndexedModel &dat)
@@ -367,6 +353,18 @@ bool GetPrefabModel(const std::string &str, IndexedModel &dat)
 		dat.positions.emplace_back(glm::vec3(1, 0, 0)); 
 		dat.positions.emplace_back(glm::vec3(-1, 0, 0)); 
 		dat.positions.emplace_back(glm::vec3(0, 1, 1)); 
+		
+		dat.texCoords.emplace_back(0, .5); //LL
+		dat.texCoords.emplace_back(1, .5); //LR
+		dat.texCoords.emplace_back(1, .5); //C
+		dat.texCoords.emplace_back(0, .5); //LR
+		dat.texCoords.emplace_back(.5, 1); //UR
+		
+		dat.normals.emplace_back(glm::vec3(0, 0, -1));
+		dat.normals.emplace_back(glm::vec3(0, 0, -1));
+		dat.normals.emplace_back(glm::vec3(0, 0, -1));
+		dat.normals.emplace_back(glm::vec3(0, 0, -1));
+		dat.normals.emplace_back(glm::vec3(0, 0, -1));
 		
 		dat.indices.emplace_back(0);
 		dat.indices.emplace_back(1);

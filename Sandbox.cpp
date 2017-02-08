@@ -65,18 +65,20 @@ void Sandbox::Play()
 	tmptile.SetTileType(TileType::MTN);
 	m_display_ptr->AddObject(&tmptile);
 
-	Shader testShader("res\\pyramid_examp");
+	Shader testShader("res\\basicShader");
 	testShader.Bind();
-	//Transform transform;
-	//Camera camera(glm::vec3(0.0f, 0.0f, -2.0f), 70.0f, 800/600, 0.1f, 100.0f);
-	GLint projectionLoc = glGetUniformLocation(testShader.GetProgramId(), "projection");
-	glm::mat4 projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
-	glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, &projection[0][0]);
+	Transform transform;
+	Camera camera(glm::vec3(0.0f, 0.0f, -2.0f), 70.0f, 800/600, 0.1f, 100.0f);
+	
 	
 	while (!m_display_ptr->WindowShouldClose())
 	{
-		m_display_ptr->Clear(0, 0, .2, 1);
+		m_display_ptr->Clear(.9, .9, .9, 1);
 		testShader.Bind();
+		transform.GetRot()->x = m_xrot;
+		transform.GetRot()->y = m_yrot;
+		transform.GetRot()->z = m_zrot;
+		testShader.Update(transform, camera);
 		m_display_ptr->Refresh();
 		m_display_ptr->SwapBuffers();
 		glfwPollEvents();

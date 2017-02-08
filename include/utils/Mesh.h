@@ -13,17 +13,17 @@ enum class BufferIdx
 {
 	POS_IDX = 0,
 	IDX_IDX = 1, // :)
-	COLOR_IDX = 2,
-	TRANS_IDX = 3,
-	TEXTURE_IDX = 4,
-	N_POS = 5
+	TEXTURE_IDX = 2,
+	NORMAL_IDX = 3,
+	TRANS_IDX = 4
 };
 
 enum class AttributeIdx
 {
 	POS_LOC = 0,
-	COLOR_LOC = 1,
-	TRANSLATION_LOC = 2
+	TEXTURE_LOC = 1,
+	NORMAL_LOC = 2,
+	TRANSLATION_LOC = 3
 };
 
 // Mesh class is in this file below.
@@ -65,7 +65,7 @@ private:
 	void InitMesh(const IndexedModel& model);
 
 	GLuint m_VAO;
-	GLuint m_VBO_ids[4];
+	GLuint m_VBO_ids[5];
 	IndexedModel m_model;
 	unsigned int m_numIndices;
 	Texture *m_texture;
