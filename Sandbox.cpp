@@ -73,7 +73,7 @@ void Sandbox::Play()
 	
 	while (!m_display_ptr->WindowShouldClose())
 	{
-		m_display_ptr->Clear(.9, .9, .9, 1);
+		m_display_ptr->Clear(0, 0, 0, 1);
 		testShader.Bind();
 		transform.GetRot()->x = m_xrot;
 		transform.GetRot()->y = m_yrot;
@@ -84,6 +84,7 @@ void Sandbox::Play()
 		glfwPollEvents();
 		
 	}
+	
 }
 
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)

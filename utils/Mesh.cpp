@@ -8,45 +8,45 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 
-bool MeshManager::m_instance_created = false;
+bool MeshManager::m_initialized = false;
 MeshManager *MeshManager::m_instance = 0;
 
 static std::map<TileType, std::string> tiletype_lookup
 {
-	{ TileType::BLACK, "res\\flat.robj" },
-	{ TileType::BRICKS, "res\\flat.robj" },
-	{ TileType::DESERT, "res\\flat.robj" },
-	{ TileType::EMMY, "res\\flat.robj" },
-	{ TileType::FAIRY, "res\\flat.robj" },
-	{ TileType::GRASS, "res\\flat.robj" },
-	{ TileType::GRASS2, "res\\flat.robj" },
-	{ TileType::JELLYBEAN, "res\\flat.robj" },
-	{ TileType::MAINCHAR, "res\\flat.robj" },
-	{ TileType::MERMAID, "res\\flat.robj" },
-	{ TileType::MTN, "res\\pyramid.robj" },
-	{ TileType::MTNSNOW, "res\\mtn.robj" },
-	{ TileType::MUD, "res\\flat.robj" },
-	{ TileType::OCTOPUS, "res\\flat.robj" },
-	{ TileType::PARCHMENT, "res\\flat.robj" },
-	{ TileType::PLANK, "res\\flat.robj" },
-	{ TileType::PRINCESS, "res\\flat.robj" },
-	{ TileType::ROCKS, "res\\flat.robj" },
-	{ TileType::ROOF, "res\\flat.robj" },
-	{ TileType::WATER, "res\\flat.robj" },
-	{ TileType::WOOD, "res\\flat.robj" }
+	{ TileType::BLACK, "res\\black.robj" },
+	{ TileType::BRICKS, "res\\bricks.robj" },
+	{ TileType::DESERT, "res\\desert.robj" },
+	{ TileType::EMMY, "res\\emmy.robj" },
+	{ TileType::FAIRY, "res\\fairy.robj" },
+	{ TileType::GRASS, "res\\grass.robj" },
+	{ TileType::GRASS2, "res\\grass2.robj" },
+	{ TileType::JELLYBEAN, "res\\jellybean.robj" },
+	{ TileType::MAINCHAR, "res\\mainchar.robj" },
+	{ TileType::MERMAID, "res\\mermaid.robj" },
+	{ TileType::MTN, "res\\mtn.robj" },
+	{ TileType::MTNSNOW, "res\\mtnsnow.robj" },
+	{ TileType::MUD, "res\\mud.robj" },
+	{ TileType::OCTOPUS, "res\\octopus.robj" },
+	{ TileType::PARCHMENT, "res\\parchment.robj" },
+	{ TileType::PLANK, "res\\plank.robj" },
+	{ TileType::PRINCESS, "res\\princess.robj" },
+	{ TileType::ROCKS, "res\\rocks.robj" },
+	{ TileType::ROOF, "res\\roof.robj" },
+	{ TileType::WATER, "res\\water.robj" },
+	{ TileType::WOOD, "res\\wood.robj" }
 };
 
 bool GetPrefabModel(const std::string &str, IndexedModel &dat);
 
 MeshManager *MeshManager::GetInstance()
 {
-	if (m_instance_created)
+	if (m_initialized)
 	{
 		return m_instance;
 	}
 
 	m_instance = new MeshManager();
-	m_instance_created = true;
+	m_initialized = true;
 	return m_instance;
 }
 
@@ -60,7 +60,6 @@ bool MeshManager::GetMeshPtr(TileType type, Mesh **mesh)
 			return true;
 		}
 	}
-
 	return false;
 }
 
@@ -91,23 +90,25 @@ Mesh::Mesh(const std::string& fileName)
 		InitMesh(m_model);
 	}
 	m_texture = nullptr;
-	m_instancing_enabled = false;
+	m_num_instances = 0;
+	m_color = RGB(1, 1, 1);
 }
 
 Mesh::Mesh(IndexedModel &model, bool calcNormalsForMe)
 {
-	if (calcNormalsForMe) model.CalcNormals();
-	InitMesh(model);
-	m_texture = nullptr;
-	m_instancing_enabled = false;
+   if (calcNormalsForMe) model.CalcNormals();
+   InitMesh(model);
+   m_texture = nullptr;
+   m_num_instances = 0;
+   m_color = RGB(1, 1, 1);
 }
 
 bool Mesh::UseTexture(TileType &ttype)
 {
-	TextureManager *tm = TextureManager::GetInstance();
-	tm->GetTexturePtr(ttype, &m_texture);
-	if (m_texture != nullptr) return true;
-	return false;
+   TextureManager *tm = TextureManager::GetInstance();
+   tm->GetTexturePtr(ttype, &m_texture);
+   if (m_texture != nullptr) return true;
+   return false;
 }
 
 bool Mesh::UseTexture(std::string &texture_filename)
@@ -119,16 +120,32 @@ bool Mesh::UseTexture(std::string &texture_filename)
    return false;
 }
 
-static double get_rand(int boundy)
+void Mesh::SetUpInstancing(int n_instances, glm::vec3 scalevect, glm::mat4 *translations)
 {
-	static bool is_seeded(false);
-	if (!is_seeded)
+	glBindVertexArray(m_VAO);
+	if (m_VBO_ids.size() < 5)
 	{
-		srand(14);
-		is_seeded = true;
+		GLuint tmp;
+		glGenBuffers(1, &tmp);
+		m_VBO_ids.push_back(tmp);
 	}
-	int result = rand() % boundy;
-	return result;
+   m_num_instances = n_instances;
+   
+   for (int aa = 0; aa < n_instances; aa++)
+   {
+	   translations[aa] = glm::scale(translations[aa], scalevect);
+   }
+
+   glBindBuffer(GL_ARRAY_BUFFER, m_VBO_ids[static_cast<int>(BufferIdx::TRANS_IDX)]);
+   glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat4)*n_instances, translations, GL_STATIC_DRAW);
+
+	for (int i = 0; i < 4; ++i)
+	{
+		glVertexAttribPointer(static_cast<int>(AttributeIdx::TRANSLATION_LOC) + i, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (GLvoid *)(i * sizeof(glm::vec4)));
+		glVertexAttribDivisor(static_cast<int>(AttributeIdx::TRANSLATION_LOC) + i, 1);
+		glEnableVertexAttribArray(static_cast<int>(AttributeIdx::TRANSLATION_LOC) + i);
+	}
+	glBindVertexArray(0);
 }
 
 void Mesh::InitMesh(const IndexedModel& model)
@@ -138,13 +155,16 @@ void Mesh::InitMesh(const IndexedModel& model)
 	glGenVertexArrays(1, &m_VAO);
 	glBindVertexArray(m_VAO);
 	
-	glGenBuffers(5, m_VBO_ids);
+	GLuint tmp;
+	glGenBuffers(1, &tmp);
+	m_VBO_ids.push_back(tmp);
+	glGenBuffers(1, &tmp);
+	m_VBO_ids.push_back(tmp);
+	glGenBuffers(1, &tmp);
+	m_VBO_ids.push_back(tmp);
+	glGenBuffers(1, &tmp);
+	m_VBO_ids.push_back(tmp);
 	
-	if ((sizeof(GLfloat) * 3) != sizeof(glm::vec3))
-	{
-		std::cout << "potential sizing problem" << std::endl;
-	}
-
 	// Spatial Positions (-1 to 1)
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO_ids[static_cast<int>(BufferIdx::POS_IDX)]);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(model.positions[0]) * model.positions.size(), &model.positions[0], GL_STATIC_DRAW);
@@ -161,40 +181,11 @@ void Mesh::InitMesh(const IndexedModel& model)
 	glEnableVertexAttribArray(static_cast<int>(AttributeIdx::TEXTURE_LOC));
 	glVertexAttribPointer(static_cast<int>(AttributeIdx::TEXTURE_LOC), 2, GL_FLOAT, GL_FALSE, 0, 0);
 
-#define NINST 12
 	// Normals
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO_ids[static_cast<int>(BufferIdx::NORMAL_IDX)]);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(model.normals[0]) * model.normals.size(), &model.normals[0], GL_STATIC_DRAW);
 	glEnableVertexAttribArray(static_cast<int>(AttributeIdx::NORMAL_LOC));
 	glVertexAttribPointer(static_cast<int>(AttributeIdx::NORMAL_LOC), 3, GL_FLOAT, GL_FALSE, 0, 0);
-	
-	static glm::mat4 *translations = nullptr;
-	if(translations ==  nullptr)
-	{
-		translations = new glm::mat4[NINST];
-		translations[0] = glm::translate(glm::mat4(1.0f), glm::vec3(-10.0f, -5.0f, -14.0f));
-		translations[1] = glm::translate(glm::mat4(1.0f), glm::vec3(-9.0f, -1.0f, -17.0f));
-		translations[2] = glm::translate(glm::mat4(1.0f), glm::vec3(-8.0f, -2.0f, -9.0f));
-		translations[3] = glm::translate(glm::mat4(1.0f), glm::vec3(-7.0f, -3.0f, -14.0f));
-		translations[4] = glm::translate(glm::mat4(1.0f), glm::vec3(-6.0f, -1.0f, -17.0f));
-		translations[5] = glm::translate(glm::mat4(1.0f), glm::vec3(-5.0f, -2.0f, -9.0f));
-		translations[6] = glm::translate(glm::mat4(1.0f), glm::vec3(-4.0f, -3.0f, -14.0f));
-		translations[7] = glm::translate(glm::mat4(1.0f), glm::vec3(-3.0f, -1.0f, -17.0f));
-		translations[8] = glm::translate(glm::mat4(1.0f), glm::vec3(-2.0f, -2.0f, -9.0f));
-		translations[9] = glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, -3.0f, -14.0f));
-		translations[10] = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, -1.0f, -17.0f));
-		translations[11] = glm::translate(glm::mat4(1.0f), glm::vec3(3.0f, -2.0f, -9.0f));
-	}
-
-	glBindBuffer(GL_ARRAY_BUFFER, m_VBO_ids[static_cast<int>(BufferIdx::TRANS_IDX)]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat4)*NINST, translations, GL_STATIC_DRAW);
-
-	for (int i = 0; i < 4; ++i)
-	{
-		glVertexAttribPointer(static_cast<int>(AttributeIdx::TRANSLATION_LOC) + i, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (GLvoid *)(i * sizeof(glm::vec4)));
-		glVertexAttribDivisor(static_cast<int>(AttributeIdx::TRANSLATION_LOC) + i, 1);
-		glEnableVertexAttribArray(static_cast<int>(AttributeIdx::TRANSLATION_LOC) + i);
-	}
 
 	glBindVertexArray(0);
 }
@@ -206,61 +197,44 @@ Mesh::~Mesh()
 
 void Mesh::Render()
 {
-	RenderInstanced();
-	/*
-	glColor3f(static_cast<GLfloat> (1),	static_cast<GLfloat> (1),
-		static_cast<GLfloat> (1));
-	
-	if (m_texture != nullptr) m_texture->Bind();
-	
-	glBindVertexArray(m_VAO);
+   glBindVertexArray(m_VAO);
 
-	glDrawElements(GL_TRIANGLES, m_numIndices, GL_UNSIGNED_INT, 0);
-	//glDrawElementsBaseVertex(GL_TRIANGLES, m_numIndices, GL_UNSIGNED_INT, 0, 0);
-	//glDrawArrays(GL_TRIANGLES,0,3);
+   if (m_texture != nullptr) m_texture->Bind();
 
-	glBindVertexArray(0);
-	if (m_texture != nullptr)  m_texture->UnBind();
-	*/
-}
-
-void Mesh::RenderInstanced()
-{
-	glColor3f(1, 1, 1);
-	if (m_texture != nullptr) m_texture->Bind();
-
-	glBindVertexArray(m_VAO);
-
-	glDrawElementsInstanced(GL_TRIANGLES, m_numIndices, GL_UNSIGNED_SHORT, NULL, NINST);
-		
-	//glDrawElementsBaseVertex(GL_TRIANGLES, m_numIndices, GL_UNSIGNED_INT, 0, 0);
-	//glDrawArrays(GL_TRIANGLES,0,3);
-
-	glFlush();
-	//glBindVertexArray(0);
-	if (m_texture != nullptr)  m_texture->UnBind();
+   if (m_num_instances > 0)
+   {
+	   glDrawElementsInstanced(GL_TRIANGLES, m_numIndices, GL_UNSIGNED_SHORT, NULL, m_num_instances);
+	   glFlush();
+   }
+   else
+   {
+      glDrawElements(GL_TRIANGLES, m_numIndices, GL_UNSIGNED_INT, 0);
+   }
+   
+   if (m_texture != nullptr) m_texture->UnBind();
+   glBindVertexArray(0);
 }
 
 bool GetPrefabModel(const std::string &str, IndexedModel &dat)
 {
-	if (str == "res\\mtn.robj")
+	if (str == "res\\mtn.robj" || str == "res\\mtnsnow.robj")
 	{
 		dat.Clear();
-		dat.positions.emplace_back(glm::vec3(-.5f, -1, 0)); //LL
-		dat.positions.emplace_back(glm::vec3(.5f, -1, 0)); //LR
+		dat.positions.emplace_back(glm::vec3(-.5f, -.5, 0)); //LL
+		dat.positions.emplace_back(glm::vec3(.5f, -.5, 0)); //LR
 		dat.positions.emplace_back(glm::vec3(0, 0, -.5)); //CENTRE
 
-		dat.positions.emplace_back(glm::vec3(.5f, -1, 0)); //LR
-		dat.positions.emplace_back(glm::vec3(.5f, 1, 0)); //UR
+		dat.positions.emplace_back(glm::vec3(.5f, -.5, 0)); //LR
+		dat.positions.emplace_back(glm::vec3(.5f, .5, 0)); //UR
 		dat.positions.emplace_back(glm::vec3(0, 0, -.5)); //CENTRE
 
 		dat.positions.emplace_back(glm::vec3(0, 0, -.5)); //CENTRE
-		dat.positions.emplace_back(glm::vec3(.5f, 1, 0)); //UR
-		dat.positions.emplace_back(glm::vec3(-.5f, 1, 0)); //UL
+		dat.positions.emplace_back(glm::vec3(.5f, .5, 0)); //UR
+		dat.positions.emplace_back(glm::vec3(-.5f, .5, 0)); //UL
 
-		dat.positions.emplace_back(glm::vec3(-.5f, -1, 0)); //LL
+		dat.positions.emplace_back(glm::vec3(-.5f, -.5, 0)); //LL
 		dat.positions.emplace_back(glm::vec3(0, 0, -.5)); //CENTRE
-		dat.positions.emplace_back(glm::vec3(-.5f, 1, 0)); //UL
+		dat.positions.emplace_back(glm::vec3(-.5f, .5, 0)); //UL
 
 		dat.texCoords.emplace_back(0, 0); //LL
 		dat.texCoords.emplace_back(1, 0); //LR
@@ -305,25 +279,43 @@ bool GetPrefabModel(const std::string &str, IndexedModel &dat)
 		dat.normals.emplace_back(glm::vec3(0, 0, -1));
 		return true;
 	}
-	else if (str == "res\\flat.robj")
-	{
+	else if ( str == "res\\emmy.robj" || str == "res\\fairy.robj" ||
+              str == "res\\jellybean.robj" || str == "res\\mainchar.robj" ||
+		      str == "res\\mermaid.robj" || str == "res\\octopus.robj" ||
+              str == "res\\princess.robj")
+	{ 
 		dat.Clear();
-		dat.positions.emplace_back(glm::vec3(-.5f, -1, 0)); //LL
-		dat.positions.emplace_back(glm::vec3(.5f, -1, 0)); //LR
-		dat.positions.emplace_back(glm::vec3(.5f, -1, 0)); //LR
-		dat.positions.emplace_back(glm::vec3(.5f, 1, 0)); //UR
-		dat.positions.emplace_back(glm::vec3(.5f, 1, 0)); //UR
-		dat.positions.emplace_back(glm::vec3(-.5f, 1, 0)); //UL
-     	dat.positions.emplace_back(glm::vec3(-.5f, -1, 0)); //LL
-		dat.positions.emplace_back(glm::vec3(-.5f, 1, 0)); //UL
+		dat.Clear();
+		dat.positions.emplace_back(glm::vec3(-.5f, -.5, 0)); //LL
+		dat.positions.emplace_back(glm::vec3(.5f, -.5, 0)); //LR
+		dat.positions.emplace_back(glm::vec3(0, 0, -.5)); //CENTRE
+
+		dat.positions.emplace_back(glm::vec3(.5f, -.5, 0)); //LR
+		dat.positions.emplace_back(glm::vec3(.5f, .5, 0)); //UR
+		dat.positions.emplace_back(glm::vec3(0, 0, -.1)); //CENTRE
+
+		dat.positions.emplace_back(glm::vec3(0, 0, -.1)); //CENTRE
+		dat.positions.emplace_back(glm::vec3(.5f, .5, 0)); //UR
+		dat.positions.emplace_back(glm::vec3(-.5f, .5, 0)); //UL
+
+		dat.positions.emplace_back(glm::vec3(-.5f, -.5, 0)); //LL
+		dat.positions.emplace_back(glm::vec3(0, 0, -.5)); //CENTRE
+		dat.positions.emplace_back(glm::vec3(-.5f, .5, 0)); //UL
 
 		dat.texCoords.emplace_back(0, 0); //LL
 		dat.texCoords.emplace_back(1, 0); //LR
+		dat.texCoords.emplace_back(0, 0); //C
+
 		dat.texCoords.emplace_back(1, 0); //LR
 		dat.texCoords.emplace_back(1, 1); //UR
+		dat.texCoords.emplace_back(0, 0); //C
+
+		dat.texCoords.emplace_back(0, 0); //C
 		dat.texCoords.emplace_back(1, 1); //UR
 		dat.texCoords.emplace_back(0, 1); //UL
+
 		dat.texCoords.emplace_back(0, 0); //LL
+		dat.texCoords.emplace_back(0, 0); //C
 		dat.texCoords.emplace_back(0, 1); //UL
 
 		dat.indices.emplace_back(0);
@@ -334,7 +326,15 @@ bool GetPrefabModel(const std::string &str, IndexedModel &dat)
 		dat.indices.emplace_back(5);
 		dat.indices.emplace_back(6);
 		dat.indices.emplace_back(7);
-	
+		dat.indices.emplace_back(8);
+		dat.indices.emplace_back(9);
+		dat.indices.emplace_back(10);
+		dat.indices.emplace_back(11);
+
+		dat.normals.emplace_back(glm::vec3(0, 0, -1));
+		dat.normals.emplace_back(glm::vec3(0, 0, -1));
+		dat.normals.emplace_back(glm::vec3(0, 0, -1));
+		dat.normals.emplace_back(glm::vec3(0, 0, -1));
 		dat.normals.emplace_back(glm::vec3(0, 0, -1));
 		dat.normals.emplace_back(glm::vec3(0, 0, -1));
 		dat.normals.emplace_back(glm::vec3(0, 0, -1));
@@ -345,7 +345,33 @@ bool GetPrefabModel(const std::string &str, IndexedModel &dat)
 		dat.normals.emplace_back(glm::vec3(0, 0, -1));
 		return true;
 	}
-	else if (str == "res\\pyramid.robj")
+	else 
+	{
+		dat.Clear();
+		dat.positions.emplace_back(glm::vec3(-.5f, -.5, 0)); //LL
+		dat.positions.emplace_back(glm::vec3(.5f, -.5, 0)); //LR
+		dat.positions.emplace_back(glm::vec3(.5f, .5, 0)); //UR
+		dat.positions.emplace_back(glm::vec3(-.5f, .5, 0)); //UL
+     
+		dat.texCoords.emplace_back(0, 0); //LL
+		dat.texCoords.emplace_back(1, 0); //LR
+		dat.texCoords.emplace_back(1, 1); //UR
+		dat.texCoords.emplace_back(0, 1); //UL
+		
+		dat.indices.emplace_back(0);
+		dat.indices.emplace_back(1);
+		dat.indices.emplace_back(2);
+		dat.indices.emplace_back(0);
+		dat.indices.emplace_back(2);
+		dat.indices.emplace_back(3);
+			
+		dat.normals.emplace_back(glm::vec3(0, 0, -1));
+		dat.normals.emplace_back(glm::vec3(0, 0, -1));
+		dat.normals.emplace_back(glm::vec3(0, 0, -1));
+		dat.normals.emplace_back(glm::vec3(0, 0, -1));
+		return true;
+	}
+	/*else if (str == "res\\pyramid.robj")
 	{
 		dat.Clear();
 		dat.positions.emplace_back(glm::vec3(-1, 0, 2)); 
@@ -381,5 +407,6 @@ bool GetPrefabModel(const std::string &str, IndexedModel &dat)
 
 		return true;
 	}
+	*/
 	return false;
 }

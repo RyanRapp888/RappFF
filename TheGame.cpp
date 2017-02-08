@@ -5,18 +5,6 @@
 #include "Shader.h"
 #include "Camera.h"
 
-/*
-#include <time.h>
-static time_t prev_mvmt_key(-1);
-time_t cur;
-time(&cur);
-if (prev_mvmt_key > 0 && fabs(difftime(prev_mvmt_key, cur)) < KEYDELAY)
-{
-	return;
-}
-prev_mvmt_key = cur;
-*/
-
 void TheGame::KeyHandler(int key, int scancode, int action, int mods)
 {
 	if (action == GLFW_PRESS)
@@ -69,7 +57,7 @@ void TheGame::Play()
 	m_mainchar = Character("main_character", CharacterType::MAINCHAR, CharMotion(), 22, 4);
 	m_mainchar.SetColor(RGB(255, 255, 255));
 	TiledGameBoard *upper = new TiledGameBoard(m_display_ptr, .01, .01, .98, .98, m_gamemap_ptr);
-	Shader testShader("res\\InstanceShader");
+	Shader testShader("res\\basicShader");
 	upper->SetTileDetails(16, 16);
 	m_display_ptr->AddWindowSection(upper);
 	
@@ -86,17 +74,9 @@ void TheGame::Play()
 		m_gamemap_ptr->AttachCharacter(&(otherchars[bb]));
 	}
 	
-	/*
-	Tile tmptile;
-	tmptile.SetColor(RGB(255, 255, 255));
-	tmptile.SetTileType(TileType::MTN);
-	m_display_ptr->AddObject(&tmptile);
-	*/
-	//Shader testShader("res\\basicShader");
-	
 	testShader.Bind();
 	Transform transform;
-	Camera camera(glm::vec3(0.0f, 0.0f, -1.5f), 70.0f, 800 / 600, 0.1f, 100.0f);
+	Camera camera(glm::vec3(0.0f, 0.0f, -2.0f), 70.0f, 800 / 600, 0.1f, 100.0f);
 
 	RGB background(255, 182, 193);
 
@@ -143,12 +123,5 @@ void TheGame::Interact(int x, int y)
 		std::cout << "YOU FOUND " << foundchars[aa]->GetName() << "!!!" << std::endl;
 		std::cout << foundchars[aa]->GetName() << " is " << ToText(proximities[aa]) << std::endl
 			      << "!! How FUN!!" << std::endl;
-		/*
-		Tile *lower = new Tile();
-		lower->SetTileType(TileType::PARCHMENT);
-		lower->SetRelativeLocation(.01,.01,.98,.28);
-		lower->SetColor(RGB(255,255,255));
-		display.AddObject(lower);
-		*/
 	}
 }

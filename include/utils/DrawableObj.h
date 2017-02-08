@@ -41,11 +41,12 @@ public:
 	
 	double GetRelativeWidth_01();
 	double GetRelativeHeight_01();
+	double GetXDrawPos_N11();
+	double GetYDrawPos_N11();
 
 protected:
    
-   double GetXDrawPos_N11();
-   double GetYDrawPos_N11();
+   
    double GetRelativeOriginX_01();
    double GetRelativeOriginY_01();
 

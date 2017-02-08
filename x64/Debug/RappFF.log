@@ -1,4 +1,3 @@
-﻿  TheGame.cpp
-c:\devstuff\rappff\thegame.cpp(96): warning C4305: 'argument': truncation from 'double' to 'float'
+﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (PyramidInstancing.vcxproj, Sandbox.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   RappFF.vcxproj -> C:\devstuff\RappFF\x64\Debug\RappFF.exe
   RappFF.vcxproj -> C:\devstuff\RappFF\x64\Debug\RappFF.pdb (Full PDB)
