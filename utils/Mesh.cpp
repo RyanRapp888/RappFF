@@ -57,6 +57,7 @@ bool MeshManager::GetMeshPtr(TileType type, Mesh **mesh)
 	{
 		if (GetMeshPtr(iter->second, mesh))
 		{
+			(*mesh)->UseTexture(type);
 			return true;
 		}
 	}

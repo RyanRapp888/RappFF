@@ -18,11 +18,17 @@ enum class ProxRel
 class GameMap
 {
 public:
+	static GameMap *GetInstance();
+  
    GameMap() :m_mainchar_ptr(nullptr), m_xtiles(0), m_ytiles(0) {}
-   GameMap(int x_tiles, int y_tiles, Character *mc);
-   Character *GetMainCharPtr();
-   bool GetTileType(int x, int y, TileType &type);
+   bool LoadGameMap(int x_tiles, int y_tiles);
+
+   bool AttachMainCharacter(Character *mainchar);
    void AttachCharacter(Character *otherchar);
+
+    Character *GetMainCharPtr();
+   bool GetTileType(int x, int y, TileType &type);
+
    bool HasACharacter(int x, int y);
    bool FindTouchingCharacters(int x, int y, std::vector<Character *> &found_chars, std::vector<ProxRel> &found_prox);
    bool FindCharactersInRange(int minx, int miny, int maxx, int maxy, std::vector<Character *> &found_chars);
@@ -30,7 +36,9 @@ public:
    int GetWorldMaxY();
       
    private:
-  
+   
+   static bool m_initialized;
+   static GameMap *m_instance;
    Character *m_mainchar_ptr;
    std::vector<Character *> m_otherchar_ptrs;
    int m_xtiles;

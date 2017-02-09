@@ -18,23 +18,30 @@ static std::map<CharacterType, TileType> CTypeToTileType
 	{ CharacterType::PRINCESS, TileType::PRINCESS }
 };
 
-Character::Character(const std::string &name, CharacterType ctype, CharMotion cmot,
-	                 int worldx, int worldy):
-	   m_name(name),
-	   m_chartype(ctype),
-	   m_char_motion(cmot),
-	   m_worldx(worldx),
-	   m_worldy(worldy),
-	   m_gamemap_ptr(nullptr)
+void Character::SetName(const std::string &name)
 {
-	SetTileType(CTypeToTileType[ctype]);
+	m_name = name;
 }
 
-void Character::SetGameMapPtr(GameMap *gm_ptr)
+void Character::SetCharacterType(const CharacterType &ctype)
 {
-	m_gamemap_ptr = gm_ptr;
+	m_chartype = ctype;
 }
 
+CharacterType Character::GetCharacterType()
+{
+	return m_chartype;
+}
+
+TileType Character::GetTileType()
+{
+	return CTypeToTileType[m_chartype];
+}
+
+void Character::SetCharMotion(const CharMotion &cmot)
+{
+	m_char_motion = cmot;
+}
 	
 static void InitTravelPermissions()
 {
@@ -65,7 +72,8 @@ bool Character::CanOccupyLocation(int x, int y)
 	if (!permission_initialized) InitTravelPermissions();
 	
 	TileType typ;
-	m_gamemap_ptr->GetTileType(x, y, typ);
+	GameMap *map_ptr = GameMap::GetInstance();
+	map_ptr->GetTileType(x, y, typ);
 	//First, we see if our character is allowed to be on the given tiletype
 	std::vector<TileType> &vv = travel_permissions[m_chartype];
 	auto iter = std::find(vv.begin(), vv.end(), typ);
@@ -75,16 +83,17 @@ bool Character::CanOccupyLocation(int x, int y)
 	}
 
 	//then we make sure no other players are occupying the space
-	return !(m_gamemap_ptr->HasACharacter(x, y));
+	return !(map_ptr->HasACharacter(x, y));
 }
 
 void Character::SetLocation(int x, int y)
 {
-	if (m_gamemap_ptr == nullptr) return;
+	GameMap *map_ptr = GameMap::GetInstance();
+	if (map_ptr == nullptr) return;
 	if (x < 0) x = 0;
-	if (x >= m_gamemap_ptr->GetWorldMaxX()) x = m_gamemap_ptr->GetWorldMaxX() - 1;
+	if (x >= map_ptr->GetWorldMaxX()) x = map_ptr->GetWorldMaxX() - 1;
 	if (y < 0) y = 0;
-	if (y >= m_gamemap_ptr->GetWorldMaxY()) y = m_gamemap_ptr->GetWorldMaxY() - 1;
+	if (y >= map_ptr->GetWorldMaxY()) y = map_ptr->GetWorldMaxY() - 1;
 
 	//CanOccupyLocation looks to see if our character can step on the desired
 	//tile type AND makes sure its not occupied.
@@ -94,23 +103,6 @@ void Character::SetLocation(int x, int y)
 		m_worldy = y;
 	}
 
-}
-
-Character &Character::operator=(const Character & other)
-{
-	if (this != &other) // protect against invalid self-assignment
-	{
-		this->m_chartype = other.m_chartype;
-		this->m_name = other.m_name;
-		this->m_char_motion = other.m_char_motion;
-		if (other.m_gamemap_ptr != nullptr) this->m_gamemap_ptr = other.m_gamemap_ptr;
-		this->m_worldx = other.m_worldx;
-		this->m_worldy = other.m_worldy;
-		DrawnCharacter::operator=(other);
-
-	}
-
-	return *this;
 }
 
 int Character::GetX() { return m_worldx; }

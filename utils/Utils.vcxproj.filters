@@ -30,9 +30,6 @@
     <ClCompile Include="DrawableObj.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DrawnCharacter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GameMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -78,9 +75,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\include\utils\DrawableObj.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\utils\DrawnCharacter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\include\utils\GameMap.h">

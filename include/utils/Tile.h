@@ -6,7 +6,7 @@
 #include "RGB.h"
 #include "Mesh.h"
 
-class Tile: public DrawableObj
+class Tile: public Mesh
 {
 public:
    
@@ -14,17 +14,19 @@ public:
    {
       m_mesh_ptr = nullptr;
 	  m_tiletype = TileType::GRASS;
+	  m_color = RGB(255, 255, 255);
    }
 
    void SetColor(RGB col);
    void SetTileType(TileType type);
+   TileType GetTileType();
    void Render();
    Mesh *GetMeshPtr();
       
    private:
 
+   TileType m_tiletype;
    Mesh *m_mesh_ptr;
-   TileType m_tiletype;   
    RGB m_color;
 };
 

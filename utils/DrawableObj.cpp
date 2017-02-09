@@ -80,7 +80,7 @@ double DrawableObj::GetRelativeOriginX_01()
 
 double DrawableObj::GetRelativeOriginY_01()
 {
-	double result;
+	double result(-77);
 	if (m_viewport_ptr != nullptr)
 	{
 		result = m_rel_originy_01;

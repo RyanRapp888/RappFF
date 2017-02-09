@@ -53,31 +53,49 @@ void TheGame::Play()
 	if (m_display_ptr == nullptr) return;
 	
 	//ultimately, I want gamemap to be 256x256
-	m_gamemap_ptr =  new GameMap(40, 30, &m_mainchar);
-	m_mainchar = Character("main_character", CharacterType::MAINCHAR, CharMotion(), 15, 15);
-	m_mainchar.SetColor(RGB(255, 255, 255));
-	TiledGameBoard *upper = new TiledGameBoard(m_display_ptr, .01, .01, .98, .98, m_gamemap_ptr);
+	GameMap *gamemap_ptr = GameMap::GetInstance();
+	if (!gamemap_ptr->LoadGameMap(40, 30))
+	{
+		std::cout << "Error: Could not load game map" << std::endl;
+	}
+	m_mainchar.SetName("main_character");
+	m_mainchar.SetCharacterType(CharacterType::MAINCHAR);
+	m_mainchar.SetLocation(15, 15);
+	gamemap_ptr->AttachMainCharacter(&m_mainchar);
+	TiledGameBoard *upper = new TiledGameBoard(m_display_ptr, .01, .01, .98, .98);
 	Shader testShader("res\\basicShader");
-	upper->SetTileDetails(12, 12);
+	upper->SetTileDetails(20, 20);
 	m_display_ptr->AddWindowSection(upper);
 	
-	int n_chars(5);
-	Character *otherchars = new Character[n_chars];
-	otherchars[0] = Character("Emme", CharacterType::EMMY, CharMotion(), 36, 4);
-	otherchars[1] = Character("Lily", CharacterType::FAIRY, CharMotion(), 26, 28);
-	otherchars[2] = Character("Jerry", CharacterType::OCTOPUS, CharMotion(), 11, 5);
-	otherchars[3] = Character("Bella", CharacterType::JELLYBEAN, CharMotion(), 2, 28);
-	otherchars[4] = Character("Maddy", CharacterType::MERMAID, CharMotion(), 22, 17);
-
-	for (int bb = 0; bb < n_chars; bb++)
+	std::vector<Character> otherchars;
+	otherchars.resize(5);
+	otherchars[0].SetName("Emmy");
+	otherchars[0].SetCharacterType(CharacterType::EMMY);
+	otherchars[0].SetLocation( 36, 4);
+	otherchars[1].SetName("Lily");
+	otherchars[1].SetCharacterType(CharacterType::FAIRY);
+	otherchars[1].SetLocation( 26, 28);
+	otherchars[2].SetName("Jerry");
+	otherchars[2].SetCharacterType(CharacterType::OCTOPUS);
+	otherchars[2].SetLocation(11, 5);
+	otherchars[3].SetName("Bella");
+	otherchars[3].SetCharacterType(CharacterType::JELLYBEAN);
+	otherchars[3].SetLocation(2, 28);
+	otherchars[4].SetName("Maddy");
+	otherchars[4].SetCharacterType(CharacterType::MERMAID);
+	otherchars[4].SetLocation(22, 17);
+	
+	for (int bb = 0; bb < otherchars.size(); bb++)
 	{
-		m_gamemap_ptr->AttachCharacter(&(otherchars[bb]));
+		gamemap_ptr->AttachCharacter(&(otherchars[bb]));
 	}
 	
 	testShader.Bind();
 	Transform transform;
-	Camera camera(glm::vec3(0, 0, -.5f), 50.0f, 800 / 600, 0.1f, 100.0f);
-
+	Camera camera(glm::vec3(0, 0, -1.2f), 50.0f, 800 / 600, 0.1f, 100.0f);
+	m_xrot = 20;
+	m_yrot = 0;
+	m_zrot = 0;
 	RGB background(0,0,0);
 
 	while (!m_display_ptr->WindowShouldClose())
@@ -100,8 +118,8 @@ void TheGame::Play()
 
 std::string ToText(ProxRel dat)
 {
-	if (dat == ProxRel::FOUND_TO_LEFT) return "to the WEST of you!";
-	else if (dat == ProxRel::FOUND_TO_RIGHT) return "to the EAST of you!";
+	if (dat == ProxRel::FOUND_TO_LEFT) return "to the EAST of you!";
+	else if (dat == ProxRel::FOUND_TO_RIGHT) return "to the RIGHT of you!";
 	else if (dat == ProxRel::FOUND_ABOVE) return "to the NORTH of you!";
 	else if (dat == ProxRel::FOUND_BELOW) return "to the SOUTH of you!";
 	return "";
@@ -112,7 +130,8 @@ void TheGame::Interact(int x, int y)
 	std::vector<Character *> foundchars;
 	std::vector< ProxRel > proximities;
 
-	m_gamemap_ptr->FindTouchingCharacters(
+	GameMap *map_ptr = GameMap::GetInstance();
+	map_ptr->FindTouchingCharacters(
 		m_mainchar.GetX(),
 		m_mainchar.GetY(),
 		foundchars, proximities);

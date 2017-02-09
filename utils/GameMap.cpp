@@ -8,20 +8,37 @@
 
 using namespace std;
 
-GameMap::GameMap(int x_tiles, int y_tiles, Character *mc)
+bool GameMap::m_initialized = false;
+GameMap *GameMap::m_instance = 0;
+
+GameMap *GameMap::GetInstance()
+{
+	if (!m_initialized)
+	{
+		m_instance = new GameMap();
+		m_initialized = true;
+	}
+	return m_instance;
+}
+
+bool GameMap::AttachMainCharacter(Character *mainchar)
+{
+	if (mainchar == nullptr) return false;
+	m_mainchar_ptr = mainchar;
+	return true;
+}
+
+bool GameMap::LoadGameMap(int x_tiles, int y_tiles)
 {
 	m_xtiles = x_tiles;
 	m_ytiles = y_tiles;
 	m_tiletypes.resize(x_tiles * y_tiles);
 
-	m_mainchar_ptr = mc;
-	mc->SetGameMapPtr(this);
-
 	std::ifstream input_file("res\\map.csv");
 	if (!input_file.is_open())
 	{
 		std::cout << "ERROR: Unable to load map file (map.csv)" << std::endl;
-		return;
+		return false;
 	}
 
 	for (int row = y_tiles - 1; row >= 0; row--)
@@ -43,13 +60,13 @@ GameMap::GameMap(int x_tiles, int y_tiles, Character *mc)
 		}
 	}
 	input_file.close();
+	return true;
 }
 
 Character *GameMap::GetMainCharPtr()
 {
 	return m_mainchar_ptr;
 }
-
 
 void GameMap::AttachCharacter(Character *otherchar)
 {

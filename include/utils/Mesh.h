@@ -35,8 +35,8 @@ class MeshManager
    public:
 	
    static MeshManager *GetInstance();
-   bool GetMeshPtr(TileType type, Mesh **texture);
-   bool GetMeshPtr(const std::string &filename, Mesh **texture);
+   bool GetMeshPtr(TileType type, Mesh **meshdat);
+   bool GetMeshPtr(const std::string &filename, Mesh **meshdat);
 
    private:
 	
@@ -71,6 +71,7 @@ private:
    GLuint m_VAO;
    std::vector<GLuint> m_VBO_ids;
    IndexedModel m_model;
+
    unsigned int m_numIndices;
    Texture *m_texture;
    int m_num_instances;

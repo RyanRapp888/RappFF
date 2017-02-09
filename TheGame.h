@@ -20,7 +20,6 @@ private:
 	void Interact(int x, int y);
 	Character m_mainchar;
 	Display *m_display_ptr;
-	GameMap *m_gamemap_ptr;
 	int m_xrot, m_yrot, m_zrot;
 };
 

@@ -3,8 +3,8 @@
 
 #include "GameMap.h"
 #include "CharMotion.h"
-#include "DrawnCharacter.h"
 #include <string>
+#include "Tile.h"
 
 enum class CharacterType
 {
@@ -18,29 +18,30 @@ enum class CharacterType
 	SIZE
 };
 
-class Character: public DrawnCharacter
+class Character
 {
    friend class GameMap;
    public:
 
    Character(){}
-   Character(const std::string &name, CharacterType ctype, CharMotion cmot, int worldx, int worldy);
+   void SetName(const std::string &name);
+   void SetCharacterType(const CharacterType &ctype);
+   CharacterType GetCharacterType();
+   TileType GetTileType();
+   void SetCharMotion(const CharMotion &cmot);
    bool CanOccupyLocation(int x, int y);
    void SetLocation(int x, int y);
    int GetX();
    int GetY();
    std::string GetName() { return m_name; }
-   Character &operator=(const Character & other);
-     
+        
 protected:
-	void SetGameMapPtr(GameMap *gm_ptr);
-
+	
    private:
    
    CharacterType m_chartype;
    std::string m_name;
    CharMotion m_char_motion;
-   GameMap *m_gamemap_ptr;
    int m_worldx, m_worldy;
 };
 
