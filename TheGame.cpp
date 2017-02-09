@@ -20,7 +20,7 @@ void TheGame::KeyHandler(int key, int scancode, int action, int mods)
 				break;
 			case(GLFW_KEY_A):
 			case(GLFW_KEY_LEFT):
-				xx--;
+				xx++;
 				break;
 			case(GLFW_KEY_S):
 			case(GLFW_KEY_DOWN):
@@ -28,7 +28,7 @@ void TheGame::KeyHandler(int key, int scancode, int action, int mods)
 				break;
 			case(GLFW_KEY_D):
 			case(GLFW_KEY_RIGHT):
-				xx++;
+				xx--;
 				break;
 			case(GLFW_KEY_X):
 				m_xrot++;
@@ -54,11 +54,11 @@ void TheGame::Play()
 	
 	//ultimately, I want gamemap to be 256x256
 	m_gamemap_ptr =  new GameMap(40, 30, &m_mainchar);
-	m_mainchar = Character("main_character", CharacterType::MAINCHAR, CharMotion(), 22, 4);
+	m_mainchar = Character("main_character", CharacterType::MAINCHAR, CharMotion(), 15, 15);
 	m_mainchar.SetColor(RGB(255, 255, 255));
 	TiledGameBoard *upper = new TiledGameBoard(m_display_ptr, .01, .01, .98, .98, m_gamemap_ptr);
 	Shader testShader("res\\basicShader");
-	upper->SetTileDetails(16, 16);
+	upper->SetTileDetails(12, 12);
 	m_display_ptr->AddWindowSection(upper);
 	
 	int n_chars(5);
@@ -76,9 +76,9 @@ void TheGame::Play()
 	
 	testShader.Bind();
 	Transform transform;
-	Camera camera(glm::vec3(0.0f, 0.0f, -2.0f), 70.0f, 800 / 600, 0.1f, 100.0f);
+	Camera camera(glm::vec3(0, 0, -.5f), 50.0f, 800 / 600, 0.1f, 100.0f);
 
-	RGB background(255, 182, 193);
+	RGB background(0,0,0);
 
 	while (!m_display_ptr->WindowShouldClose())
 	{
@@ -91,7 +91,6 @@ void TheGame::Play()
 		transform.GetRot()->x = m_xrot;
 		transform.GetRot()->y = m_yrot;
 		transform.GetRot()->z = m_zrot;
-		std::cout << "xyz rot" << m_xrot << "," << m_yrot << "," << m_zrot << std::endl;
 		testShader.Update(transform, camera);
 		m_display_ptr->Refresh();
 		m_display_ptr->SwapBuffers();

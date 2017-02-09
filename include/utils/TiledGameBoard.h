@@ -24,9 +24,12 @@ class TiledGameBoard: public WindowSection
    
    private:
    
+
+
    TiledGameBoard():m_tiles(nullptr),m_gamemap_ptr(nullptr){}
    int GetTileIdx(int xpos, int ypos);
-     
+   void Print();
+
    int m_xtiles;
    int m_ytiles;
    Tile *m_tiles;

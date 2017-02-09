@@ -28,18 +28,14 @@ GameMap::GameMap(int x_tiles, int y_tiles, Character *mc)
 	{
 		std::string line;
 		std::getline(input_file, line);
-		if (!input_file.good())
-			break;
-
+		
 		std::stringstream iss(line);
 
 		for (int col = 0; col < x_tiles; col++)
 		{
 			std::string val;
 			std::getline(iss, val, ',');
-			if (!iss.good())
-				break;
-
+			
 			std::stringstream tmp_sstr(val);
 			int tmpint;
 			tmp_sstr >> tmpint;

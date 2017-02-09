@@ -46,6 +46,26 @@ void TiledGameBoard::SetTileDetails(int xtiles, int ytiles)
 
 }
 
+void TiledGameBoard::Print()
+{
+	Character *mainchar = m_gamemap_ptr->GetMainCharPtr();
+	for (int row = m_ytiles - 1; row >= 0; row--)
+	{
+		for (int col = 0; col < m_xtiles; col++)
+		{
+			Tile *curtile = &(m_tiles[GetTileIdx(col, row)]);
+			int curtile_wx = mainchar->GetX() - (m_xtiles / 2) + col;
+			int curtile_wy = mainchar->GetY() - (m_ytiles / 2) + row;
+			TileType cur;
+			m_gamemap_ptr->GetTileType(curtile_wx, curtile_wy, cur);
+			std::cout << static_cast<int>(cur);
+			if (col != m_xtiles - 1) std::cout << ",";
+		}
+		std::cout << std::endl;
+	}
+}
+
+
 void TiledGameBoard::Refresh()
 {
 	if (m_gamemap_ptr->GetMainCharPtr() == nullptr)
@@ -66,19 +86,19 @@ void TiledGameBoard::Refresh()
 
 	std::map<TileType, std::vector< int > > ids_per_mesh;
 
-	for (int xx = 0; xx < m_xtiles; xx++)
+	for (int row = 0; row < m_ytiles; row++)
 	{
-		for (int yy = 0; yy < m_ytiles; yy++)
+		for (int col = 0; col < m_xtiles; col++)
 		{
-			Tile *curtile = &(m_tiles[GetTileIdx(xx, yy)]);
+			Tile *curtile = &(m_tiles[ GetTileIdx(col, row) ]);
 			curtile->SetColor(RGB(255, 255, 255));
 			TileType cur;
-			int curtile_wx = maincharx - (m_xtiles / 2) + xx;
-			int curtile_wy = mainchary - (m_ytiles / 2) + yy;
+			int curtile_wx = maincharx - (m_xtiles / 2) + col;
+			int curtile_wy = mainchary - (m_ytiles / 2) + row;
 			m_gamemap_ptr->GetTileType(curtile_wx, curtile_wy, cur);
 			curtile->SetTileType(cur);
 
-			ids_per_mesh[cur].emplace_back(GetTileIdx(xx, yy));
+			ids_per_mesh[cur].emplace_back(GetTileIdx(col, row));
 
 			for (int aa = 0; aa < close_chars.size(); aa++)
 			{
