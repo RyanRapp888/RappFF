@@ -61,6 +61,15 @@ void IndexedModel::CalcNormals()
 		normals.resize(positions.size());
 	}
 
+	if (indices.size() == 0)
+	{
+		indices.resize(positions.size());
+		for (int aa = 0; aa < indices.size(); aa++)
+		{
+			indices[aa] = aa;
+		}
+	}
+
     for(unsigned int i = 0; i < indices.size(); i += 3)
     {
         int i0 = indices[i];

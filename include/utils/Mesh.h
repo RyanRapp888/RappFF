@@ -13,10 +13,10 @@
 enum class BufferIdx
 {
 	POS_IDX = 0,
-	IDX_IDX = 1,
-	TEXTURE_IDX = 2,
-	NORMAL_IDX = 3,
-	TRANS_IDX = 4
+	//IDX_IDX = 1,
+	TEXTURE_IDX = 1,
+	NORMAL_IDX = 2,
+	TRANS_IDX = 3
 };
 
 enum class AttributeIdx

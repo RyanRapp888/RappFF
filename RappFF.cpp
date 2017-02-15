@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <direct.h>
 
+
 static void PrintGLParams();
 static void error_callback(int error, const char* description);
 static void PrintCurrentPath();

@@ -14,7 +14,7 @@ void TiledGameBoard::SetTileDetails(int xtiles, int ytiles)
 		m_tiles[aa].SetWindowSectionPtr(this);
 	}
 	
-	m_scale_vec = glm::vec3(2.0 / m_xtiles, 2.0 / m_ytiles, 6.0 / m_xtiles);
+	m_scale_vec = glm::vec3(2.0 / m_xtiles, 2.0 / m_ytiles, 2.0 / m_xtiles);
 
 	if (m_tiles == nullptr)
 	{
@@ -28,7 +28,6 @@ void TiledGameBoard::SetTileDetails(int xtiles, int ytiles)
 		for (int yy = 0; yy < m_ytiles; yy++)
 		{
 			Tile *curtile = &(m_tiles[GetTileIdx(xx, yy)]);
-			curtile->SetColor(RGB(255, 255, 255));
 			TileType cur;
 			map_ptr->GetTileType(xx, yy, cur);
 			curtile->SetTileType(cur);
@@ -54,7 +53,7 @@ void TiledGameBoard::Refresh()
 	mesh_manager->GetMeshPtr(mainchar->GetTileType(), &main_char_mesh);
     main_char_mesh->SetWindowSectionPtr(this);
 	
-	std::vector< Character *> close_chars;
+    std::vector< Character *> close_chars;
 	map_ptr->FindCharactersInRange(mainchar->GetX() - (m_xtiles / 2), 
 		                           mainchar->GetY() - (m_ytiles / 2),
 		                           mainchar->GetX() + (m_xtiles / 2), 

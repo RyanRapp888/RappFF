@@ -51,12 +51,13 @@ Display::Display(int width, int height, const std::string& title)
    glfwMakeContextCurrent(m_window);
    gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
    glfwSwapInterval(1);
+   glEnable(GL_LIGHTING);
+   glEnable(GL_LIGHT0);    /* Uses default lighting parameters */
+   glDepthFunc(GL_LESS); // depth-testing interprets a smaller value as "closer"
    glEnable(GL_DEPTH_TEST);
+   glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+
    
-   /*
-   glEnable(GL_CULL_FACE);
-   glCullFace(GL_BACK);
-   */
 }
 
 GLFWwindow *Display::GetWindowPtr()

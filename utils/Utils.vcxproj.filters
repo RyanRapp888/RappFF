@@ -142,10 +142,7 @@
     <None Include="..\res\InstanceShader.vs">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\res\pyramid_examp.fs">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\res\pyramid_examp.vs">
+    <None Include="..\res\map.csv">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

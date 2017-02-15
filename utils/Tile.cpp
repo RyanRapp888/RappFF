@@ -1,8 +1,6 @@
 #include "Tile.h"
 #include "Texture.h"
 
-void Tile::SetColor(RGB col) { m_color = col; }
-
 TileType Tile::GetTileType()
 {
 	return m_tiletype;

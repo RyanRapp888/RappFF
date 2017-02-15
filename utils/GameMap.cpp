@@ -5,6 +5,7 @@
 #include <iostream>
 #include <direct.h>
 #include "Character.h"
+#include <stdlib.h>
 
 using namespace std;
 
@@ -61,6 +62,53 @@ bool GameMap::LoadGameMap(int x_tiles, int y_tiles)
 	}
 	input_file.close();
 	return true;
+}
+
+static TileType GetRandTileType()
+{
+	//std::vector<TileType> allowed_types = { TileType::BRICKS, TileType::DESERT, TileType::GRASS, TileType::GRASS2,
+	//										TileType::MTN, TileType::MTNSNOW, TileType::MUD, TileType::PLANK,
+	//										TileType::PLANK, TileType::ROCKS, TileType::WATER,TileType::WOOD};
+
+	std::vector<TileType> allowed_types = { TileType::GRASS, TileType::GRASS2 };
+											
+
+	int n = rand() % allowed_types.size();
+	return allowed_types[n];
+}
+
+
+void GameMap::GenerateRandomMap(int x_tiles, int y_tiles, const std::string &filename)
+{
+
+	static bool seeded(false);
+	if (!seeded)
+	{
+		srand(234);
+		seeded = true;
+	}
+
+
+	std::ofstream outfile(filename.c_str());
+	for (int aa = 0; aa < y_tiles; aa++)
+	{
+		for (int bb = 0; bb < x_tiles; bb++)
+		{
+			//outfile << (rand() % 21);
+			outfile << static_cast<int>(GetRandTileType());
+			if (bb < (x_tiles - 1))
+			{
+				outfile << ",";
+			}
+		}
+		
+		if (aa < (y_tiles - 1))
+		{
+			outfile << "\n";
+		}
+	}
+	outfile.close();
+
 }
 
 Character *GameMap::GetMainCharPtr()

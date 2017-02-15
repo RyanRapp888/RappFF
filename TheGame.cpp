@@ -31,13 +31,13 @@ void TheGame::KeyHandler(int key, int scancode, int action, int mods)
 				xx--;
 				break;
 			case(GLFW_KEY_X):
-				m_xrot++;
+				m_xrot+=5;
 				break;
 			case(GLFW_KEY_Y):
-				m_yrot++;
+				m_yrot+=5;
 				break;
 			case(GLFW_KEY_Z):
-				m_zrot++;
+				m_zrot+=5;
 			case(GLFW_KEY_ENTER):
 				Interact(m_mainchar.GetX(), m_mainchar.GetY());
 			default:
@@ -49,12 +49,16 @@ void TheGame::KeyHandler(int key, int scancode, int action, int mods)
 
 void TheGame::Play()
 {
+	
+
 	m_display_ptr = new Display(800, 600, "Cupcake");
 	if (m_display_ptr == nullptr) return;
 	
 	//ultimately, I want gamemap to be 256x256
 	GameMap *gamemap_ptr = GameMap::GetInstance();
-	if (!gamemap_ptr->LoadGameMap(40, 30))
+	//gamemap_ptr->GenerateRandomMap(256, 256, "res\\map.csv");
+
+	if (!gamemap_ptr->LoadGameMap(256, 256))
 	{
 		std::cout << "Error: Could not load game map" << std::endl;
 	}
@@ -71,7 +75,7 @@ void TheGame::Play()
 	otherchars.resize(5);
 	otherchars[0].SetName("Emmy");
 	otherchars[0].SetCharacterType(CharacterType::EMMY);
-	otherchars[0].SetLocation( 36, 4);
+	otherchars[0].SetLocation( 20, 20);
 	otherchars[1].SetName("Lily");
 	otherchars[1].SetCharacterType(CharacterType::FAIRY);
 	otherchars[1].SetLocation( 26, 28);
@@ -92,8 +96,9 @@ void TheGame::Play()
 	
 	testShader.Bind();
 	Transform transform;
-	Camera camera(glm::vec3(0, 0, -1.2f), 50.0f, 800 / 600, 0.1f, 100.0f);
-	m_xrot = 20;
+	//Camera camera(glm::vec3(0, 0, -1.2f), 50.0f, 800 / 600, 0.1f, 100.0f);
+	Camera camera(glm::vec3(0, 0, -1.2), 50.0f, 800 / 600, 0.1f, 100.0f);
+	m_xrot = 40;
 	m_yrot = 0;
 	m_zrot = 0;
 	RGB background(0,0,0);
