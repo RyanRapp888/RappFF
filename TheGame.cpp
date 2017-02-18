@@ -58,7 +58,7 @@ void TheGame::Play()
 	GameMap *gamemap_ptr = GameMap::GetInstance();
 	//gamemap_ptr->GenerateRandomMap(256, 256, "res\\map.csv");
 
-	if (!gamemap_ptr->LoadGameMap(256, 256))
+	if (!gamemap_ptr->LoadGameMap(40, 30))
 	{
 		std::cout << "Error: Could not load game map" << std::endl;
 	}

@@ -113,9 +113,6 @@
     <ClInclude Include="..\include\utils\TiledGameBoard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\utils\TileType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\utils\Transform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -126,6 +123,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\include\utils\WindowSection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\utils\TileType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

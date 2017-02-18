@@ -1,11 +1,8 @@
 #ifndef TEXTURE_H__
 #define TEXTURE_H__
 
-#include <string>
 #include <glad.h>
-#include <map>
 #include "TileType.h"
-
 
 class Texture
 {
@@ -31,7 +28,6 @@ class TextureManager
    public:
 
    static TextureManager *GetInstance();
-   bool GetTexturePtr(TileType type, Texture **texture);
    bool GetTexturePtr(const std::string &filename, Texture **texture);
 
    private:

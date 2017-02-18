@@ -1,30 +1,28 @@
 #ifndef TILE_H__
 #define TILE_H__
 
-#include "DrawableObj.h"
-#include "Texture.h"
-#include "RGB.h"
+#include "TileType.h"
 #include "Mesh.h"
 
-class Tile : public Mesh
+std::string GetMeshFilename(TileType tt);
+std::string GetTextureFilename(TileType tt);
+
+class Tile: public Mesh
 {
 public:
 
-	Tile()
+	Tile() : Mesh()
 	{
-		m_mesh_ptr = nullptr;
-		m_tiletype = TileType::GRASS;
+    	m_tiletype = TileType::UNDEF;
 	}
 
 	void SetTileType(TileType type);
 	TileType GetTileType();
 	void Render();
-	Mesh *GetMeshPtr();
-
+	
 private:
 
 	TileType m_tiletype;
-	Mesh *m_mesh_ptr;
 };
 
 #endif

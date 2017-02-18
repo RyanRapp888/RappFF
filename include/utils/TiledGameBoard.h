@@ -28,6 +28,7 @@ class TiledGameBoard: public WindowSection
    int m_xtiles;
    int m_ytiles;
    Tile *m_tiles;
+   //Tile *m_drawable_mainchar;
    glm::vec3 m_scale_vec;
 };
 

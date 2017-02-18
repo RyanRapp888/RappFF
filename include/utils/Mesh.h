@@ -7,13 +7,13 @@
 #include <vector>
 #include "ObjLoader.h"
 #include "DrawableObj.h"
+#include "TileType.h"
 #include "Texture.h"
 #include "RGB.h"
 
 enum class BufferIdx
 {
 	POS_IDX = 0,
-	//IDX_IDX = 1,
 	TEXTURE_IDX = 1,
 	NORMAL_IDX = 2,
 	TRANS_IDX = 3
@@ -27,7 +27,6 @@ enum class AttributeIdx
 	TRANSLATION_LOC = 3
 };
 
-// Mesh class is in this file below.
 class Mesh;
 
 class MeshManager
@@ -35,7 +34,6 @@ class MeshManager
    public:
 	
    static MeshManager *GetInstance();
-   bool GetMeshPtr(TileType type, Mesh **meshdat);
    bool GetMeshPtr(const std::string &filename, Mesh **meshdat);
 
    private:
@@ -47,35 +45,42 @@ class MeshManager
 
 class Mesh : public DrawableObj
 {
-   public:
+
+public:
+
    friend class MeshManager;
    
-   Mesh() {}
    virtual ~Mesh();
    bool UseTexture(std::string &texture);
-   bool UseTexture(TileType &ttype);
-
    void SetUpInstancing(int n_instances, glm::vec3 scale, glm::mat4 *translations);
    void Render();
-
+   void InitMesh(const IndexedModel& model);
+   void InitMesh(const std::string& filename);
 protected:
 
+   Mesh() 
+   {
+      m_VAO = 999;
+      m_model.Clear();
+      m_texture = nullptr;
+      m_num_instances = 0;
+      m_color = RGB(255, 255, 255);
+	  m_is_valid = false;
+   }
+
 private:
-   
    Mesh(const std::string& fileName);
-   Mesh(IndexedModel &model, bool calcNormalsForMe);
+   Mesh(IndexedModel &model);
    void operator=(const Mesh& mesh) {}
    Mesh(const Mesh& mesh) {}
-   void InitMesh(const IndexedModel& model);
-
+   
    GLuint m_VAO;
    std::vector<GLuint> m_VBO_ids;
    IndexedModel m_model;
-
-   unsigned int m_numIndices;
    Texture *m_texture;
    int m_num_instances;
    RGB m_color;
+   bool m_is_valid;
 };
 
 #endif

@@ -1,3 +1,4 @@
+#include "Tile.h"
 #include "Texture.h"
 #include "StbImage.h"
 #include <iostream>
@@ -7,34 +8,7 @@
 using namespace std;
 
 bool TextureManager::m_instance_created = false;
-
 TextureManager *TextureManager::m_instance = 0;
-
-static std::map<TileType, std::string> tiletype_lookup
-{
-	{ TileType::BLACK, "res\\black.jpg" },
-	{ TileType::BRICKS, "res\\bricks.jpg" },
-	{ TileType::DESERT, "res\\desert.jpg" },
-	{ TileType::EMMY, "res\\emmy.png"},
-	{ TileType::FAIRY, "res\\fairy.png"},
-	{ TileType::GRASS, "res\\grass.png" },
-	{ TileType::GRASS2, "res\\grass2.png" },
-	{ TileType::JELLYBEAN, "res\\jellybean.jpg" },
-	{ TileType::MAINCHAR, "res\\cat.png" },
-	{ TileType::MERMAID, "res\\Mermaid.png" },
-	{ TileType::MTN, "res\\mtn.png" },
-	{ TileType::MTNSNOW, "res\\mtnsnow.png" },
-	{ TileType::MUD, "res\\mud.png" },
-	{ TileType::OCTOPUS, "res\\octopus.png" },
-	{ TileType::PARCHMENT, "res\\parchment.jpg" },
-	{ TileType::PLANK, "res\\Plank.png" },
-	{ TileType::PRINCESS, "res\\princess.png" },
-	{ TileType::ROCKS, "res\\rocks.jpg" },
-	{ TileType::ROOF, "res\\roof.png" },
-	{ TileType::WATER, "res\\Water.png" },
-	{ TileType::WOOD, "res\\Wood.png"}
-};
-
 
 TextureManager *TextureManager::GetInstance()
 {
@@ -46,20 +20,6 @@ TextureManager *TextureManager::GetInstance()
    m_instance = new TextureManager();
    m_instance_created = true;
    return m_instance;  
-}
-
-bool TextureManager::GetTexturePtr(TileType type, Texture **texture)
-{
-   auto iter = tiletype_lookup.find(type);
-   if(iter != tiletype_lookup.end())
-   { 
-	   if(GetTexturePtr(iter->second, texture))
-	   {
-		  return true;
-      }
-   }
-   
-   return false;
 }
 
 bool TextureManager::GetTexturePtr(const std::string &filename, Texture **texture)

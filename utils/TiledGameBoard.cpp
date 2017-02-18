@@ -34,6 +34,25 @@ void TiledGameBoard::SetTileDetails(int xtiles, int ytiles)
 			curtile->SetRelativeLocation(xx * (1.0 / m_xtiles), yy * (1.0 / m_ytiles), 1.0 / m_xtiles, 1.0 / m_ytiles);
 		}
 	}
+
+	/*
+	if (m_drawable_mainchar != nullptr)
+	{
+		delete m_drawable_mainchar;
+		m_drawable_mainchar = nullptr;
+	}
+	*/
+	/*
+	m_drawable_mainchar = new Tile();
+	m_drawable_mainchar->SetTileType(TileType::MAINCHAR);
+	Character *mainchar = map_ptr->GetMainCharPtr();
+	if (mainchar == nullptr) return;
+	Tile *mainchar_cur_placement = &(m_tiles[GetTileIdx(mainchar->GetX(), mainchar->GetY())]);
+	double ox, oy, w, h;
+	mainchar_cur_placement->GetRelativeLocation(ox, oy, w, h);
+	m_drawable_mainchar->SetRelativeLocation(ox, oy, w, h);
+	AddObject(m_drawable_mainchar);
+	*/
 }
 
 void TiledGameBoard::Refresh()
@@ -45,14 +64,9 @@ void TiledGameBoard::Refresh()
 		return;
 	}
 
-	int maincharx, mainchary;
-	
 	Character *mainchar = map_ptr->GetMainCharPtr();
 	MeshManager *mesh_manager = MeshManager::GetInstance();
-	Mesh *main_char_mesh;
-	mesh_manager->GetMeshPtr(mainchar->GetTileType(), &main_char_mesh);
-    main_char_mesh->SetWindowSectionPtr(this);
-	
+		
     std::vector< Character *> close_chars;
 	map_ptr->FindCharactersInRange(mainchar->GetX() - (m_xtiles / 2), 
 		                           mainchar->GetY() - (m_ytiles / 2),
@@ -60,7 +74,7 @@ void TiledGameBoard::Refresh()
 		                           mainchar->GetY() + (m_ytiles / 2),
 		                           close_chars);
 
-	std::map<TileType, std::vector< int > > ids_per_mesh;
+	std::map<TileType, std::vector< int > > ids_per_tiletype;
 
 	for (int row = 0; row < m_ytiles; row++)
 	{
@@ -74,14 +88,15 @@ void TiledGameBoard::Refresh()
 			map_ptr->GetTileType(curtile_wx, curtile_wy, cur);
 			curtile->SetTileType(cur);
 
-			ids_per_mesh[cur].emplace_back(GetTileIdx(col, row));
+			ids_per_tiletype[cur].emplace_back(GetTileIdx(col, row));
 
 			for (int aa = 0; aa < close_chars.size(); aa++)
 			{
 				Character *cur_close_char = close_chars[aa];
 
 				Mesh *cur_close_mesh;
-				mesh_manager->GetMeshPtr(cur_close_char->GetTileType(), &cur_close_mesh);
+				mesh_manager->GetMeshPtr(GetMeshFilename(cur_close_char->GetTileType()), &cur_close_mesh);
+				cur_close_mesh->UseTexture(GetTextureFilename(cur_close_char->GetTileType()));
 				cur_close_mesh->SetWindowSectionPtr(this);
 				int col = cur_close_char->GetX();
 				int row = cur_close_char->GetY();
@@ -108,6 +123,10 @@ void TiledGameBoard::Refresh()
 	Tile *center_tile = &(m_tiles[GetTileIdx(screen_mid_tilex, screen_mid_tiley)]);
 	double ox, oy, w, h;
 	center_tile->GetRelativeLocation(ox, oy, w, h);
+	Mesh *main_char_mesh;
+	mesh_manager->GetMeshPtr(GetMeshFilename(TileType::MAINCHAR), &main_char_mesh);
+	main_char_mesh->UseTexture(GetTextureFilename(TileType::MAINCHAR));
+	main_char_mesh->SetWindowSectionPtr(this);
 	main_char_mesh->SetRelativeLocation(ox, oy, w, h);
 	glm::mat4 *translations = new glm::mat4[1];
 	translations[0] =
@@ -119,10 +138,9 @@ void TiledGameBoard::Refresh()
 	main_char_mesh->Render();
 
 	std::map<TileType, std::vector< int > >::iterator it1;
-	for (it1 = ids_per_mesh.begin(); it1 != ids_per_mesh.end(); it1++)
+	for (it1 = ids_per_tiletype.begin(); it1 != ids_per_tiletype.end(); it1++)
 	{
-		Tile *curtile = &(m_tiles[it1->second[0]]);
-		Mesh *m1 = curtile->GetMeshPtr();
+		Tile *curtiletype = &(m_tiles[it1->second[0]]);
 		int n_instances = it1->second.size();
 		glm::mat4 *translations = new glm::mat4[n_instances];
 		for (int aa = 0; aa < it1->second.size(); aa++)
@@ -131,9 +149,9 @@ void TiledGameBoard::Refresh()
 			translations[aa] =
 				glm::translate(glm::mat4(1.0), glm::vec3(tmp2->GetXDrawPos_N11(), tmp2->GetYDrawPos_N11(), 0));
 		}
-		m1->SetUpInstancing(it1->second.size(), m_scale_vec, translations);
+		curtiletype->SetUpInstancing(it1->second.size(), m_scale_vec, translations);
 		delete[] translations;
-		m1->Render();
+		curtiletype->Render();
 	}
 
 	WindowSection::Refresh();

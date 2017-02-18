@@ -9,11 +9,11 @@
 
 struct OBJIndex
 {
-    unsigned int vertexIndex;
-    unsigned int uvIndex;
-    unsigned int normalIndex;
+    unsigned int m_vertexIndex;
+    unsigned int m_uvIndex;
+    unsigned int m_normalIndex;
     
-    bool operator<(const OBJIndex& r) const { return vertexIndex < r.vertexIndex; }
+    bool operator<(const OBJIndex& r) const { return m_vertexIndex < r.m_vertexIndex; }
 };
 
 class IndexedModel
@@ -21,15 +21,15 @@ class IndexedModel
 public:
 	void Clear()
 	{
-		positions.clear();
-		texCoords.clear();
-		normals.clear();
-		indices.clear();
+		m_positions.clear();
+		m_texCoords.clear();
+		m_normals.clear();
+		m_indices.clear();
 	}
-    std::vector<glm::vec3> positions;
-    std::vector<glm::vec2> texCoords;
-    std::vector<glm::vec3> normals;
-    std::vector<GLushort> indices;
+    std::vector<glm::vec3> m_positions;
+    std::vector<glm::vec2> m_texCoords;
+    std::vector<glm::vec3> m_normals;
+    std::vector<GLushort> m_indices;
     
     void CalcNormals();
 };
@@ -37,12 +37,12 @@ public:
 class OBJModel
 {
 public:
-    std::vector<OBJIndex> OBJIndices;
-    std::vector<glm::vec3> vertices;
-    std::vector<glm::vec2> uvs;
-    std::vector<glm::vec3> normals;
-    bool hasUVs;
-    bool hasNormals;
+    std::vector<OBJIndex> m_OBJIndices;
+    std::vector<glm::vec3> m_vertices;
+    std::vector<glm::vec2> m_uvs;
+    std::vector<glm::vec3> m_normals;
+    bool m_hasUVs;
+    bool m_hasNormals;
     
     OBJModel(const std::string& fileName);
     

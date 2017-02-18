@@ -8,12 +8,10 @@
 #include <stdio.h>
 #include <direct.h>
 
-
 static void PrintGLParams();
 static void error_callback(int error, const char* description);
 static void PrintCurrentPath();
 TheGame rappff;
-
 
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -105,7 +103,6 @@ int get_rand()
 	int result = rand() % 7;
 	return result;
 }
-
 
 void PrintCurrentPath()
 {
