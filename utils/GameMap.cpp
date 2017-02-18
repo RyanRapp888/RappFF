@@ -87,8 +87,7 @@ void GameMap::GenerateRandomMap(int x_tiles, int y_tiles, const std::string &fil
 		srand(234);
 		seeded = true;
 	}
-
-
+	
 	std::ofstream outfile(filename.c_str());
 	for (int aa = 0; aa < y_tiles; aa++)
 	{
@@ -142,7 +141,7 @@ bool GameMap::GetTileType(int x, int y, TileType &type)
 	if (x < 0 || x >= m_xtiles ||
 		y < 0 || y >= m_ytiles)
 	{
-		type = TileType::BLACK;
+		type = TileType::WATER;
 		return true;
 	}
 	int idx = GetTileIdx(x, y);

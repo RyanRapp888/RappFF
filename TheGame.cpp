@@ -44,13 +44,12 @@ void TheGame::KeyHandler(int key, int scancode, int action, int mods)
 				break;
 		}
 		m_mainchar.SetLocation(xx, yy);
+		std::cout << "(" << xx << "," << yy << ")" << std::endl;
 	}
 }
 
 void TheGame::Play()
 {
-	
-
 	m_display_ptr = new Display(800, 600, "Cupcake");
 	if (m_display_ptr == nullptr) return;
 	
@@ -58,13 +57,13 @@ void TheGame::Play()
 	GameMap *gamemap_ptr = GameMap::GetInstance();
 	//gamemap_ptr->GenerateRandomMap(256, 256, "res\\map.csv");
 
-	if (!gamemap_ptr->LoadGameMap(40, 30))
+	if (!gamemap_ptr->LoadGameMap(256, 256))
 	{
 		std::cout << "Error: Could not load game map" << std::endl;
 	}
 	m_mainchar.SetName("main_character");
 	m_mainchar.SetCharacterType(CharacterType::MAINCHAR);
-	m_mainchar.SetLocation(15, 15);
+	m_mainchar.SetLocation(128, 05);
 	gamemap_ptr->AttachMainCharacter(&m_mainchar);
 	TiledGameBoard *upper = new TiledGameBoard(m_display_ptr, .01, .01, .98, .98);
 	Shader testShader("res\\basicShader");
@@ -75,19 +74,19 @@ void TheGame::Play()
 	otherchars.resize(5);
 	otherchars[0].SetName("Emmy");
 	otherchars[0].SetCharacterType(CharacterType::EMMY);
-	otherchars[0].SetLocation( 20, 20);
+	otherchars[0].SetLocation( 120, 38);
 	otherchars[1].SetName("Lily");
 	otherchars[1].SetCharacterType(CharacterType::FAIRY);
-	otherchars[1].SetLocation( 26, 28);
+	otherchars[1].SetLocation( 115, 33);
 	otherchars[2].SetName("Jerry");
 	otherchars[2].SetCharacterType(CharacterType::OCTOPUS);
-	otherchars[2].SetLocation(11, 5);
+	otherchars[2].SetLocation(138, 22);
 	otherchars[3].SetName("Bella");
 	otherchars[3].SetCharacterType(CharacterType::JELLYBEAN);
-	otherchars[3].SetLocation(2, 28);
+	otherchars[3].SetLocation(120, 45);
 	otherchars[4].SetName("Maddy");
 	otherchars[4].SetCharacterType(CharacterType::MERMAID);
-	otherchars[4].SetLocation(22, 17);
+	otherchars[4].SetLocation(128, 20);
 	
 	for (int bb = 0; bb < otherchars.size(); bb++)
 	{
@@ -96,7 +95,6 @@ void TheGame::Play()
 	
 	testShader.Bind();
 	Transform transform;
-	//Camera camera(glm::vec3(0, 0, -1.2f), 50.0f, 800 / 600, 0.1f, 100.0f);
 	Camera camera(glm::vec3(0, 0, -1.2), 50.0f, 800 / 600, 0.1f, 100.0f);
 	m_xrot = 40;
 	m_yrot = 0;
