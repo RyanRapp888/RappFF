@@ -29,58 +29,49 @@ enum class AttributeIdx
 
 class Mesh;
 
+struct GLData
+{
+	GLuint m_vao;
+	std::vector<GLuint> m_vbos;
+	int m_n_vertices;
+};
+
 class MeshManager
 {
    public:
 	
    static MeshManager *GetInstance();
-   bool GetMeshPtr(const std::string &filename, Mesh **meshdat);
+   bool GetGLData(const std::string &filename, GLData **gldata);
 
    private:
 	
-   std::map<std::string, Mesh *> m_lookup;
+   std::map<std::string, GLData *> m_lookup;
    static MeshManager *m_instance;
    static bool m_initialized;
 };
 
 class Mesh : public DrawableObj
 {
-
-public:
+   public:
 
    friend class MeshManager;
-   
+   Mesh();
+   bool LoadMesh(const std::string &meshname);
    virtual ~Mesh();
    bool UseTexture(std::string &texture);
    void SetUpInstancing(int n_instances, glm::vec3 scale, glm::mat4 *translations);
    void Render();
-   void InitMesh(const IndexedModel& model);
-   void InitMesh(const std::string& filename);
-protected:
-
-   Mesh() 
-   {
-      m_VAO = 999;
-      m_model.Clear();
-      m_texture = nullptr;
-      m_num_instances = 0;
-      m_color = RGB(255, 255, 255);
-	  m_is_valid = false;
-   }
-
+   
 private:
    Mesh(const std::string& fileName);
    Mesh(IndexedModel &model);
-   void operator=(const Mesh& mesh) {}
    Mesh(const Mesh& mesh) {}
-   
-   GLuint m_VAO;
-   std::vector<GLuint> m_VBO_ids;
-   IndexedModel m_model;
+   void operator=(const Mesh& mesh) {}
+     
+   GLData *m_gldata;
    Texture *m_texture;
    int m_num_instances;
    RGB m_color;
-   bool m_is_valid;
 };
 
 #endif

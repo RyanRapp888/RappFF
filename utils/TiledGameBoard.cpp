@@ -94,25 +94,25 @@ void TiledGameBoard::Refresh()
 			{
 				Character *cur_close_char = close_chars[aa];
 
-				Mesh *cur_close_mesh;
-				mesh_manager->GetMeshPtr(GetMeshFilename(cur_close_char->GetTileType()), &cur_close_mesh);
-				cur_close_mesh->UseTexture(GetTextureFilename(cur_close_char->GetTileType()));
-				cur_close_mesh->SetWindowSectionPtr(this);
+				Mesh cur_close_mesh;
+				cur_close_mesh.LoadMesh(GetMeshFilename(cur_close_char->GetTileType()));
+				cur_close_mesh.UseTexture(GetTextureFilename(cur_close_char->GetTileType()));
+				cur_close_mesh.SetWindowSectionPtr(this);
 				int col = cur_close_char->GetX();
 				int row = cur_close_char->GetY();
 				if (curtile_wx == col && curtile_wy == row)
 				{
 					double ox, oy, w, h;
 					curtile->GetRelativeLocation(ox, oy, w, h);
-					cur_close_mesh->SetRelativeLocation(ox, oy, w, h);
+					cur_close_mesh.SetRelativeLocation(ox, oy, w, h);
 					glm::mat4 *translations = new glm::mat4[1];
 					translations[0] =
 					glm::translate(glm::mat4(1.0), 
-						glm::vec3(cur_close_mesh->GetXDrawPos_N11(), 
-							      cur_close_mesh->GetYDrawPos_N11(), 0));					//cur->Render();
-					cur_close_mesh->SetUpInstancing(1, m_scale_vec, translations);
+						glm::vec3(cur_close_mesh.GetXDrawPos_N11(), 
+							      cur_close_mesh.GetYDrawPos_N11(), 0));					//cur->Render();
+					cur_close_mesh.SetUpInstancing(1, m_scale_vec, translations);
 					delete[] translations;
-					cur_close_mesh->Render();
+					cur_close_mesh.Render();
 				}
 			}
 		}
@@ -123,19 +123,19 @@ void TiledGameBoard::Refresh()
 	Tile *center_tile = &(m_tiles[GetTileIdx(screen_mid_tilex, screen_mid_tiley)]);
 	double ox, oy, w, h;
 	center_tile->GetRelativeLocation(ox, oy, w, h);
-	Mesh *main_char_mesh;
-	mesh_manager->GetMeshPtr(GetMeshFilename(TileType::MAINCHAR), &main_char_mesh);
-	main_char_mesh->UseTexture(GetTextureFilename(TileType::MAINCHAR));
-	main_char_mesh->SetWindowSectionPtr(this);
-	main_char_mesh->SetRelativeLocation(ox, oy, w, h);
+	Mesh main_char_mesh;
+	main_char_mesh.LoadMesh( GetMeshFilename(TileType::MAINCHAR));
+	main_char_mesh.UseTexture(GetTextureFilename(TileType::MAINCHAR));
+	main_char_mesh.SetWindowSectionPtr(this);
+	main_char_mesh.SetRelativeLocation(ox, oy, w, h);
 	glm::mat4 *translations = new glm::mat4[1];
 	translations[0] =
 		glm::translate(glm::mat4(1.0),
-			glm::vec3(main_char_mesh->GetXDrawPos_N11(),
-				      main_char_mesh->GetYDrawPos_N11(), 0));					//cur->Render();
-	main_char_mesh->SetUpInstancing(1, m_scale_vec, translations);
+			glm::vec3(main_char_mesh.GetXDrawPos_N11(),
+				      main_char_mesh.GetYDrawPos_N11(), 0));					//cur->Render();
+	main_char_mesh.SetUpInstancing(1, m_scale_vec, translations);
 	delete[] translations;
-	main_char_mesh->Render();
+	main_char_mesh.Render();
 
 	std::map<TileType, std::vector< int > >::iterator it1;
 	for (it1 = ids_per_tiletype.begin(); it1 != ids_per_tiletype.end(); it1++)

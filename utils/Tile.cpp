@@ -75,7 +75,7 @@ void Tile::SetTileType(TileType type)
 	auto iter = tiletype_to_mesh.find(type);
 	if (iter != tiletype_to_mesh.end())
 	{
-		Mesh::InitMesh(iter->second);
+		Mesh::LoadMesh(iter->second);
 	}
 
 	auto iter2 = tiletype_to_texture.find(type);
@@ -83,7 +83,7 @@ void Tile::SetTileType(TileType type)
 	{
 		Mesh::UseTexture(iter2->second);
 	}
-
+	m_tiletype = type;
 	return;
 }
 

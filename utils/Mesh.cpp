@@ -8,11 +8,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 
-
-
 bool MeshManager::m_initialized = false;
 MeshManager *MeshManager::m_instance = 0;
-
 bool GetPrefabModel(const std::string &str, IndexedModel &dat);
 
 MeshManager *MeshManager::GetInstance()
@@ -21,40 +18,89 @@ MeshManager *MeshManager::GetInstance()
 	{
 		return m_instance;
 	}
-
 	m_instance = new MeshManager();
 	m_initialized = true;
 	return m_instance;
 }
 
+static void GenerateVAOVBOS(IndexedModel &model, GLData **gldata)
+{
+	*gldata = new GLData;
 
-bool MeshManager::GetMeshPtr(const std::string &filename, Mesh **mesh)
+	(*gldata)->m_n_vertices = model.m_positions.size();
+	glGenVertexArrays(1, &((*gldata)->m_vao));
+	glBindVertexArray((*gldata)->m_vao);
+
+	GLuint tmp;
+	glGenBuffers(1, &tmp);
+	(*gldata)->m_vbos.push_back(tmp);
+	glGenBuffers(1, &tmp);
+	(*gldata)->m_vbos.push_back(tmp);
+	glGenBuffers(1, &tmp);
+	(*gldata)->m_vbos.push_back(tmp);
+
+	// Spatial Positions (-1 to 1)
+	glBindBuffer(GL_ARRAY_BUFFER, (*gldata)->m_vbos[static_cast<int>(BufferIdx::POS_IDX)]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(model.m_positions[0]) * model.m_positions.size(), &model.m_positions[0], GL_STATIC_DRAW);
+	glEnableVertexAttribArray(static_cast<int>(AttributeIdx::POS_LOC));
+	glVertexAttribPointer(static_cast<int>(AttributeIdx::POS_LOC), 3, GL_FLOAT, GL_FALSE, 0, 0);
+
+	// Texture Coords
+	glBindBuffer(GL_ARRAY_BUFFER, (*gldata)->m_vbos[static_cast<int>(BufferIdx::TEXTURE_IDX)]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(model.m_texCoords[0]) * model.m_texCoords.size(), &model.m_texCoords[0], GL_STATIC_DRAW);
+	glEnableVertexAttribArray(static_cast<int>(AttributeIdx::TEXTURE_LOC));
+	glVertexAttribPointer(static_cast<int>(AttributeIdx::TEXTURE_LOC), 2, GL_FLOAT, GL_FALSE, 0, 0);
+
+	// Normals
+	glBindBuffer(GL_ARRAY_BUFFER, (*gldata)->m_vbos[static_cast<int>(BufferIdx::NORMAL_IDX)]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(model.m_normals[0]) * model.m_normals.size(), &model.m_normals[0], GL_STATIC_DRAW);
+	glEnableVertexAttribArray(static_cast<int>(AttributeIdx::NORMAL_LOC));
+	glVertexAttribPointer(static_cast<int>(AttributeIdx::NORMAL_LOC), 3, GL_FLOAT, GL_FALSE, 0, 0);
+
+	glBindVertexArray(0);
+}
+
+bool MeshManager::GetGLData(const std::string &filename, GLData **gldata)
 {
 	auto iter2 = m_lookup.find(filename);
 	if (iter2 != m_lookup.end())
 	{
-		*mesh = iter2->second;
+		*gldata = iter2->second;
 		return true;
 	}
-
-	*mesh = new Mesh(filename);
-	if (*mesh == nullptr) return false;
-	m_lookup[filename] = *mesh;
+	
+	IndexedModel model;
+	if (GetPrefabModel(filename, model))
+	{
+		GenerateVAOVBOS(model, gldata);
+	}
+	else
+	{
+		model = OBJModel(filename).ToIndexedModel();
+		GenerateVAOVBOS(model, gldata);
+	}
+	m_lookup[filename] = *gldata;
 	return true;
+}
+
+Mesh::Mesh()
+{
+	m_texture = nullptr;
+	m_gldata = nullptr;
+	m_num_instances = 0;
+	m_color = RGB(255, 255, 255);
 }
 
 Mesh::Mesh(const std::string& fileName)
 {
-	InitMesh(fileName);
+	LoadMesh(fileName);
 }
 
-Mesh::Mesh(IndexedModel &model)
+bool Mesh::LoadMesh(const std::string &filename)
 {
-   InitMesh(model);
-   m_texture = nullptr;
-   m_num_instances = 0;
-   m_color = RGB(255, 255, 255);
-   m_is_valid = true;
+	MeshManager *mm = MeshManager::GetInstance();
+	mm->GetGLData(filename, &m_gldata);
+	return m_gldata != nullptr;
 }
 
 bool Mesh::UseTexture(std::string &texture_filename)
@@ -68,12 +114,12 @@ bool Mesh::UseTexture(std::string &texture_filename)
 
 void Mesh::SetUpInstancing(int n_instances, glm::vec3 scalevect, glm::mat4 *translations)
 {
-	glBindVertexArray(m_VAO);
-	if (m_VBO_ids.size() < 4)
+	glBindVertexArray(m_gldata->m_vao);
+	if (m_gldata->m_vbos.size() < 4)
 	{
 		GLuint tmp;
 		glGenBuffers(1, &tmp);
-		m_VBO_ids.push_back(tmp);
+		m_gldata->m_vbos.push_back(tmp);
 	}
    m_num_instances = n_instances;
    
@@ -82,7 +128,7 @@ void Mesh::SetUpInstancing(int n_instances, glm::vec3 scalevect, glm::mat4 *tran
 	   translations[aa] = glm::scale(translations[aa], scalevect);
    }
 
-   glBindBuffer(GL_ARRAY_BUFFER, m_VBO_ids[static_cast<int>(BufferIdx::TRANS_IDX)]);
+   glBindBuffer(GL_ARRAY_BUFFER, m_gldata->m_vbos[static_cast<int>(BufferIdx::TRANS_IDX)]);
    glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat4)*n_instances, translations, GL_STATIC_DRAW);
 
 	for (int i = 0; i < 4; ++i)
@@ -94,58 +140,6 @@ void Mesh::SetUpInstancing(int n_instances, glm::vec3 scalevect, glm::mat4 *tran
 	glBindVertexArray(0);
 }
 
-void Mesh::InitMesh(const std::string &filename)
-{
-	if (GetPrefabModel(filename, m_model))
-	{
-		InitMesh(m_model);
-	}
-	else
-	{
-		m_model = OBJModel(filename).ToIndexedModel();
-		InitMesh(m_model);
-	}
-	m_texture = nullptr;
-	m_num_instances = 0;
-	m_color = RGB(255, 255, 255);
-	m_is_valid = true;
-}
-
-void Mesh::InitMesh(const IndexedModel& model)
-{
-	glGenVertexArrays(1, &m_VAO);
-	glBindVertexArray(m_VAO);
-	
-	GLuint tmp;
-	glGenBuffers(1, &tmp);
-	m_VBO_ids.push_back(tmp);
-	glGenBuffers(1, &tmp);
-	m_VBO_ids.push_back(tmp);
-	glGenBuffers(1, &tmp);
-	m_VBO_ids.push_back(tmp);
-		
-	// Spatial Positions (-1 to 1)
-	glBindBuffer(GL_ARRAY_BUFFER, m_VBO_ids[static_cast<int>(BufferIdx::POS_IDX)]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(model.m_positions[0]) * model.m_positions.size(), &model.m_positions[0], GL_STATIC_DRAW);
-	glEnableVertexAttribArray(static_cast<int>(AttributeIdx::POS_LOC));
-	glVertexAttribPointer(static_cast<int>(AttributeIdx::POS_LOC), 3, GL_FLOAT, GL_FALSE, 0, 0);
-	
-	// Texture Coords
-	glBindBuffer(GL_ARRAY_BUFFER, m_VBO_ids[static_cast<int>(BufferIdx::TEXTURE_IDX)]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(model.m_texCoords[0]) * model.m_texCoords.size(), &model.m_texCoords[0], GL_STATIC_DRAW);
-	glEnableVertexAttribArray(static_cast<int>(AttributeIdx::TEXTURE_LOC));
-	glVertexAttribPointer(static_cast<int>(AttributeIdx::TEXTURE_LOC), 2, GL_FLOAT, GL_FALSE, 0, 0);
-
-	// Normals
-	glBindBuffer(GL_ARRAY_BUFFER, m_VBO_ids[static_cast<int>(BufferIdx::NORMAL_IDX)]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(model.m_normals[0]) * model.m_normals.size(), &model.m_normals[0], GL_STATIC_DRAW);
-	glEnableVertexAttribArray(static_cast<int>(AttributeIdx::NORMAL_LOC));
-	glVertexAttribPointer(static_cast<int>(AttributeIdx::NORMAL_LOC), 3, GL_FLOAT, GL_FALSE, 0, 0);
-
-	glBindVertexArray(0);
-	m_is_valid = true;
-}
-
 Mesh::~Mesh()
 {
 	
@@ -153,22 +147,19 @@ Mesh::~Mesh()
 
 void Mesh::Render()
 {
-   if (!m_is_valid) return;
-   glBindVertexArray(m_VAO);
-   //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-   //glEnable(GL_BLEND);
+   glBindVertexArray(m_gldata->m_vao);
    glColor3f(1.0, 1.0, 1.0);
   
    if (m_texture != nullptr) m_texture->Bind();
 
    if (m_num_instances > 0)
    {
-	   glDrawArraysInstanced(GL_TRIANGLES, 0, m_model.m_positions.size(), m_num_instances);
+	   glDrawArraysInstanced(GL_TRIANGLES, 0, m_gldata->m_n_vertices, m_num_instances);
 	   glFlush();
    }
    else
    {
-       glDrawArrays(GL_TRIANGLES, 0, m_model.m_positions.size());
+       glDrawArrays(GL_TRIANGLES, 0, m_gldata->m_n_vertices);
    }
    
    if (m_texture != nullptr) m_texture->UnBind();
