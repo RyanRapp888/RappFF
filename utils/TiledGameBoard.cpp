@@ -57,6 +57,7 @@ void TiledGameBoard::SetTileDetails(int xtiles, int ytiles)
 
 void TiledGameBoard::Refresh()
 {
+	if (!m_enable) return;
 	GameMap *map_ptr = GameMap::GetInstance();
 	if (map_ptr->GetMainCharPtr() == nullptr)
 	{

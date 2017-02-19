@@ -8,7 +8,7 @@
 class TheGame
 {
 public:
-	TheGame(){}
+	TheGame() :m_display_ptr(nullptr), m_fightymode(false) {}
 	void KeyHandler(int key, int scancode, int action, int mods);
 	void Play();
 	~TheGame()
@@ -20,6 +20,7 @@ private:
 	void Interact(int x, int y);
 	Character m_mainchar;
 	Display *m_display_ptr;
+	bool m_fightymode;
 	int m_xrot, m_yrot, m_zrot;
 };
 

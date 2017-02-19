@@ -86,14 +86,34 @@ bool Character::CanOccupyLocation(int x, int y)
 	return !(map_ptr->HasACharacter(x, y));
 }
 
-void Character::SetLocation(int x, int y)
+bool Character::SetLocation(int x, int y)
 {
+	bool result;
 	GameMap *map_ptr = GameMap::GetInstance();
-	if (map_ptr == nullptr) return;
-	if (x < 0) x = 0;
-	if (x >= map_ptr->GetWorldMaxX()) x = map_ptr->GetWorldMaxX() - 1;
-	if (y < 0) y = 0;
-	if (y >= map_ptr->GetWorldMaxY()) y = map_ptr->GetWorldMaxY() - 1;
+	if (map_ptr == nullptr) return false;
+	if (x < 0)
+	{
+		x = 0;
+		return false;
+	}
+	
+	if (x >= map_ptr->GetWorldMaxX())
+	{
+		x = map_ptr->GetWorldMaxX() - 1;
+		return false;
+	}
+
+	if (y < 0)
+	{
+		y = 0;
+		return false;
+	}
+
+	if (y >= map_ptr->GetWorldMaxY())
+	{
+		y = map_ptr->GetWorldMaxY() - 1;
+		return false;
+	}
 
 	//CanOccupyLocation looks to see if our character can step on the desired
 	//tile type AND makes sure its not occupied.
@@ -101,8 +121,9 @@ void Character::SetLocation(int x, int y)
 	{
 		m_worldx = x;
 		m_worldy = y;
+		return true;
 	}
-
+	return false;
 }
 
 int Character::GetX() { return m_worldx; }

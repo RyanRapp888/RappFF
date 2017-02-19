@@ -92,17 +92,7 @@ static void error_callback(int error, const char* description)
 	fprintf(stderr, "Error: %s\n", description);
 }
 
-int get_rand()
-{
-	static bool is_seeded(false);
-	if (!is_seeded)
-	{
-		srand(14);
-		is_seeded = true;
-	}
-	int result = rand() % 7;
-	return result;
-}
+
 
 void PrintCurrentPath()
 {

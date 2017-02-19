@@ -70,8 +70,8 @@
   <ItemGroup>
     <None Include="..\res\basicShader.fs" />
     <None Include="..\res\basicShader.vs" />
-    <None Include="..\res\InstanceShader.fs" />
-    <None Include="..\res\InstanceShader.vs" />
+    <None Include="..\res\basic_noninst.fs" />
+    <None Include="..\res\basic_noninst.vs" />
     <None Include="..\res\map.csv" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -130,19 +130,19 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\res\map.csv">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\res\basic_noninst.fs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\res\basic_noninst.vs">
+      <Filter>Resource Files</Filter>
+    </None>
     <None Include="..\res\basicShader.fs">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="..\res\basicShader.vs">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\res\InstanceShader.fs">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\res\InstanceShader.vs">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\res\map.csv">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

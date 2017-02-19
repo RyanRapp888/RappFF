@@ -1,21 +1,34 @@
 #include "WindowSection.h"
 #include <algorithm>
 
-WindowSection::WindowSection(): 
-   m_view_ptr(nullptr),
-   m_originx_01(0),
-   m_originy_01(0),
-   m_width_01(0),
-   m_height_01(0)
+WindowSection::WindowSection() :
+	m_view_ptr(nullptr),
+	m_originx_01(0),
+	m_originy_01(0),
+	m_width_01(0),
+	m_height_01(0),
+	m_enable(true)
 {
 }
 
+void WindowSection::Enable()
+{
+	m_enable = true;
+}
+
+void WindowSection::Disable()
+{
+	m_enable = false;
+}
 
 void WindowSection::Refresh()
 {
-	for (auto cur_obj : m_drawables)
+	if (m_enable)
 	{
-		cur_obj->Render();
+		for (auto cur_obj : m_drawables)
+		{
+			cur_obj->Render();
+		}
 	}
 }
 

@@ -25,10 +25,15 @@ public:
    double GetOriginY_01();
    double GetWidth_01();
    double GetHeight_01();
-    
+   void Enable();
+   void Disable();
    void AddObject( DrawableObj *dat);
    void RemoveObject( DrawableObj *dat);
    Viewport *GetVP();
+
+protected:
+
+	bool m_enable;
 
 private:
 
@@ -36,7 +41,8 @@ private:
    // m_originx & m_originy are relative to the viewport
    double m_originx_01, m_originy_01;
    double m_width_01, m_height_01;
-   std::vector< DrawableObj* > m_drawables;  
+   std::vector< DrawableObj* > m_drawables;
+   
 };
 
 #endif

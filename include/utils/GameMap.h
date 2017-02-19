@@ -36,6 +36,7 @@ public:
    bool FindCharactersInRange(int minx, int miny, int maxx, int maxy, std::vector<Character *> &found_chars);
    int GetWorldMaxX();
    int GetWorldMaxY();
+   int GetMonsterOdds(int x, int y);
       
    private:
    

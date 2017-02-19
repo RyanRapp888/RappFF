@@ -22,6 +22,21 @@ GameMap *GameMap::GetInstance()
 	return m_instance;
 }
 
+int GameMap::GetMonsterOdds(int x, int y)
+{
+	TileType cc;
+	GetTileType(x, y,cc);
+	if (cc == TileType::BRICKS)
+	{
+		return 0;
+	}
+	else
+	{
+		return 25;
+	}
+	return 0;
+}
+
 bool GameMap::AttachMainCharacter(Character *mainchar)
 {
 	if (mainchar == nullptr) return false;

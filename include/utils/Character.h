@@ -30,7 +30,7 @@ class Character
    TileType GetTileType();
    void SetCharMotion(const CharMotion &cmot);
    bool CanOccupyLocation(int x, int y);
-   void SetLocation(int x, int y);
+   bool SetLocation(int x, int y);
    int GetX();
    int GetY();
    std::string GetName() { return m_name; }
