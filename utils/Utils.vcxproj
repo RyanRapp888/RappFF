@@ -72,7 +72,10 @@
   <ItemGroup>
     <None Include="..\res\basicShader.fs" />
     <None Include="..\res\basicShader.vs" />
+    <None Include="..\res\cube.robj" />
+    <None Include="..\res\flattile.robj" />
     <None Include="..\res\map.csv" />
+    <None Include="..\res\mtnshape.robj" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{29FF5A95-0FC0-48D7-9D4E-438F8AB6F11A}</ProjectGuid>

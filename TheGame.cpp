@@ -48,13 +48,13 @@ void TheGame::KeyHandler(int key, int scancode, int action, int mods)
 				took_step = true;
 				break;
 			case(GLFW_KEY_X):
-				m_xrot+=5;
+				m_xrot-=5;
 				break;
 			case(GLFW_KEY_Y):
-				m_yrot+=5;
+				m_yrot-=5;
 				break;
 			case(GLFW_KEY_Z):
-				m_zrot+=5;
+				m_zrot-=5;
 			case(GLFW_KEY_ENTER):
 				Interact(m_mainchar.GetX(), m_mainchar.GetY());
 			default:
@@ -129,8 +129,7 @@ void TheGame::Play()
 	}
 	
 	Transform maintransform;
-	Camera maincamera(glm::vec3(0, 0, 1.1), 66.0f, 800 / 600, 0.1f, 100.0f);
-	//Camera maincamera(glm::vec3(0, 0, 1.1), 66.0f, 800 / 600, 100.0f, .1f);
+	Camera maincamera(glm::vec3(0, 0, 1.5), 90.0f, 800 / 600, 0.1f, 100.0f);
 	m_xrot = 0;
 	m_yrot = 0;
 	m_zrot = 0;
@@ -150,6 +149,9 @@ void TheGame::Play()
 		
 		if (m_fightymode)
 		{
+			maintransform.GetRot()->x = 0;
+			maintransform.GetRot()->y = 0;
+			maintransform.GetRot()->z = 0;
 			tiled_ws->Disable();
 			fightscreen_ws->Enable();
 		}

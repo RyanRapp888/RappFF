@@ -53,6 +53,7 @@ void FightScreen::Refresh()
 		floatscales[0] = cur->GetXDrawPos_N11() - (1 - scalevec.x);
 		floatscales[1] = cur->GetYDrawPos_N11() - (1 - scalevec.y);
 		floatscales[2] = 0;
+
 		glm::vec3 transvec(floatscales[0],floatscales[1],floatscales[2]);
  		translations[0] = glm::translate(glm::mat4(1.0), transvec);
 		scalevec *= 2;

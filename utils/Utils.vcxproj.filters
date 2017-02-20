@@ -145,5 +145,14 @@
     <None Include="..\res\basicShader.vs">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="..\res\cube.robj">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\res\flattile.robj">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\res\mtnshape.robj">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

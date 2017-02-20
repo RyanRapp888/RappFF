@@ -14,7 +14,7 @@ void TiledGameBoard::SetTileDetails(int xtiles, int ytiles)
 		m_tiles[aa].SetWindowSectionPtr(this);
 	}
 	
-	m_scale_vec = glm::vec3(2.0 / m_xtiles, 2.0 / m_ytiles, 2.0 / m_xtiles);
+	m_scale_vec = glm::vec3(2.0 / m_xtiles,2.0 / m_ytiles, 2.0 / m_xtiles);
 
 	if (m_tiles == nullptr)
 	{
@@ -31,11 +31,10 @@ void TiledGameBoard::SetTileDetails(int xtiles, int ytiles)
 			TileType cur;
 			map_ptr->GetTileType(xx, yy, cur);
 			curtile->SetTileType(cur);
-			curtile->SetRelativeLocation(xx * (1.0 / m_xtiles), yy * (1.0 / m_ytiles), 1.0 / m_xtiles, 1.0 / m_ytiles);
-			//curtile->SetRelativeLocation(xx * (1.0 / m_xtiles), yy * (1.0 / m_ytiles), 1.0 / m_xtiles, -.01);
+			//curtile->SetRelativeLocation(xx * (2.0 / m_xtiles), yy * (2.0 / m_ytiles), 2.0 / m_xtiles, 2.0 / m_ytiles);
+			curtile->SetRelativeLocation(xx * (1.0 / m_xtiles), yy * (1.0 / m_ytiles), 1.0 / m_xtiles, -.01);
 		}
 	}
-
 }
 
 void TiledGameBoard::Refresh()

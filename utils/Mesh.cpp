@@ -10,7 +10,6 @@
 
 bool MeshManager::m_initialized = false;
 MeshManager *MeshManager::m_instance = 0;
-bool GetPrefabModel(const std::string &str, IndexedModel &dat);
 
 MeshManager *MeshManager::GetInstance()
 {
@@ -70,15 +69,8 @@ bool MeshManager::GetGLData(const std::string &filename, GLData **gldata)
 	}
 	
 	IndexedModel model;
-	if (GetPrefabModel(filename, model))
-	{
-		GenerateVAOVBOS(model, gldata);
-	}
-	else
-	{
-		model = OBJModel(filename).ToIndexedModel();
-		GenerateVAOVBOS(model, gldata);
-	}
+	model = OBJModel(filename).ToIndexedModel();
+	GenerateVAOVBOS(model, gldata);
 	m_lookup[filename] = *gldata;
 	return true;
 }
@@ -160,86 +152,4 @@ void Mesh::Render()
    
    if (m_texture != nullptr) m_texture->UnBind();
    glBindVertexArray(0);
-}
-
-bool GetPrefabModel(const std::string &str, IndexedModel &dat)
-{
-	if (str == "res\\mtnshape.robj")
-	{
-		
-		dat.Clear();
-		dat.m_positions.emplace_back(glm::vec3(-.5f, -.5, 0)); //LL
-		dat.m_positions.emplace_back(glm::vec3(.5f, -.5, 0)); //LR
-		dat.m_positions.emplace_back(glm::vec3(0, 0, .5)); //CENTRE
-
-		dat.m_positions.emplace_back(glm::vec3(.5f, -.5, 0)); //LR
-		dat.m_positions.emplace_back(glm::vec3(.5f, .5, 0)); //UR
-		dat.m_positions.emplace_back(glm::vec3(0, 0, .5)); //CENTRE
-
-		dat.m_positions.emplace_back(glm::vec3(0, 0, .5)); //CENTRE
-		dat.m_positions.emplace_back(glm::vec3(.5f, .5, 0)); //UR
-		dat.m_positions.emplace_back(glm::vec3(-.5f, .5, 0)); //UL
-
-		dat.m_positions.emplace_back(glm::vec3(-.5f, -.5, 0)); //LL
-		dat.m_positions.emplace_back(glm::vec3(0, 0, .5)); //CENTRE
-		dat.m_positions.emplace_back(glm::vec3(-.5f, .5, 0)); //UL
-
-		dat.m_texCoords.emplace_back(0, 0); //LL
-		dat.m_texCoords.emplace_back(1, 0); //LR
-		dat.m_texCoords.emplace_back(0, 0); //C
-
-		dat.m_texCoords.emplace_back(1, 0); //LR
-		dat.m_texCoords.emplace_back(1, 1); //UR
-		dat.m_texCoords.emplace_back(0, 0); //C
-
-		dat.m_texCoords.emplace_back(0, 0); //C
-		dat.m_texCoords.emplace_back(1, 1); //UR
-		dat.m_texCoords.emplace_back(0, 1); //UL
-
-		dat.m_texCoords.emplace_back(0, 0); //LL
-		dat.m_texCoords.emplace_back(0, 0); //C
-		dat.m_texCoords.emplace_back(0, 1); //UL
-
-		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
-		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
-		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
-		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
-		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
-		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
-		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
-		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
-		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
-		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
-		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
-		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
-		return true;
-	}
-	else if(str == "res\\flattile.robj")
-	{
-		dat.Clear();
-		dat.m_positions.emplace_back(glm::vec3(-.5f, -.5, 0)); //LL
-		dat.m_positions.emplace_back(glm::vec3(.5f, -.5, 0)); //LR
-		dat.m_positions.emplace_back(glm::vec3(.5f, .5, 0)); //UR
-
-		dat.m_positions.emplace_back(glm::vec3(-.5f, -.5, 0)); //LL
-		dat.m_positions.emplace_back(glm::vec3(.5f, .5, 0)); //UR
-		dat.m_positions.emplace_back(glm::vec3(-.5f, .5, 0)); //UL
-     
-		dat.m_texCoords.emplace_back(0, 0); //LL
-		dat.m_texCoords.emplace_back(1, 0); //LR
-		dat.m_texCoords.emplace_back(1, 1); //UR
-
-		dat.m_texCoords.emplace_back(0, 0); //LL
-		dat.m_texCoords.emplace_back(1, 1); //UR
-		dat.m_texCoords.emplace_back(0, 1); //UL
-		
-		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
-		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
-		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
-		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
-		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
-		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
-		return true;
-	}
-	return false;
 }
