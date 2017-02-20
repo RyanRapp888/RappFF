@@ -2,6 +2,7 @@
 #include <glad.h>
 #include "TheGame.h"
 #include "TiledGameBoard.h"
+#include "FightScreen.h"
 #include "Shader.h"
 #include "Camera.h"
 
@@ -33,7 +34,7 @@ void TheGame::KeyHandler(int key, int scancode, int action, int mods)
 				break;
 			case(GLFW_KEY_A):
 			case(GLFW_KEY_LEFT):
-				xx++;
+				xx--;
 				took_step = true;
 				break;
 			case(GLFW_KEY_S):
@@ -43,7 +44,7 @@ void TheGame::KeyHandler(int key, int scancode, int action, int mods)
 				break;
 			case(GLFW_KEY_D):
 			case(GLFW_KEY_RIGHT):
-				xx--;
+				xx++;
 				took_step = true;
 				break;
 			case(GLFW_KEY_X):
@@ -83,7 +84,6 @@ void TheGame::Play()
 	m_display_ptr = new Display(800, 600, "Cupcake");
 	if (m_display_ptr == nullptr) return;
 	
-	//ultimately, I want gamemap to be 256x256
 	GameMap *gamemap_ptr = GameMap::GetInstance();
 	
 	if (!gamemap_ptr->LoadGameMap(256, 256))
@@ -95,36 +95,16 @@ void TheGame::Play()
 	m_mainchar.SetCharacterType(CharacterType::MAINCHAR);
 	m_mainchar.SetLocation(128, 05);
 	gamemap_ptr->AttachMainCharacter(&m_mainchar);
+	
 	TiledGameBoard *tiled_ws = new TiledGameBoard(m_display_ptr, .01, .01, .98, .98);
-	Shader InstancedShader("res\\basicShader");
-	Shader NonInstancedShader("res\\basic_noninst");
+	Shader basicShader("res\\basicShader");
+	basicShader.Bind();
 	tiled_ws->SetTileDetails(20, 20);
 	m_display_ptr->AddWindowSection(tiled_ws);
+		
+	FightScreen *fightscreen_ws = new FightScreen(m_display_ptr, .01, .01, .98, .98);
+	m_display_ptr->AddWindowSection(fightscreen_ws);
 	
-	Tile *singular = new Tile();
-	singular->SetTileType(TileType::PARCHMENT);
-	singular->SetRelativeLocation(0, 0, 1, 1);
-	WindowSection *fightmode_bl = new WindowSection(m_display_ptr, 0, 0, .357, .35);
-	fightmode_bl->AddObject(singular);
-	WindowSection *fightmode_tl = new WindowSection(m_display_ptr, 0, .357, .535, .65);
-	fightmode_tl->AddObject(singular);
-	WindowSection *fightmode_br = new WindowSection(m_display_ptr, .357, 0, .428, .35);
-	fightmode_br->AddObject(singular);
-	WindowSection *fightmode_tr = new WindowSection(m_display_ptr, .535, .35, .264, .65);
-	fightmode_tr->AddObject(singular);
-	WindowSection *fightmode_fr = new WindowSection(m_display_ptr, .785, 0, .214, 1);
-	fightmode_fr->AddObject(singular);
-	fightmode_bl->Disable();
-	fightmode_tl->Disable();
-	fightmode_br->Disable();
-	fightmode_tr->Disable();
-	fightmode_fr->Disable();
-	m_display_ptr->AddWindowSection(fightmode_bl);
-	m_display_ptr->AddWindowSection(fightmode_tl);
-	m_display_ptr->AddWindowSection(fightmode_br);
-	m_display_ptr->AddWindowSection(fightmode_tr);
-	m_display_ptr->AddWindowSection(fightmode_fr);
-
 	std::vector<Character> otherchars;
 	otherchars.resize(5);
 	otherchars[0].SetName("Emmy");
@@ -149,10 +129,9 @@ void TheGame::Play()
 	}
 	
 	Transform maintransform;
-	Transform fighttransform;
-	Camera maincamera(glm::vec3(0, 0, -1.2), 66.0f, 800 / 600, 0.1f, 100.0f);
-	Camera fightcamera(glm::vec3(0, 0, -1.1), 90.0f, 800 / 600, 0.1f, 100.0f);
-	m_xrot = 40;
+	Camera maincamera(glm::vec3(0, 0, 1.1), 66.0f, 800 / 600, 0.1f, 100.0f);
+	//Camera maincamera(glm::vec3(0, 0, 1.1), 66.0f, 800 / 600, 100.0f, .1f);
+	m_xrot = 0;
 	m_yrot = 0;
 	m_zrot = 0;
 	RGB background(0,0,0);
@@ -165,37 +144,23 @@ void TheGame::Play()
 			background.GetBlue()/255.0,
 			1);
 
+		maintransform.GetRot()->x = m_xrot;
+		maintransform.GetRot()->y = m_yrot;
+		maintransform.GetRot()->z = m_zrot;
+		
 		if (m_fightymode)
 		{
-			InstancedShader.Detach();
-			NonInstancedShader.Bind();
 			tiled_ws->Disable();
-			fightmode_bl->Enable();
-			fightmode_tl->Enable();
-			fightmode_br->Enable();
-			fightmode_tr->Enable();
-			fightmode_fr->Enable();
-
-			if (!m_fightymode)
-			{
-     			tiled_ws->Enable();
-				fightmode_bl->Disable();
-				fightmode_tl->Disable();
-				fightmode_br->Disable();
-				fightmode_tr->Disable();
-				fightmode_fr->Disable();
-			}
-			NonInstancedShader.Update(fighttransform, fightcamera);
+			fightscreen_ws->Enable();
 		}
 		else
 		{
-			NonInstancedShader.Detach();
-			InstancedShader.Bind();
-			maintransform.GetRot()->x = m_xrot;
-			maintransform.GetRot()->y = m_yrot;
-			maintransform.GetRot()->z = m_zrot;
-			InstancedShader.Update(maintransform, maincamera);
+			fightscreen_ws->Disable();
+			tiled_ws->Enable();
+
 		}
+		
+		basicShader.Update(maintransform, maincamera);
 		m_display_ptr->Refresh();
 		m_display_ptr->SwapBuffers();
 		glfwPollEvents();
@@ -204,8 +169,8 @@ void TheGame::Play()
 
 std::string ToText(ProxRel dat)
 {
-	if (dat == ProxRel::FOUND_TO_LEFT) return "to the EAST of you!";
-	else if (dat == ProxRel::FOUND_TO_RIGHT) return "to the RIGHT of you!";
+	if (dat == ProxRel::FOUND_TO_LEFT) return "to the WEST of you!";
+	else if (dat == ProxRel::FOUND_TO_RIGHT) return "to the EAST of you!";
 	else if (dat == ProxRel::FOUND_ABOVE) return "to the NORTH of you!";
 	else if (dat == ProxRel::FOUND_BELOW) return "to the SOUTH of you!";
 	return "";

@@ -60,6 +60,9 @@
     <ClCompile Include="WindowSection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FightScreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\utils\Camera.h">
@@ -128,15 +131,12 @@
     <ClInclude Include="..\include\utils\TileType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\utils\FightScreen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\res\map.csv">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\res\basic_noninst.fs">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\res\basic_noninst.vs">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="..\res\basicShader.fs">

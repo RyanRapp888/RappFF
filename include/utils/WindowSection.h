@@ -38,7 +38,6 @@ protected:
 private:
 
    Viewport *m_view_ptr;
-   // m_originx & m_originy are relative to the viewport
    double m_originx_01, m_originy_01;
    double m_width_01, m_height_01;
    std::vector< DrawableObj* > m_drawables;

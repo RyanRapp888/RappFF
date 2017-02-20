@@ -89,5 +89,6 @@ void Tile::SetTileType(TileType type)
 
 void Tile::Render()
 {
+	
 	Mesh::Render();
 }

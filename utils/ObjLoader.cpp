@@ -114,7 +114,7 @@ IndexedModel OBJModel::ToIndexedModel()
 			}
 			else
 			{
-				result.m_normals.emplace_back(glm::vec3(0, 0, -1));
+				result.m_normals.emplace_back(glm::vec3(0, 0, 1));
 			}
 		}
 		
@@ -147,7 +147,7 @@ IndexedModel OBJModel::ToIndexedModel()
         if(m_hasNormals)
             currentNormal = m_normals[currentIndex->m_normalIndex];
         else
-            currentNormal = glm::vec3(0,0,0);
+            currentNormal = glm::vec3(0,0,1);
         
         unsigned int normalModelIndex;
         unsigned int resultModelIndex;

@@ -157,10 +157,6 @@ void Mesh::Render()
 	   glDrawArraysInstanced(GL_TRIANGLES, 0, m_gldata->m_n_vertices, m_num_instances);
 	   glFlush();
    }
-   else
-   {
-       glDrawArrays(GL_TRIANGLES, 0, m_gldata->m_n_vertices);
-   }
    
    if (m_texture != nullptr) m_texture->UnBind();
    glBindVertexArray(0);
@@ -174,18 +170,18 @@ bool GetPrefabModel(const std::string &str, IndexedModel &dat)
 		dat.Clear();
 		dat.m_positions.emplace_back(glm::vec3(-.5f, -.5, 0)); //LL
 		dat.m_positions.emplace_back(glm::vec3(.5f, -.5, 0)); //LR
-		dat.m_positions.emplace_back(glm::vec3(0, 0, -.5)); //CENTRE
+		dat.m_positions.emplace_back(glm::vec3(0, 0, .5)); //CENTRE
 
 		dat.m_positions.emplace_back(glm::vec3(.5f, -.5, 0)); //LR
 		dat.m_positions.emplace_back(glm::vec3(.5f, .5, 0)); //UR
-		dat.m_positions.emplace_back(glm::vec3(0, 0, -.5)); //CENTRE
+		dat.m_positions.emplace_back(glm::vec3(0, 0, .5)); //CENTRE
 
-		dat.m_positions.emplace_back(glm::vec3(0, 0, -.5)); //CENTRE
+		dat.m_positions.emplace_back(glm::vec3(0, 0, .5)); //CENTRE
 		dat.m_positions.emplace_back(glm::vec3(.5f, .5, 0)); //UR
 		dat.m_positions.emplace_back(glm::vec3(-.5f, .5, 0)); //UL
 
 		dat.m_positions.emplace_back(glm::vec3(-.5f, -.5, 0)); //LL
-		dat.m_positions.emplace_back(glm::vec3(0, 0, -.5)); //CENTRE
+		dat.m_positions.emplace_back(glm::vec3(0, 0, .5)); //CENTRE
 		dat.m_positions.emplace_back(glm::vec3(-.5f, .5, 0)); //UL
 
 		dat.m_texCoords.emplace_back(0, 0); //LL
@@ -204,126 +200,18 @@ bool GetPrefabModel(const std::string &str, IndexedModel &dat)
 		dat.m_texCoords.emplace_back(0, 0); //C
 		dat.m_texCoords.emplace_back(0, 1); //UL
 
-		dat.m_normals.emplace_back(glm::vec3(0, 0, -1));
-		dat.m_normals.emplace_back(glm::vec3(0, 0, -1));
-		dat.m_normals.emplace_back(glm::vec3(0, 0, -1));
-		dat.m_normals.emplace_back(glm::vec3(0, 0, -1));
-		dat.m_normals.emplace_back(glm::vec3(0, 0, -1));
-		dat.m_normals.emplace_back(glm::vec3(0, 0, -1));
-		dat.m_normals.emplace_back(glm::vec3(0, 0, -1));
-		dat.m_normals.emplace_back(glm::vec3(0, 0, -1));
-		dat.m_normals.emplace_back(glm::vec3(0, 0, -1));
-		dat.m_normals.emplace_back(glm::vec3(0, 0, -1));
-		dat.m_normals.emplace_back(glm::vec3(0, 0, -1));
-		dat.m_normals.emplace_back(glm::vec3(0, 0, -1));
-		return true;
-	}
-	else if ( str == "res\\emmy.robj" || str == "res\\fairy.robj" || str == "res\\jellybean.robj" ||
-		      str == "res\\mermaid.robj" || str == "res\\octopus.robj" || str == "res\\princess.robj")
-	{ 
-		dat.Clear();
-
-		//top of cube
-		dat.m_positions.emplace_back(glm::vec3(-.25f, -.25, -1.0)); //LL
-		dat.m_positions.emplace_back(glm::vec3(.25f, -.25, -1.0)); //LR
-		dat.m_positions.emplace_back(glm::vec3(.25f, .25, -1.0)); //UR
-		dat.m_positions.emplace_back(glm::vec3(-.25f, -.25, -1.0)); //LL
-		dat.m_positions.emplace_back(glm::vec3(.25f, .25, -1.0)); //UR
-		dat.m_positions.emplace_back(glm::vec3(-.25f, .25, -1.0)); //UL
-		
-		//bottom of cube
-		dat.m_positions.emplace_back(glm::vec3(-.25f, -.25, -.5)); //LL2
-		dat.m_positions.emplace_back(glm::vec3(.25f, -.25, -.5)); //LR2
-		dat.m_positions.emplace_back(glm::vec3(.25f, .25, -.5)); //UR2
-		dat.m_positions.emplace_back(glm::vec3(-.25f, -.25, -.5)); //LL2
-		dat.m_positions.emplace_back(glm::vec3(.25f, .25, -0.5)); //UR2
-		dat.m_positions.emplace_back(glm::vec3(-.25f, .25, -.5)); //UL2
-
-	    //side of cube
-		dat.m_positions.emplace_back(glm::vec3(-.25f, -.25, -.5)); //LL2
-		dat.m_positions.emplace_back(glm::vec3(.25f, -.25, -.5)); //LR2
-		dat.m_positions.emplace_back(glm::vec3(.25f, -.25, -1.0)); //LR
-		dat.m_positions.emplace_back(glm::vec3(-.25f, -.25, -.5)); //LL2
-		dat.m_positions.emplace_back(glm::vec3(.25f, -.25, -1.0)); //LR
-		dat.m_positions.emplace_back(glm::vec3(-.25f, -.25, -1.0)); //LL
-
-		//side of cube
-		dat.m_positions.emplace_back(glm::vec3(.25f, -.25, -.5)); //LR2
-		dat.m_positions.emplace_back(glm::vec3(.25f, .25, -0.5)); //UR2
-		dat.m_positions.emplace_back(glm::vec3(.25f, .25, -1.0)); //UR
-		dat.m_positions.emplace_back(glm::vec3(.25f, -.25, -.5)); //LR2
-		dat.m_positions.emplace_back(glm::vec3(.25f, .25, -1.0)); //UR
-		dat.m_positions.emplace_back(glm::vec3(.25f, -.25, -1.0)); //LR
-
-		// side of cube
-		dat.m_positions.emplace_back(glm::vec3(-.25f, .25, -.5)); //UL2
-		dat.m_positions.emplace_back(glm::vec3(.25f, .25, -0.5)); //UR2
-		dat.m_positions.emplace_back(glm::vec3(.25f, .25, -1.0)); //UR
-		dat.m_positions.emplace_back(glm::vec3(-.25f, .25, -.5)); //UL2
-		dat.m_positions.emplace_back(glm::vec3(.25f, .25, -1.0)); //UR
-		dat.m_positions.emplace_back(glm::vec3(-.25f, .25, -1.0)); //UL
-
-		// side of cube
-		dat.m_positions.emplace_back(glm::vec3(-.25f, -.25, -.5)); //LL2
-		dat.m_positions.emplace_back(glm::vec3(-.25f, .25, -.5)); //UL2
-		dat.m_positions.emplace_back(glm::vec3(-.25f, .25, -1.0)); //UL
-		dat.m_positions.emplace_back(glm::vec3(-.25f, -.25, -.5)); //LL2
-		dat.m_positions.emplace_back(glm::vec3(-.25f, .25, -1.0)); //UL
-		dat.m_positions.emplace_back(glm::vec3(-.25f, -.25, -1.0)); //LL
-
-		// texcoords top
-		dat.m_texCoords.emplace_back(0, 0); //LL
-		dat.m_texCoords.emplace_back(1, 0); //LR
-		dat.m_texCoords.emplace_back(1, 1); //UR
-		dat.m_texCoords.emplace_back(0, 0); //LL
-		dat.m_texCoords.emplace_back(1, 1); //UR
-		dat.m_texCoords.emplace_back(0, 1); //UL
-
-		//texcoords bottom
-		dat.m_texCoords.emplace_back(0, 0); //LL
-		dat.m_texCoords.emplace_back(1, 0); //LR
-		dat.m_texCoords.emplace_back(1, 1); //UR
-		dat.m_texCoords.emplace_back(0, 0); //LL
-		dat.m_texCoords.emplace_back(1, 1); //UR
-		dat.m_texCoords.emplace_back(0, 1); //UL
-		
-		//side of cube
-		dat.m_texCoords.emplace_back(0,0); 
-		dat.m_texCoords.emplace_back(1,0);
-		dat.m_texCoords.emplace_back(1,1); 
-		dat.m_texCoords.emplace_back(0,0); 
-		dat.m_texCoords.emplace_back(1,1); 
-		dat.m_texCoords.emplace_back(0,1); 
-
-		//side of cube
-		dat.m_texCoords.emplace_back(0, 0);
-		dat.m_texCoords.emplace_back(1, 0); 
-		dat.m_texCoords.emplace_back(1, 1); 
-		dat.m_texCoords.emplace_back(0, 0); 
-		dat.m_texCoords.emplace_back(1, 1); 
-		dat.m_texCoords.emplace_back(0, 1); 
-
-		// side of cube
-		dat.m_texCoords.emplace_back(0, 0); 
-		dat.m_texCoords.emplace_back(1, 0);
-		dat.m_texCoords.emplace_back(1, 1); 
-		dat.m_texCoords.emplace_back(0, 0); 
-		dat.m_texCoords.emplace_back(1, 1); 
-		dat.m_texCoords.emplace_back(0, 1); 
-		
-	    // side of cube
-		dat.m_texCoords.emplace_back(0, 0);
-		dat.m_texCoords.emplace_back(1, 0); 
-		dat.m_texCoords.emplace_back(1, 1);
-		dat.m_texCoords.emplace_back(0, 0);
-		dat.m_texCoords.emplace_back(1, 1);
-		dat.m_texCoords.emplace_back(0, 1);
-
-		dat.m_normals.resize(dat.m_positions.size());
-		for (int aa = 0; aa < dat.m_normals.size(); aa++)
-		{
-			dat.m_normals[aa] = glm::vec3(0, 0, -1);
-		}
+		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
+		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
+		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
+		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
+		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
+		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
+		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
+		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
+		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
+		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
+		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
+		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
 		return true;
 	}
 	else if(str == "res\\flattile.robj")
@@ -345,12 +233,12 @@ bool GetPrefabModel(const std::string &str, IndexedModel &dat)
 		dat.m_texCoords.emplace_back(1, 1); //UR
 		dat.m_texCoords.emplace_back(0, 1); //UL
 		
-		dat.m_normals.emplace_back(glm::vec3(0, 0, -1));
-		dat.m_normals.emplace_back(glm::vec3(0, 0, -1));
-		dat.m_normals.emplace_back(glm::vec3(0, 0, -1));
-		dat.m_normals.emplace_back(glm::vec3(0, 0, -1));
-		dat.m_normals.emplace_back(glm::vec3(0, 0, -1));
-		dat.m_normals.emplace_back(glm::vec3(0, 0, -1));
+		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
+		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
+		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
+		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
+		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
+		dat.m_normals.emplace_back(glm::vec3(0, 0, 1));
 		return true;
 	}
 	return false;

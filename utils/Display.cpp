@@ -52,8 +52,8 @@ Display::Display(int width, int height, const std::string& title)
    glfwSwapInterval(1);
    glEnable(GL_LIGHTING);
    glEnable(GL_LIGHT0);    /* Uses default lighting parameters */
-   glDepthFunc(GL_LESS); // depth-testing interprets a smaller value as "closer"
-   glEnable(GL_DEPTH_TEST);
+   glDepthFunc(GL_LEQUAL);
+   //glEnable(GL_DEPTH_TEST);
    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
 
    

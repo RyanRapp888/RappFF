@@ -32,27 +32,10 @@ void TiledGameBoard::SetTileDetails(int xtiles, int ytiles)
 			map_ptr->GetTileType(xx, yy, cur);
 			curtile->SetTileType(cur);
 			curtile->SetRelativeLocation(xx * (1.0 / m_xtiles), yy * (1.0 / m_ytiles), 1.0 / m_xtiles, 1.0 / m_ytiles);
+			//curtile->SetRelativeLocation(xx * (1.0 / m_xtiles), yy * (1.0 / m_ytiles), 1.0 / m_xtiles, -.01);
 		}
 	}
 
-	/*
-	if (m_drawable_mainchar != nullptr)
-	{
-		delete m_drawable_mainchar;
-		m_drawable_mainchar = nullptr;
-	}
-	*/
-	/*
-	m_drawable_mainchar = new Tile();
-	m_drawable_mainchar->SetTileType(TileType::MAINCHAR);
-	Character *mainchar = map_ptr->GetMainCharPtr();
-	if (mainchar == nullptr) return;
-	Tile *mainchar_cur_placement = &(m_tiles[GetTileIdx(mainchar->GetX(), mainchar->GetY())]);
-	double ox, oy, w, h;
-	mainchar_cur_placement->GetRelativeLocation(ox, oy, w, h);
-	m_drawable_mainchar->SetRelativeLocation(ox, oy, w, h);
-	AddObject(m_drawable_mainchar);
-	*/
 }
 
 void TiledGameBoard::Refresh()
@@ -110,7 +93,7 @@ void TiledGameBoard::Refresh()
 					translations[0] =
 					glm::translate(glm::mat4(1.0), 
 						glm::vec3(cur_close_mesh.GetXDrawPos_N11(), 
-							      cur_close_mesh.GetYDrawPos_N11(), 0));					//cur->Render();
+							      cur_close_mesh.GetYDrawPos_N11(), 0));					
 					cur_close_mesh.SetUpInstancing(1, m_scale_vec, translations);
 					delete[] translations;
 					cur_close_mesh.Render();
@@ -133,11 +116,11 @@ void TiledGameBoard::Refresh()
 	translations[0] =
 		glm::translate(glm::mat4(1.0),
 			glm::vec3(main_char_mesh.GetXDrawPos_N11(),
-				      main_char_mesh.GetYDrawPos_N11(), 0));					//cur->Render();
+				      main_char_mesh.GetYDrawPos_N11(), 0));	
 	main_char_mesh.SetUpInstancing(1, m_scale_vec, translations);
-	delete[] translations;
 	main_char_mesh.Render();
-
+	delete[] translations;
+	
 	std::map<TileType, std::vector< int > >::iterator it1;
 	for (it1 = ids_per_tiletype.begin(); it1 != ids_per_tiletype.end(); it1++)
 	{
@@ -162,14 +145,6 @@ int TiledGameBoard::GetTileIdx(int xpos, int ypos)
 {
 	return (xpos + (ypos * m_xtiles));
 }
-
-
-
-
-
-
-
-
 
 void TiledGameBoard::Print()
 {
