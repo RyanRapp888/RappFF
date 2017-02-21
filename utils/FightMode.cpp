@@ -1,6 +1,8 @@
-#include "FightScreen.h"
+#include "FightMode.h"
+#include <glad.h>
+#include <GLFW/glfw3.h>
 
-FightScreen::FightScreen(Viewport *vpt, double origxpct, double origypct, double w_pct, double h_pct) :
+FightMode::FightMode(Viewport *vpt, double origxpct, double origypct, double w_pct, double h_pct) :
 	WindowSection(vpt, origxpct, origypct, w_pct, h_pct)
 {
 	Tile *bltile = &(m_five_window_parts[0]);
@@ -29,11 +31,10 @@ FightScreen::FightScreen(Viewport *vpt, double origxpct, double origypct, double
 	frtile->SetRelativeLocation(.78, 0, .214, 1);
 	
 	m_enable = false;
-	
+	m_fight_ended = false;
 }
-	
 
-void FightScreen::Refresh()
+void FightMode::Refresh()
 {
 	if (!m_enable) return;
 		
@@ -58,6 +59,15 @@ void FightScreen::Refresh()
 		cur->Render();
 		delete[] translations;
 	}
-
 	WindowSection::Refresh();
+}
+
+bool FightMode::HandleKey(int key, int scancode, int action, int mods)
+{
+	
+	if (action == GLFW_PRESS && key == GLFW_KEY_E)
+	{
+		m_fight_ended = true;
+	}
+	return true;
 }

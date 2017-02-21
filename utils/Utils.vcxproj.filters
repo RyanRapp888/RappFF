@@ -60,7 +60,7 @@
     <ClCompile Include="WindowSection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FightScreen.cpp">
+    <ClCompile Include="FightMode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -131,7 +131,7 @@
     <ClInclude Include="..\include\utils\TileType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\utils\FightScreen.h">
+    <ClInclude Include="..\include\utils\FightMode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

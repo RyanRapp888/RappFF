@@ -30,7 +30,7 @@
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="Display.cpp" />
     <ClCompile Include="DrawableObj.cpp" />
-    <ClCompile Include="FightScreen.cpp" />
+    <ClCompile Include="FightMode.cpp" />
     <ClCompile Include="GameMap.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="Mesh.cpp" />
@@ -50,7 +50,7 @@
     <ClInclude Include="..\include\utils\CharMotion.h" />
     <ClInclude Include="..\include\utils\Display.h" />
     <ClInclude Include="..\include\utils\DrawableObj.h" />
-    <ClInclude Include="..\include\utils\FightScreen.h" />
+    <ClInclude Include="..\include\utils\FightMode.h" />
     <ClInclude Include="..\include\utils\GameMap.h" />
     <ClInclude Include="..\include\utils\linmath.h" />
     <ClInclude Include="..\include\utils\Math3d.h" />

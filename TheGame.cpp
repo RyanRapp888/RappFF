@@ -2,7 +2,7 @@
 #include <glad.h>
 #include "TheGame.h"
 #include "TiledGameBoard.h"
-#include "FightScreen.h"
+#include "FightMode.h"
 #include "Shader.h"
 #include "Camera.h"
 
@@ -18,15 +18,44 @@ int get_rand()
 	return result;
 }
 
+void TheGame::SetCurMode(GameMode dat)
+{
+	if (dat == GameMode::FightMode)
+	{
+		m_mapwalkingmode_ws->Disable();
+		m_fightmode_ws->StartFight();
+		m_fightmode_ws->Enable();
+	}
+	else if(dat == GameMode::FightMode)
+	{
+		m_fightmode_ws->Disable();
+		m_mapwalkingmode_ws->Enable();
+	}
+	m_cur_mode = dat;
+}
+
 void TheGame::KeyHandler(int key, int scancode, int action, int mods)
 {
-	if (action == GLFW_PRESS)
+	if (m_cur_mode == GameMode::FightMode)
 	{
-		int xx = m_mainchar.GetX();
-		int yy = m_mainchar.GetY();
-		bool took_step(false);
-		switch (key)
+		if (m_fightmode_ws != nullptr)
 		{
+			m_fightmode_ws->HandleKey(key, scancode, action, mods);
+			if (m_fightmode_ws->FightEnded())
+			{
+				SetCurMode(GameMode::MapWalkingMode);
+			}
+		}
+	}
+	else if(m_cur_mode == GameMode::MapWalkingMode)
+	{
+		if (action == GLFW_PRESS)
+		{
+			int xx = m_mainchar.GetX();
+			int yy = m_mainchar.GetY();
+			bool took_step(false);
+			switch (key)
+			{
 			case(GLFW_KEY_W):
 			case(GLFW_KEY_UP):
 				yy++;
@@ -48,32 +77,35 @@ void TheGame::KeyHandler(int key, int scancode, int action, int mods)
 				took_step = true;
 				break;
 			case(GLFW_KEY_X):
-				m_xrot-=5;
+				m_xrot -= 5;
 				break;
 			case(GLFW_KEY_Y):
-				m_yrot-=5;
+				m_yrot -= 5;
 				break;
 			case(GLFW_KEY_Z):
-				m_zrot-=5;
+				m_zrot -= 5;
 			case(GLFW_KEY_ENTER):
 				Interact(m_mainchar.GetX(), m_mainchar.GetY());
 			default:
 				break;
-		}
-		
-		if (took_step)
-		{
-			m_mainchar.SetLocation(xx, yy);
-			GameMap *gamemap_ptr = GameMap::GetInstance();
-			int randy = get_rand();
-			int monster_odds = gamemap_ptr->GetMonsterOdds(xx,yy);
-			if (randy <= monster_odds)
-			{
-				std::cout << "FIGHTY MODE!!!" << std::endl;
-				m_fightymode = true;
 			}
-			std::cout << randy << " out of " << monster_odds << std::endl;
-			std::cout << "(" << xx << "," << yy << ")" << std::endl;
+
+			if (took_step)
+			{
+				if (m_mainchar.SetLocation(xx, yy))
+				{
+					GameMap *gamemap_ptr = GameMap::GetInstance();
+					int randy = get_rand();
+					int monster_odds = gamemap_ptr->GetMonsterOdds(xx, yy);
+					if (randy <= monster_odds)
+					{
+						std::cout << "FIGHTY MODE!!!" << std::endl;
+						SetCurMode(GameMode::FightMode);
+					}
+					std::cout << randy << " out of " << monster_odds << std::endl;
+					std::cout << "(" << xx << "," << yy << ")" << std::endl;
+				}
+			}
 		}
 		
 	}
@@ -96,14 +128,14 @@ void TheGame::Play()
 	m_mainchar.SetLocation(128, 05);
 	gamemap_ptr->AttachMainCharacter(&m_mainchar);
 	
-	TiledGameBoard *tiled_ws = new TiledGameBoard(m_display_ptr, .01, .01, .98, .98);
+	m_mapwalkingmode_ws = new TiledGameBoard(m_display_ptr, .01, .01, .98, .98);
 	Shader basicShader("res\\basicShader");
 	basicShader.Bind();
-	tiled_ws->SetTileDetails(28, 16);
-	m_display_ptr->AddWindowSection(tiled_ws);
+	m_mapwalkingmode_ws->SetTileDetails(28, 16);
+	m_display_ptr->AddWindowSection(m_mapwalkingmode_ws);
 		
-	FightScreen *fightscreen_ws = new FightScreen(m_display_ptr, 0, 0, 1, 1);
-	m_display_ptr->AddWindowSection(fightscreen_ws);
+	m_fightmode_ws = new FightMode(m_display_ptr, 0, 0, 1, 1);
+	m_display_ptr->AddWindowSection(m_fightmode_ws);
 	
 	std::vector<Character> otherchars;
 	otherchars.resize(5);
@@ -147,18 +179,19 @@ void TheGame::Play()
 		maintransform.GetRot()->y = m_yrot;
 		maintransform.GetRot()->z = m_zrot;
 		
-		if (m_fightymode)
+		if (m_cur_mode == GameMode::FightMode)
 		{
+			m_display_ptr->Clear(1, 1, 1, 1);
 			maintransform.GetRot()->x = 0;
 			maintransform.GetRot()->y = 0;
 			maintransform.GetRot()->z = 0;
-			tiled_ws->Disable();
-			fightscreen_ws->Enable();
+			m_mapwalkingmode_ws->Disable();
+			m_fightmode_ws->Enable();
 		}
-		else
+		else if(m_cur_mode == GameMode::MapWalkingMode)
 		{
-			fightscreen_ws->Disable();
-			tiled_ws->Enable();
+			m_fightmode_ws->Disable();
+			m_mapwalkingmode_ws->Enable();
 		}
 		
 		basicShader.Update(maintransform, maincamera);

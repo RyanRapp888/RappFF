@@ -49,7 +49,7 @@ static std::map<TileType, std::string> tiletype_to_texture
 	{ TileType::ROOF, "res\\roof.png" },
 	{ TileType::WATER, "res\\Water.png" },
 	{ TileType::WOOD, "res\\Wood.png" },
-	{ TileType::FRAME, "res\\frame.jpg"}
+	{ TileType::FRAME, "res\\framewhite.jpg"}
 };
 
 std::string GetMeshFilename(TileType tt)
