@@ -27,8 +27,9 @@ enum class TileType
 	ROOF = 18,
 	WATER = 19,
 	WOOD = 20,
-	NTILETYPES = 21,
-	UNDEF = 22
+	FRAME = 21,
+	NTILETYPES = 22,
+	UNDEF = 23
 };
 
 

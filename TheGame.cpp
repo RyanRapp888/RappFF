@@ -81,7 +81,7 @@ void TheGame::KeyHandler(int key, int scancode, int action, int mods)
 
 void TheGame::Play()
 {
-	m_display_ptr = new Display(800, 600, "Cupcake");
+	m_display_ptr = new Display(800, 450, "Cupcake");
 	if (m_display_ptr == nullptr) return;
 	
 	GameMap *gamemap_ptr = GameMap::GetInstance();
@@ -99,10 +99,10 @@ void TheGame::Play()
 	TiledGameBoard *tiled_ws = new TiledGameBoard(m_display_ptr, .01, .01, .98, .98);
 	Shader basicShader("res\\basicShader");
 	basicShader.Bind();
-	tiled_ws->SetTileDetails(20, 20);
+	tiled_ws->SetTileDetails(28, 16);
 	m_display_ptr->AddWindowSection(tiled_ws);
 		
-	FightScreen *fightscreen_ws = new FightScreen(m_display_ptr, .01, .01, .98, .98);
+	FightScreen *fightscreen_ws = new FightScreen(m_display_ptr, 0, 0, 1, 1);
 	m_display_ptr->AddWindowSection(fightscreen_ws);
 	
 	std::vector<Character> otherchars;
@@ -129,8 +129,8 @@ void TheGame::Play()
 	}
 	
 	Transform maintransform;
-	Camera maincamera(glm::vec3(0, 0, 1.5), 90.0f, 800 / 600, 0.1f, 100.0f);
-	m_xrot = 0;
+	Camera maincamera(glm::vec3(0, 0, 1.1), 90.0f, 800 / 600, 0.1f, 100.0f);
+	m_xrot = -40;
 	m_yrot = 0;
 	m_zrot = 0;
 	RGB background(0,0,0);
@@ -159,7 +159,6 @@ void TheGame::Play()
 		{
 			fightscreen_ws->Disable();
 			tiled_ws->Enable();
-
 		}
 		
 		basicShader.Update(maintransform, maincamera);
