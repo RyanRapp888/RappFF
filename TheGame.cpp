@@ -4,7 +4,9 @@
 #include "TiledGameBoard.h"
 #include "FightMode.h"
 #include "Shader.h"
+#include "SkyboxShader.h"
 #include "Camera.h"
+#include "StbImage.h"
 
 int get_rand()
 {
@@ -111,6 +113,61 @@ void TheGame::KeyHandler(int key, int scancode, int action, int mods)
 	}
 }
 
+
+bool SetUpSkybox(GLuint &cube_vao, GLuint &cube_text_id)
+{
+	glGenTextures(1, &cube_text_id);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, cube_text_id);
+	int width, height, numComponents;
+	unsigned char* image;
+	std::vector<std::string> box_img_names = 
+	{ 
+		"res\\right.jpg",
+		"res\\left.jpg",
+		"res\\top.jpg", 
+		"res\\bottom.jpg", 
+		"res\\back.jpg",
+		"res\\front.jpg"		
+	};
+	
+	for (GLuint ii = 0; ii < box_img_names.size(); ii++)
+	{
+		int width, height, numComponents;
+		image = stbi_load((box_img_names[ii]).c_str(), &width, &height, &numComponents, 3);
+
+		if (image == NULL)
+		{
+			std::cerr << "Unable to load texture: " << box_img_names[ii] << std::endl;
+			return false;
+		}
+		
+		glTexImage2D( GL_TEXTURE_CUBE_MAP_POSITIVE_X + ii, 0, GL_RGB, width,
+			          height, 0, GL_RGB, GL_UNSIGNED_BYTE, image );
+	}
+
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+
+	IndexedModel model;
+	model = OBJModel("res\\skybox.robj").ToIndexedModel();
+	
+	GLuint skyboxVBO;
+	glGenVertexArrays(1, &cube_vao);
+	glGenBuffers(1, &skyboxVBO);
+	glBindVertexArray(cube_vao);
+	glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(model.m_positions[0]) * model.m_positions.size(),
+		&(model.m_positions[0]), GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+	glBindVertexArray(0);
+	return true;
+}
+
 void TheGame::Play()
 {
 	m_display_ptr = new Display(800, 450, "Cupcake");
@@ -130,6 +187,7 @@ void TheGame::Play()
 	
 	m_mapwalkingmode_ws = new TiledGameBoard(m_display_ptr, .01, .01, .98, .98);
 	Shader basicShader("res\\basicShader");
+	SkyboxShader skyboxShader("res\\skyboxshader");
 	basicShader.Bind();
 	m_mapwalkingmode_ws->SetTileDetails(28, 16);
 	m_display_ptr->AddWindowSection(m_mapwalkingmode_ws);
@@ -165,7 +223,16 @@ void TheGame::Play()
 	m_xrot = -40;
 	m_yrot = 0;
 	m_zrot = 0;
-	RGB background(0,0,0);
+	RGB background(255,255,255);
+
+	GLuint skybox_VAO;
+	GLuint skybox_texture;
+	if (!SetUpSkybox(skybox_VAO, skybox_texture))
+	{
+		std::cout << "Skybox failure" << std::endl;
+		return;
+	}
+
 
 	while (!m_display_ptr->WindowShouldClose())
 	{
@@ -174,6 +241,18 @@ void TheGame::Play()
 			background.GetGreen()/255.0,
 			background.GetBlue()/255.0,
 			1);
+		
+		glDepthMask(GL_FALSE);
+		skyboxShader.Bind();
+		skyboxShader.Update(maintransform, maincamera);
+		
+		glBindVertexArray(skybox_VAO);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, skybox_texture);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glBindVertexArray(0);
+		glDepthMask(GL_TRUE);
+		skyboxShader.Detach();
+		basicShader.Bind();
 
 		maintransform.GetRot()->x = m_xrot;
 		maintransform.GetRot()->y = m_yrot;
