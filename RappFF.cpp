@@ -22,9 +22,10 @@ int main(void)
 {
 	SetKeyCallbackFunc(KeyCallback);
 	glfwSetErrorCallback(error_callback);
-
+	
 	if (!glfwInit())
 	{
+		std::cout << "Error initializing glfw";
 		exit(EXIT_FAILURE);
 	}
 

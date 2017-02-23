@@ -16,7 +16,8 @@ enum class GameMode
 class TheGame
 {
 public:
-	TheGame() :m_display_ptr(nullptr), m_cur_mode(GameMode::MapWalkingMode),m_mapwalkingmode_ws(nullptr),m_fightmode_ws(nullptr) {}
+	TheGame(): m_display_ptr(nullptr), m_cur_mode(GameMode::MapWalkingMode),
+		       m_mapwalkingmode_ws(nullptr), m_fightmode_ws(nullptr) {}
 	void KeyHandler(int key, int scancode, int action, int mods);
 	void Play();
 	~TheGame()

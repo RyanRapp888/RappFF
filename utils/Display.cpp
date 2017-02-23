@@ -38,7 +38,7 @@ static void WindowCloseCallback(GLFWwindow *window)
    glfwSetWindowShouldClose(window, GLFW_TRUE);
 }
 
-Display::Display(int width, int height, const std::string& title)
+Display::Display(int width, int height, const std::string& title) :Viewport()
 {
    cd_width = width;
    cd_height = height; 
@@ -55,7 +55,7 @@ Display::Display(int width, int height, const std::string& title)
    glDepthFunc(GL_LEQUAL);
    glEnable(GL_DEPTH_TEST);
    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
-
+   SetWindowSize(width, height);
    
 }
 

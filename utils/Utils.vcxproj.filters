@@ -66,6 +66,12 @@
     <ClCompile Include="SkyboxShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Text.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FontShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\utils\Camera.h">
@@ -140,6 +146,12 @@
     <ClInclude Include="..\include\utils\SkyboxShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\utils\FontShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\utils\Text.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\res\map.csv">
@@ -167,6 +179,12 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="..\res\skybox.robj">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\res\fontshader.fs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\res\fontshader.vs">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

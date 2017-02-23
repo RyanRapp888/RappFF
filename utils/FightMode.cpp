@@ -59,6 +59,7 @@ void FightMode::Refresh()
 		cur->Render();
 		delete[] translations;
 	}
+
 	WindowSection::Refresh();
 }
 

@@ -5,8 +5,10 @@
 #include "FightMode.h"
 #include "Shader.h"
 #include "SkyboxShader.h"
+#include "FontShader.h"
 #include "Camera.h"
 #include "StbImage.h"
+#include "Text.h"
 
 int get_rand()
 {
@@ -188,6 +190,12 @@ void TheGame::Play()
 	m_mapwalkingmode_ws = new TiledGameBoard(m_display_ptr, .01, .01, .98, .98);
 	Shader basicShader("res\\basicShader");
 	SkyboxShader skyboxShader("res\\skyboxshader");
+	FontShader fontShader("res\\fontShader");
+
+
+	Text testtext(m_display_ptr->GetWinWidth(), m_display_ptr->GetWinHeight());
+	testtext.Init(fontShader.GetProgramId(), 20);
+	
 	basicShader.Bind();
 	m_mapwalkingmode_ws->SetTileDetails(28, 16);
 	m_display_ptr->AddWindowSection(m_mapwalkingmode_ws);
@@ -252,6 +260,10 @@ void TheGame::Play()
 		glBindVertexArray(0);
 		glDepthMask(GL_TRUE);
 		skyboxShader.Detach();
+
+		fontShader.Bind();
+		testtext.Render("Your mother is a whore", .5f, .5f, TextAlignType::CENTER);
+
 		basicShader.Bind();
 
 		maintransform.GetRot()->x = m_xrot;

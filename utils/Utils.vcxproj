@@ -15,6 +15,7 @@
     <ClCompile Include="Display.cpp" />
     <ClCompile Include="DrawableObj.cpp" />
     <ClCompile Include="FightMode.cpp" />
+    <ClCompile Include="FontShader.cpp" />
     <ClCompile Include="GameMap.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="Mesh.cpp" />
@@ -23,6 +24,7 @@
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SkyboxShader.cpp" />
     <ClCompile Include="StbImage.c" />
+    <ClCompile Include="Text.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="TiledGameBoard.cpp" />
@@ -36,6 +38,7 @@
     <ClInclude Include="..\include\utils\Display.h" />
     <ClInclude Include="..\include\utils\DrawableObj.h" />
     <ClInclude Include="..\include\utils\FightMode.h" />
+    <ClInclude Include="..\include\utils\FontShader.h" />
     <ClInclude Include="..\include\utils\GameMap.h" />
     <ClInclude Include="..\include\utils\linmath.h" />
     <ClInclude Include="..\include\utils\Math3d.h" />
@@ -46,6 +49,7 @@
     <ClInclude Include="..\include\utils\Shader.h" />
     <ClInclude Include="..\include\utils\SkyboxShader.h" />
     <ClInclude Include="..\include\utils\StbImage.h" />
+    <ClInclude Include="..\include\utils\Text.h" />
     <ClInclude Include="..\include\utils\Texture.h" />
     <ClInclude Include="..\include\utils\Tile.h" />
     <ClInclude Include="..\include\utils\TiledGameBoard.h" />
@@ -60,6 +64,8 @@
     <None Include="..\res\basicShader.vs" />
     <None Include="..\res\cube.robj" />
     <None Include="..\res\flattile.robj" />
+    <None Include="..\res\fontshader.fs" />
+    <None Include="..\res\fontshader.vs" />
     <None Include="..\res\map.csv" />
     <None Include="..\res\mtnshape.robj" />
     <None Include="..\res\skybox.robj" />
