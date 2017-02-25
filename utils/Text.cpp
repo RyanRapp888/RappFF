@@ -58,14 +58,16 @@ void Text::Render(std::string text, float x, float y, TextAlignType align)
 	
 	for (const auto curchar : text)
 	{ 
-		GlyphData curglyph = GetGlyph(curchar); 
+		GlyphData curglyph;
+		GetGlyph(curchar,curglyph);
 		totalWidth += (curglyph.advance.x >> 6) * screenx; // add the horizontal advance value to the totalWidth
 	}
 
 	index = 0;
 	for (const auto curchar2 : text)
 	{ 
-		GlyphData curglyph(GetGlyph(curchar2));
+		GlyphData curglyph;
+		GetGlyph(curchar2,curglyph);
 		
 		glActiveTexture(GL_TEXTURE0);
 		glGenTextures(1, &m_textureid);
@@ -113,40 +115,34 @@ void Text::Render(std::string text, float x, float y, TextAlignType align)
 	glDisable(GL_BLEND);
 }
 
-GlyphData Text::GetGlyph(char c) 
+bool Text::GetGlyph(char c, GlyphData &returned_glyph) 
 {
 	GlyphData result;
-	vector<GlyphData>::iterator glyphIter = m_glyphs.begin();
-	while (glyphIter != m_glyphs.end()) 
+	auto iter = m_glyphlookup.find(c);
+	if(iter != m_glyphlookup.end()) 
 	{
-		if (glyphIter->c == c && glyphIter->size == m_currentSize)
-		{
-			result = *glyphIter;
-			return result;
-		}
-		glyphIter++;
+		returned_glyph = iter->second;
+		return true;
 	}
-
+	
 	if (FT_Load_Char(m_face, c, FT_LOAD_RENDER))
 	{
 		printf("Freetype is unable to load char: %c\n", c);
 	}
 
-	GlyphData gd; 
 	m_glyphslot = m_face->glyph;
-	gd.bitmap_buffer = new unsigned char[m_glyphslot->bitmap.rows * m_glyphslot->bitmap.width * 4];
-	memcpy(gd.bitmap_buffer, m_glyphslot->bitmap.buffer, 
+	returned_glyph.bitmap_buffer = new unsigned char[m_glyphslot->bitmap.rows * m_glyphslot->bitmap.width * 4];
+	memcpy(returned_glyph.bitmap_buffer, m_glyphslot->bitmap.buffer,
 		   m_glyphslot->bitmap.rows * m_glyphslot->bitmap.width * 4);
 
-	gd.bitmap_width = m_glyphslot->bitmap.width;
-	gd.bitmap_rows = m_glyphslot->bitmap.rows;
-	gd.bitmap_left = m_glyphslot->bitmap_left;
-	gd.bitmap_top = m_glyphslot->bitmap_top;
-	gd.advance = m_glyphslot->advance;
-	gd.c = c;
-	gd.size = m_currentSize;
-	result = gd;
-	m_glyphs.emplace_back(gd);
+	returned_glyph.bitmap_width = m_glyphslot->bitmap.width;
+	returned_glyph.bitmap_rows = m_glyphslot->bitmap.rows;
+	returned_glyph.bitmap_left = m_glyphslot->bitmap_left;
+	returned_glyph.bitmap_top = m_glyphslot->bitmap_top;
+	returned_glyph.advance = m_glyphslot->advance;
+	returned_glyph.c = c;
+	returned_glyph.size = m_currentSize;
+	m_glyphlookup[c] = returned_glyph;
 }
 
 void Text::FontOpt(int opt, int value) 

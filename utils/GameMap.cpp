@@ -32,7 +32,7 @@ int GameMap::GetMonsterOdds(int x, int y)
 	}
 	else
 	{
-		return 25;
+		return 10;
 	}
 	return 0;
 }

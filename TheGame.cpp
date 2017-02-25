@@ -57,6 +57,8 @@ void TheGame::KeyHandler(int key, int scancode, int action, int mods)
 		{
 			int xx = m_mainchar.GetX();
 			int yy = m_mainchar.GetY();
+			int dir(1);
+			if (mods == GLFW_MOD_SHIFT) dir *= -1;
 			bool took_step(false);
 			switch (key)
 			{
@@ -81,13 +83,13 @@ void TheGame::KeyHandler(int key, int scancode, int action, int mods)
 				took_step = true;
 				break;
 			case(GLFW_KEY_X):
-				m_xrot -= 5;
+				m_xrot -= dir * 5;
 				break;
 			case(GLFW_KEY_Y):
-				m_yrot -= 5;
+				m_yrot -= dir * 5;
 				break;
 			case(GLFW_KEY_Z):
-				m_zrot -= 5;
+				m_zrot -= dir * 5;
 			case(GLFW_KEY_ENTER):
 				Interact(m_mainchar.GetX(), m_mainchar.GetY());
 			default:
@@ -114,7 +116,6 @@ void TheGame::KeyHandler(int key, int scancode, int action, int mods)
 		
 	}
 }
-
 
 bool SetUpSkybox(GLuint &cube_vao, GLuint &cube_text_id)
 {
@@ -172,7 +173,12 @@ bool SetUpSkybox(GLuint &cube_vao, GLuint &cube_text_id)
 
 void TheGame::Play()
 {
-	m_display_ptr = new Display(800, 450, "Cupcake");
+	int initial_ww(1600);
+	int initial_wh(900);
+	m_display_ptr = new Display(initial_ww, initial_wh, "Wheat Ridge");
+	Transform maintransform;
+	float aspect(initial_ww / static_cast<double>(initial_wh));
+	Camera maincamera(glm::vec3(0, 0, 1.2), 80.0f, aspect, 0.1f, 100.0f);
 	if (m_display_ptr == nullptr) return;
 	
 	GameMap *gamemap_ptr = GameMap::GetInstance();
@@ -197,10 +203,13 @@ void TheGame::Play()
 	testtext.Init(fontShader.GetProgramId(), 20);
 	
 	basicShader.Bind();
-	m_mapwalkingmode_ws->SetTileDetails(28, 16);
+	//m_mapwalkingmode_ws->SetTileDetails(28, 16);
+	m_mapwalkingmode_ws->SetTileDetails(50, 25);
 	m_display_ptr->AddWindowSection(m_mapwalkingmode_ws);
 		
 	m_fightmode_ws = new FightMode(m_display_ptr, 0, 0, 1, 1);
+	m_fightmode_ws->SetPrimaryShader(basicShader.GetProgramId());
+	m_fightmode_ws->SetTextHandler(&testtext);
 	m_display_ptr->AddWindowSection(m_fightmode_ws);
 	
 	std::vector<Character> otherchars;
@@ -225,9 +234,7 @@ void TheGame::Play()
 	{
 		gamemap_ptr->AttachCharacter(&(otherchars[bb]));
 	}
-	
-	Transform maintransform;
-	Camera maincamera(glm::vec3(0, 0, 1.1), 90.0f, 800 / 600, 0.1f, 100.0f);
+		
 	m_xrot = -40;
 	m_yrot = 0;
 	m_zrot = 0;
@@ -241,7 +248,6 @@ void TheGame::Play()
 		return;
 	}
 
-
 	while (!m_display_ptr->WindowShouldClose())
 	{
 		m_display_ptr->Clear(
@@ -250,20 +256,6 @@ void TheGame::Play()
 			background.GetBlue()/255.0,
 			1);
 		
-		glDepthMask(GL_FALSE);
-		skyboxShader.Bind();
-		skyboxShader.Update(maintransform, maincamera);
-		
-		glBindVertexArray(skybox_VAO);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, skybox_texture);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-		glBindVertexArray(0);
-		glDepthMask(GL_TRUE);
-		skyboxShader.Detach();
-
-		fontShader.Bind();
-		testtext.Render("Your mother is a whore", .5f, .5f, TextAlignType::CENTER);
-
 		basicShader.Bind();
 
 		maintransform.GetRot()->x = m_xrot;
@@ -272,7 +264,6 @@ void TheGame::Play()
 		
 		if (m_cur_mode == GameMode::FightMode)
 		{
-			m_display_ptr->Clear(1, 1, 1, 1);
 			maintransform.GetRot()->x = 0;
 			maintransform.GetRot()->y = 0;
 			maintransform.GetRot()->z = 0;
@@ -281,6 +272,17 @@ void TheGame::Play()
 		}
 		else if(m_cur_mode == GameMode::MapWalkingMode)
 		{
+
+			glDepthMask(GL_FALSE);
+			skyboxShader.Bind();
+			skyboxShader.Update(maintransform, maincamera);
+			glBindVertexArray(skybox_VAO);
+			glBindTexture(GL_TEXTURE_CUBE_MAP, skybox_texture);
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+			glBindVertexArray(0);
+			glDepthMask(GL_TRUE);
+			skyboxShader.Detach();
+			basicShader.Bind();
 			m_fightmode_ws->Disable();
 			m_mapwalkingmode_ws->Enable();
 		}
