@@ -49,13 +49,45 @@ void Shader::Detach()
 	glUseProgram(0);
 }
 
+void Shader::Ortho(const Transform& transform)
+{
+	glm::mat4 mvp(1);
+	glm::mat4 normal(transform.GetModel());
+	
+	glUniformMatrix4fv(m_uniformids[0], 1, GL_FALSE, &mvp[0][0]);
+	glUniformMatrix4fv(m_uniformids[1], 1, GL_FALSE, &normal[0][0]);
+	//light-direction
+	glUniform3f(m_uniformids[2], 0.0f, 0.0f, -1.0f);
+}
+
 void Shader::Update(const Transform& transform, const Camera& camera)
 {
-	glm::mat4 MVP = transform.GetMVP(camera);
+	glm::mat4 VP = camera.GetViewProjection();
+	glm::mat4 MVP = transform.GetMVP(VP);
 	glm::mat4 Normal = transform.GetModel();
+
+	static int anus(0);
+
+	if (anus % 500 == 0)
+	{
+		printf("****************\nMVP\n\n");
+		for (int aa = 0; aa < 4; aa++)
+		{
+			printf("%8.5f,%8.5f,%8.5f,%8.5f\n", MVP[aa][0], MVP[aa][1], MVP[aa][2], MVP[aa][3]);
+		}
+
+		printf("****************\nNormal\n\n");
+		for (int aa = 0; aa < 4; aa++)
+		{
+			printf("%8.5f,%8.5f,%8.5f,%8.5f\n", Normal[aa][0], Normal[aa][1], Normal[aa][2], Normal[aa][3]);
+		}
+
+	}
+	anus++;
 
 	glUniformMatrix4fv(m_uniformids[0], 1, GL_FALSE, &MVP[0][0]);
 	glUniformMatrix4fv(m_uniformids[1], 1, GL_FALSE, &Normal[0][0]);
+	//light-direction
 	glUniform3f(m_uniformids[2], 0.0f, 0.0f, -1.0f);
 }
 

@@ -47,7 +47,8 @@ void SkyboxShader::Detach()
 
 void SkyboxShader::Update(const Transform& transform, const Camera& camera)
 {
-	glm::mat4 view = glm::mat4(glm::mat3(transform.GetMVP(camera)));	// Remove any translation component of the view matrix
+	glm::mat4 vp = camera.GetViewProjection();
+	glm::mat4 view = glm::mat4(glm::mat3(transform.GetMVP(vp)));
 	glm::mat4 projection = glm::perspective(90.0f, static_cast<float>(800.0 / 450.0), .1f, 100.0f);
 	glUniformMatrix4fv(glGetUniformLocation(m_program, "view"), 1, GL_FALSE, &view[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(m_program, "projection"), 1, GL_FALSE, &projection[0][0]);

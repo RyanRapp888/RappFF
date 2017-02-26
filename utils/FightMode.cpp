@@ -45,19 +45,7 @@ void FightMode::Refresh()
 	{
 		Tile *cur = &(m_five_window_parts[aa]);
 				
-		if (m_texthandler_ptr != nullptr)
-		{
-			double xdrawpos = cur->GetXDrawPos_N11();
-			// get the origin point -1 to 1
-			double ydrawpos = cur->GetYDrawPos_N11();
-			double winxmid = xdrawpos + (cur->GetRelativeWidth_01() * 2) / 2.0;
-			double winymid = ydrawpos + (cur->GetRelativeHeight_01() * 2) / 2.0;
-			std::ostringstream util;
-			util << aa;
-							
-			m_texthandler_ptr->Render("Window #" + util.str(), winxmid, 
-									  winymid, TextAlignType::LEFT);
-		}
+		
 		
 		glUseProgram(m_primary_shaderid);
 		
@@ -80,6 +68,22 @@ void FightMode::Refresh()
 		cur->SetUpInstancing(1, scalevec, translations);
 		cur->Render();
 		delete[] translations;
+
+		if (m_texthandler_ptr != nullptr)
+		{
+
+			double xdrawpos = cur->GetXDrawPos_N11();
+			// get the origin point -1 to 1
+			double ydrawpos = cur->GetYDrawPos_N11();
+			double winxmid = xdrawpos + (cur->GetRelativeWidth_01() * 2) / 2.0;
+			double winymid = ydrawpos + (cur->GetRelativeHeight_01() * 2) / 2.0;
+			std::ostringstream util;
+			util << aa;
+
+			m_texthandler_ptr->Render("Window #" + util.str(), winxmid,
+				winymid, TextAlignType::LEFT);
+		}
+
 	}
 
 	WindowSection::Refresh();

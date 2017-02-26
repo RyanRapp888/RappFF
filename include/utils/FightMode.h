@@ -9,6 +9,10 @@
 
 #define N_FRAMES 3
 
+
+
+
+
 class FightMode : public WindowSection
 {
 public:

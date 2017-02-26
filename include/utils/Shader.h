@@ -15,6 +15,7 @@ public:
 	void Bind();
 	void Detach();
 	void Update(const Transform& transform, const Camera& camera);
+	void Ortho(const Transform& transform);
 	GLuint GetProgramId() { return m_program; }
 
 	virtual ~Shader();

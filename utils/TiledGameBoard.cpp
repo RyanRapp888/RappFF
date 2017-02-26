@@ -14,7 +14,9 @@ void TiledGameBoard::SetTileDetails(int xtiles, int ytiles)
 		m_tiles[aa].SetWindowSectionPtr(this);
 	}
 	
-	m_scale_vec = glm::vec3(2.0 / m_xtiles,2.0 / m_ytiles, 2.0 / m_xtiles);
+	//m_scale_vec = glm::vec3(2.0 / m_xtiles,2.0 / m_ytiles, 2.0 / m_xtiles);
+	m_scale_vec = glm::vec3(2.0 / m_xtiles, 2.0 / m_ytiles, 2.0 / m_xtiles);
+
 
 	if (m_tiles == nullptr)
 	{
