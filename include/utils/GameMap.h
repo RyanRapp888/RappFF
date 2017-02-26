@@ -25,8 +25,11 @@ public:
 
    bool AttachMainCharacter(Character *mainchar);
    void AttachCharacter(Character *otherchar);
+   void AddToHeroParty(Character *hero);
+   void RemoveFromHeroParty(Character *hero);
 
-    Character *GetMainCharPtr();
+   Character *GetMainCharPtr();
+   void GetCurHeroes(std::vector<Character *> &heroes);
    bool GetTileType(int x, int y, TileType &type);
 
    void GenerateRandomMap(int nx, int ny, const std::string &filename);
@@ -37,6 +40,7 @@ public:
    int GetWorldMaxX();
    int GetWorldMaxY();
    int GetMonsterOdds(int x, int y);
+   std::vector<Character> GetMonsters(int x, int y);
       
    private:
    
@@ -44,6 +48,7 @@ public:
    static GameMap *m_instance;
    Character *m_mainchar_ptr;
    std::vector<Character *> m_otherchar_ptrs;
+   std::vector<Character *> m_cur_heroes;
    int m_xtiles;
    int m_ytiles;
    std::vector<TileType> m_tiletypes;

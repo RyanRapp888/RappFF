@@ -31,7 +31,7 @@ void TheGame::Play()
 		std::cout << "Error: Could not load game map" << std::endl;
 	}
 
-	m_mainchar.SetName("main_character");
+	m_mainchar.SetName("MC Janet");
 	m_mainchar.SetCharacterType(CharacterType::MAINCHAR);
 	m_mainchar.SetLocation(128, 05);
 	gamemap_ptr->AttachMainCharacter(&m_mainchar);
@@ -43,7 +43,7 @@ void TheGame::Play()
 
 
 	Text testtext(m_display_ptr->GetWinWidth(), m_display_ptr->GetWinHeight());
-	testtext.Init(fontShader.GetProgramId(), 50);
+	testtext.Init(fontShader.GetProgramId(), 35);
 	
 	basicShader.Bind();
 	m_mapwalkingmode_ws->SetTileDetails(16, 16);
@@ -71,6 +71,11 @@ void TheGame::Play()
 	otherchars[4].SetName("Maddy");
 	otherchars[4].SetCharacterType(CharacterType::MERMAID);
 	otherchars[4].SetLocation(128, 20);
+
+	gamemap_ptr->AddToHeroParty(&m_mainchar);
+	gamemap_ptr->AddToHeroParty(&otherchars[0]);
+	gamemap_ptr->AddToHeroParty(&otherchars[1]);
+	gamemap_ptr->AddToHeroParty(&otherchars[2]);
 	
 	for (int bb = 0; bb < otherchars.size(); bb++)
 	{
@@ -100,7 +105,7 @@ void TheGame::Play()
 		
 		ostringstream location;
 		location << "(" << m_mainchar.GetX() << "," << m_mainchar.GetY() << ")";
-		testtext.Render(location.str(), -.9f, -.9f, TextAlignType::CENTER);
+		testtext.Render(location.str(), -.9f, .9f, TextAlignType::CENTER);
 		
 		basicShader.Bind();
 
@@ -173,7 +178,7 @@ void TheGame::SetCurMode(GameMode dat)
 		m_fightmode_ws->StartFight();
 		m_fightmode_ws->Enable();
 	}
-	else if (dat == GameMode::FightMode)
+	else if (dat == GameMode::MapWalkingMode)
 	{
 		m_fightmode_ws->Disable();
 		m_mapwalkingmode_ws->Enable();
@@ -251,6 +256,7 @@ void TheGame::KeyHandler(int key, int scancode, int action, int mods)
 					{
 						std::cout << "FIGHTY MODE!!!" << std::endl;
 						SetCurMode(GameMode::FightMode);
+
 					}
 					std::cout << randy << " out of " << monster_odds << std::endl;
 					std::cout << "(" << xx << "," << yy << ")" << std::endl;
@@ -260,7 +266,6 @@ void TheGame::KeyHandler(int key, int scancode, int action, int mods)
 
 	}
 }
-
 
 bool SetUpSkybox(GLuint &cube_vao, GLuint &cube_text_id)
 {

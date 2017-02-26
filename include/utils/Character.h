@@ -15,13 +15,15 @@ enum class CharacterType
 	MERMAID,
 	OCTOPUS,
 	PRINCESS,
+	SKELETON,
+	WEASEL,
 	SIZE
 };
 
 class CharacterAttributes
 {
 public:
-	CharacterAttributes() :m_hp(50), m_mp(50), m_str(50), m_dodge(50), m_magicskillz(50), m_level(1) {}
+	CharacterAttributes() :m_hp(50), m_mp(50), m_str(50), m_dodge(50), m_magicskillz(50), m_level(1){}
 
 private:
 	int  m_hp;
@@ -90,7 +92,7 @@ private:
 class CharacterInventory
 {
 public:
-	CharacterInventory() {}
+	CharacterInventory():m_money(0) {}
 
 private:
 	std::vector< Weapon> m_weapons;

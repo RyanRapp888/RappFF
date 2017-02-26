@@ -44,6 +44,42 @@ bool GameMap::AttachMainCharacter(Character *mainchar)
 	return true;
 }
 
+void GameMap::GetCurHeroes(std::vector<Character *> &heroes)
+{
+	heroes.clear();
+
+	for (auto curhero : m_cur_heroes)
+	{
+		heroes.emplace_back(curhero);
+	}
+}
+
+void GameMap::AddToHeroParty(Character *hero)
+{
+	for (int aa = 0; aa < m_cur_heroes.size(); aa++)
+	{
+		Character *cur = m_cur_heroes[aa];
+		if (hero == cur)
+		{
+			return;
+		}
+	}
+	m_cur_heroes.push_back(hero);
+}
+
+void GameMap::RemoveFromHeroParty(Character *hero)
+{
+	for (int aa = 0; aa < m_cur_heroes.size(); aa++)
+	{
+		Character *cur = m_cur_heroes[aa];
+		if (hero == cur)
+		{
+			m_cur_heroes.erase(m_cur_heroes.begin() + aa);
+		}
+	}
+}
+
+
 bool GameMap::LoadGameMap(int x_tiles, int y_tiles)
 {
 	m_xtiles = x_tiles;
@@ -219,4 +255,26 @@ int GameMap::GetWorldMaxY() { return m_ytiles; }
 int GameMap::GetTileIdx(int xpos, int ypos)
 {
 	return (xpos + (ypos * m_xtiles));
+}
+
+std::vector<Character> GameMap::GetMonsters(int x, int y)
+{
+	std::vector<Character> results;
+	results.resize(4);
+	results[0].SetName("Unskeleton");
+	results[0].SetCharacterType(CharacterType::SKELETON);
+	results[0].SetLocation(-99, -99);
+
+	results[1].SetName("Weasel");
+	results[1].SetCharacterType(CharacterType::WEASEL);
+	results[1].SetLocation(-99, -99);
+
+	results[2].SetName("Jello Skeleton");
+	results[2].SetCharacterType(CharacterType::SKELETON);
+	results[2].SetLocation(-99, -99);
+
+	results[3].SetName("Bear");
+	results[3].SetCharacterType(CharacterType::SKELETON);
+	results[3].SetLocation(-99, -99);
+	return results;
 }

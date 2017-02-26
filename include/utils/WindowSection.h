@@ -7,13 +7,12 @@
 
 class WindowSection
 {
-	
 	friend class Viewport;
 
 public:
 	WindowSection();
   
-   WindowSection(Viewport *vpt, double origxpct, double origypct, 
+    WindowSection(Viewport *vpt, double origxpct, double origypct, 
                  double w_pct, double h_pct):m_view_ptr(vpt),
                                              m_originx_01(origxpct),
                                              m_originy_01(origypct),
