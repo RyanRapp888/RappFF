@@ -137,3 +137,12 @@ std::string Character::GetHPString()
 	aa << m_attr.GetHP() << " / " << m_attr.GetMaxHP();
 	return aa.str();
 }
+
+std::vector<std::string> Character::GetDialogueLines()
+{
+	std::vector<std::string> results;
+	results.emplace_back("Hi! I'm " + GetName());
+	results.emplace_back("My HP is " + GetHPString());
+	results.emplace_back("You should check out that weird DIRT DIAMOND.");
+	return results;
+}

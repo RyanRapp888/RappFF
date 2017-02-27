@@ -117,7 +117,7 @@ void TiledGameBoard::Refresh()
 	translations[0] =
 		glm::translate(glm::mat4(1.0),
 			glm::vec3(main_char_mesh.GetXDrawPos_N11(),
-				      main_char_mesh.GetYDrawPos_N11(), 0));	
+			main_char_mesh.GetYDrawPos_N11(), 1.0 / m_ytiles));
 	main_char_mesh.SetUpInstancing(1, m_scale_vec, translations);
 	main_char_mesh.Render();
 	delete[] translations;

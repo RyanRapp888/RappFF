@@ -24,9 +24,10 @@ GameMap *GameMap::GetInstance()
 
 int GameMap::GetMonsterOdds(int x, int y)
 {
+	return -1;
 	TileType cc;
 	GetTileType(x, y,cc);
-	if (cc == TileType::BRICKS)
+	if (cc == TileType::BRICKS || cc == TileType::PLANK)
 	{
 		return -1;
 	}
@@ -34,7 +35,7 @@ int GameMap::GetMonsterOdds(int x, int y)
 	{
 		return 100;
 	}
-	return 0;
+	return -1;
 }
 
 bool GameMap::AttachMainCharacter(Character *mainchar)
@@ -173,33 +174,37 @@ bool GameMap::HasACharacter(int x, int y)
 	return false;
 }
 
-bool GameMap::FindTouchingCharacters(int x, int y, std::vector<Character *> &found_chars, std::vector<ProxRel> &found_prox)
+bool GameMap::FindTouchingCharacter(int x, int y, Character *&found_char, ProxRel &found_prox)
 {
 	for (int aa = 0; aa < m_otherchar_ptrs.size(); aa++)
 	{
 		Character *cur = m_otherchar_ptrs[aa];
 		if (cur->GetX() == (x-1) && cur->GetY() == y)
 		{
-			found_chars.push_back(cur);
-			found_prox.push_back(ProxRel::FOUND_TO_LEFT);
+			found_char = cur;
+			found_prox = ProxRel::FOUND_TO_LEFT;
+			return true;
 		}
 		else if(cur->GetX() == (x+1) && cur->GetY() == y)
 		{
-			found_chars.push_back(cur);
-			found_prox.push_back(ProxRel::FOUND_TO_RIGHT);
+			found_char = cur;
+			found_prox = ProxRel::FOUND_TO_RIGHT;
+			return true;
 		}
 		else if (cur->GetX() == x && cur->GetY() == (y + 1))
 		{
-			found_chars.push_back(cur);
-			found_prox.push_back(ProxRel::FOUND_ABOVE);
+			found_char = cur;
+			found_prox = ProxRel::FOUND_ABOVE;
+			return true;
 		}
 		else if (cur->GetX() == x && cur->GetY() == (y - 1))
 		{
-			found_chars.push_back(cur);
-			found_prox.push_back(ProxRel::FOUND_BELOW);
+			found_char = cur;
+			found_prox = ProxRel::FOUND_BELOW;
+			return true;
 		}
 	}
-	return (found_chars.size() > 0);
+	return false;
 }
 
 int GameMap::GetWorldMaxX() { return m_xtiles; }

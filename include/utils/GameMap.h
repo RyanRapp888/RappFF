@@ -33,7 +33,7 @@ public:
    bool GetTileType(int x, int y, TileType &type);
 
    bool HasACharacter(int x, int y);
-   bool FindTouchingCharacters(int x, int y, std::vector<Character *> &found_chars, std::vector<ProxRel> &found_prox);
+   bool FindTouchingCharacter(int x, int y, Character *&found_char, ProxRel &found_prox);
    bool FindCharactersInRange(int minx, int miny, int maxx, int maxy, std::vector<Character *> &found_chars);
    int GetWorldMaxX();
    int GetWorldMaxY();

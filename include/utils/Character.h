@@ -125,7 +125,8 @@ class Character
    int GetX();
    int GetY();
    std::string GetName() { return m_name; }
-   std::string GetHPString();;
+   std::string GetHPString();
+   std::vector<std::string> Character::GetDialogueLines();
         
 protected:
 	

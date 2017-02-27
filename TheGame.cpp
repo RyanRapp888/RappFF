@@ -11,7 +11,7 @@
 #include "Text.h"
 #include <sstream>
 
-bool SetUpSkybox(GLuint &cube_vao, GLuint &cube_text_id);
+//bool SetUpSkybox(GLuint &cube_vao, GLuint &cube_text_id);
 static int get_rand();
 
 void TheGame::Play()
@@ -38,7 +38,7 @@ void TheGame::Play()
 	
 	m_mapwalkingmode_ws = new TiledGameBoard(m_display_ptr, .01, .01, .98, .98);
 	Shader basicShader("res\\basicShader");
-	SkyboxShader skyboxShader("res\\skyboxshader");
+	//SkyboxShader skyboxShader("res\\skyboxshader");
 	FontShader fontShader("res\\fontShader");
 
 
@@ -46,7 +46,7 @@ void TheGame::Play()
 	testtext.Init(fontShader.GetProgramId(), 35);
 	
 	basicShader.Bind();
-	m_mapwalkingmode_ws->SetTileDetails(16, 16);
+	m_mapwalkingmode_ws->SetTileDetails(24, 24);
 	m_display_ptr->AddWindowSection(m_mapwalkingmode_ws);
 		
 	m_fightmode_ws = new FightMode(m_display_ptr, 0, 0, 1, 1);
@@ -64,13 +64,13 @@ void TheGame::Play()
 	otherchars[1].SetLocation( 115, 33);
 	otherchars[2].SetName("Jerry");
 	otherchars[2].SetCharacterType(CharacterType::OCTOPUS);
-	otherchars[2].SetLocation(133, 9);
+	otherchars[2].SetLocation(120, 9);
 	otherchars[3].SetName("Bella");
 	otherchars[3].SetCharacterType(CharacterType::JELLYBEAN);
 	otherchars[3].SetLocation(120, 45);
 	otherchars[4].SetName("Maddy");
 	otherchars[4].SetCharacterType(CharacterType::MERMAID);
-	otherchars[4].SetLocation(128, 20);
+	otherchars[4].SetLocation(128, 9);
 
 	gamemap_ptr->AddToHeroParty(&m_mainchar);
 	gamemap_ptr->AddToHeroParty(&otherchars[0]);
@@ -87,6 +87,7 @@ void TheGame::Play()
 	m_zrot = 0;
 	RGB background(255,255,255);
 
+	/*
 	GLuint skybox_VAO;
 	GLuint skybox_texture;
 	if (!SetUpSkybox(skybox_VAO, skybox_texture))
@@ -94,6 +95,7 @@ void TheGame::Play()
 		std::cout << "Skybox failure" << std::endl;
 		return;
 	}
+	*/
 
 	while (!m_display_ptr->WindowShouldClose())
 	{
@@ -120,16 +122,16 @@ void TheGame::Play()
 		}
 		else if(m_cur_mode == GameMode::MapWalkingMode)
 		{
-
-			glDepthMask(GL_FALSE);
-			skyboxShader.Bind();
-			skyboxShader.Update(maintransform, maincamera);
-			glBindVertexArray(skybox_VAO);
-			glBindTexture(GL_TEXTURE_CUBE_MAP, skybox_texture);
-			glDrawArrays(GL_TRIANGLES, 0, 36);
-			glBindVertexArray(0);
-			glDepthMask(GL_TRUE);
-			skyboxShader.Detach();
+			
+			//glDepthMask(GL_FALSE);
+			//skyboxShader.Bind();
+			//skyboxShader.Update(maintransform, maincamera);
+			//glBindVertexArray(skybox_VAO);
+			//glBindTexture(GL_TEXTURE_CUBE_MAP, skybox_texture);
+			//glDrawArrays(GL_TRIANGLES, 0, 36);
+			//glBindVertexArray(0);
+			//glDepthMask(GL_TRUE);
+			//skyboxShader.Detach();
 			basicShader.Bind();
 			m_fightmode_ws->Disable();
 			m_mapwalkingmode_ws->Enable();
@@ -137,36 +139,70 @@ void TheGame::Play()
 		}
 		
 		m_display_ptr->Refresh();
+		if (m_chatting)
+		{
+			if (m_chat_char != nullptr)
+			{
+				std::vector<std::string> dialogue = m_chat_char->GetDialogueLines();
+
+				double textorigx(0), textorigy(0);
+				if (m_chat_prox == ProxRel::FOUND_TO_LEFT)
+				{
+					textorigx = -.4;
+					textorigy = 0;
+				}
+				else if (m_chat_prox == ProxRel::FOUND_TO_RIGHT)
+				{
+					textorigx = .15;
+					textorigy = .0;
+				}
+				else if (m_chat_prox == ProxRel::FOUND_ABOVE)
+				{
+					textorigx = 0;
+					textorigy = .2 + .12 * dialogue.size();
+				}
+				else if (m_chat_prox == ProxRel::FOUND_BELOW)
+				{
+					textorigx = 0;
+					textorigy = -.3;
+				}
+
+				
+				for (int aa = 0; aa < dialogue.size(); aa++)
+				{
+					testtext.Render(dialogue[aa], textorigx, textorigy, TextAlignType::LEFT);
+					textorigy -= .12;
+				}
+			}
+		}
 		m_display_ptr->SwapBuffers();
 		glfwPollEvents();
 	}
 }
 
-std::string ToText(ProxRel dat)
-{
-	if (dat == ProxRel::FOUND_TO_LEFT) return "to the WEST of you!";
-	else if (dat == ProxRel::FOUND_TO_RIGHT) return "to the EAST of you!";
-	else if (dat == ProxRel::FOUND_ABOVE) return "to the NORTH of you!";
-	else if (dat == ProxRel::FOUND_BELOW) return "to the SOUTH of you!";
-	return "";
-}
-
 void TheGame::Interact(int x, int y)
 {
-	std::vector<Character *> foundchars;
-	std::vector< ProxRel > proximities;
+	Character *foundchar(nullptr);
+	ProxRel proximity;
 
 	GameMap *map_ptr = GameMap::GetInstance();
-	map_ptr->FindTouchingCharacters(
+	bool found = map_ptr->FindTouchingCharacter(
 		m_mainchar.GetX(),
 		m_mainchar.GetY(),
-		foundchars, proximities);
+		foundchar, proximity);
 
-	for (int aa = 0; aa < foundchars.size(); aa++)
+	if(found)
 	{
-		std::cout << "YOU FOUND " << foundchars[aa]->GetName() << "!!!" << std::endl;
-		std::cout << foundchars[aa]->GetName() << " is " << ToText(proximities[aa]) << std::endl
-			      << "!! How FUN!!" << std::endl;
+		m_chatting = !m_chatting;
+		if (m_chatting)
+		{
+			m_chat_char = foundchar;
+			m_chat_prox = proximity;
+		}
+		else
+		{
+			m_chat_char = nullptr;
+		}
 	}
 }
 
@@ -250,7 +286,7 @@ void TheGame::KeyHandler(int key, int scancode, int action, int mods)
 
 			if (took_step)
 			{
-				if (m_mainchar.SetLocation(xx, yy))
+				if (!m_chatting && m_mainchar.SetLocation(xx, yy))
 				{
 					GameMap *gamemap_ptr = GameMap::GetInstance();
 					int randy = get_rand();
@@ -270,6 +306,7 @@ void TheGame::KeyHandler(int key, int scancode, int action, int mods)
 	}
 }
 
+/*
 bool SetUpSkybox(GLuint &cube_vao, GLuint &cube_text_id)
 {
 	glGenTextures(1, &cube_text_id);
@@ -323,6 +360,7 @@ bool SetUpSkybox(GLuint &cube_vao, GLuint &cube_text_id)
 	glBindVertexArray(0);
 	return true;
 }
+*/
 
 static int get_rand()
 {

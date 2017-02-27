@@ -34,6 +34,10 @@ private:
 	FightMode *m_fightmode_ws;
 	GameMode m_cur_mode;
 	int m_xrot, m_yrot, m_zrot;
+	
+	bool m_chatting;
+	Character *m_chat_char;
+	ProxRel m_chat_prox;
 };
 
 #endif
