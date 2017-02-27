@@ -82,7 +82,7 @@ void TheGame::Play()
 		gamemap_ptr->AttachCharacter(&(otherchars[bb]));
 	}
 		
-	m_xrot = -40;
+	m_xrot = -15;
 	m_yrot = 0;
 	m_zrot = 0;
 	RGB background(255,255,255);
@@ -233,12 +233,15 @@ void TheGame::KeyHandler(int key, int scancode, int action, int mods)
 				break;
 			case(GLFW_KEY_X) :
 				m_xrot -= dir * 5;
+				std::cout << "rot(" << m_xrot << "," << m_yrot << "," << m_zrot << ")\n";
 				break;
 			case(GLFW_KEY_Y) :
 				m_yrot -= dir * 5;
+				std::cout << "rot(" << m_xrot << "," << m_yrot << "," << m_zrot << ")\n";
 				break;
 			case(GLFW_KEY_Z) :
 				m_zrot -= dir * 5;
+				std::cout << "rot(" << m_xrot << "," << m_yrot << "," << m_zrot << ")\n";
 			case(GLFW_KEY_ENTER) :
 				Interact(m_mainchar.GetX(), m_mainchar.GetY());
 			default:

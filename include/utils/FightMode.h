@@ -24,15 +24,23 @@ public:
 private:
 
 	void DrawTopWindow();
-	void DrawMonsterStatsWindow();
-	void DrawHeroStatsWindow();
+	void DrawMonsterWindow();
+	void DrawHeroWindow();
 
 	Tile m_top_tile;
 	Tile m_monsterstats_tile;
 	Tile m_herostats_tile;
 	bool m_fight_ended;
+
 	Text *m_texthandler_ptr;
 	GLuint m_primary_shaderid;
+
+	bool m_hero_turn;
+	int m_hero_turn_idx;
+	int m_monster_turn_idx;
+	int m_hero_anim_pct;
+	int m_anim_dir;
+	
 	std::vector<Character> m_monsters;
 
 };

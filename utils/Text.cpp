@@ -20,7 +20,7 @@ void Text::Init(GLuint shaderid, int size)
 		exit(1);
 	}
 	
-	if (FT_New_Face(m_library,"res\\CarbonBlock.ttf", 0, &m_face))
+	if (FT_New_Face(m_library, "res\\CarbonBlock.ttf", 0, &m_face))
 	{
 		printf("couldn't open font\n");
 		exit(1);
@@ -101,14 +101,6 @@ void Text::Render(std::string text, float x, float y, TextAlignType align)
 			{ x2, -y2 - h, 0, 1 },
 			{ x2 + w, -y2 - h, 1, 1 }
 		};
-		/*
-		GLfloat box[4][4] = {
-			{ x2, -y2, 0, 0 },
-			{ x2 + w, -y2, 1, 0 },
-			{ x2, -y2 - h, 0, 1 },
-			{ x2 + w, -y2 - h, 1, 1 }
-		};
-		*/
 
 		glBufferData(GL_ARRAY_BUFFER, sizeof box, box, GL_DYNAMIC_DRAW);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);

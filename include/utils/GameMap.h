@@ -32,8 +32,6 @@ public:
    void GetCurHeroes(std::vector<Character *> &heroes);
    bool GetTileType(int x, int y, TileType &type);
 
-   void GenerateRandomMap(int nx, int ny, const std::string &filename);
-
    bool HasACharacter(int x, int y);
    bool FindTouchingCharacters(int x, int y, std::vector<Character *> &found_chars, std::vector<ProxRel> &found_prox);
    bool FindCharactersInRange(int minx, int miny, int maxx, int maxy, std::vector<Character *> &found_chars);

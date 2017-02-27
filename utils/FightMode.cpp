@@ -3,7 +3,8 @@
 #include <GLFW/glfw3.h>
 #include <sstream>
 
-#define TEXT_VERT_SPACING .15
+#define HERO_VERT_SPACING .19
+#define MONSTER_VERT_SPACING .1
 
 FightMode::FightMode(Viewport *vpt, double origxpct, double origypct, double w_pct, double h_pct) :
 WindowSection(vpt, origxpct, origypct, w_pct, h_pct), m_texthandler_ptr(nullptr), m_primary_shaderid(0)
@@ -36,7 +37,6 @@ bool FightMode::SetPrimaryShader(GLuint primary_shader)
 	return true;
 }
 
-
 void FightMode::StartFight()
 { 
 	// Eventually, we can look for "boss fights"
@@ -45,15 +45,19 @@ void FightMode::StartFight()
 	m_monsters.clear();
 	Character *mainchar = gm->GetMainCharPtr();
 	m_monsters = gm->GetMonsters(mainchar->GetX(), mainchar->GetY());
+	m_hero_turn = true;
+	m_hero_anim_pct = 0;
+	m_anim_dir = -1;
+	m_hero_turn_idx = 0;
 }
 
 void FightMode::Refresh()
 {
 	if (!m_enable) return;
-		
+	
 	DrawTopWindow();
-	DrawMonsterStatsWindow();
-	DrawHeroStatsWindow();
+	DrawMonsterWindow();
+	DrawHeroWindow();
 
 	WindowSection::Refresh();
 }
@@ -82,7 +86,7 @@ void FightMode::DrawTopWindow()
 	double my = oy + (yd / 2.0);
 	double mx2 = mx - .5;
 	double my2 = my - .5;
-	glm::vec3 scalevec(m_top_tile.GetRelativeWidth_01() * 2, 
+	glm::vec3 scalevec(m_top_tile.GetRelativeWidth_01() * 2,
 		               m_top_tile.GetRelativeHeight_01() * 2, 1);
 	mx2 *= scalevec.x;
 	my2 *= scalevec.y;
@@ -91,21 +95,44 @@ void FightMode::DrawTopWindow()
 	m_top_tile.SetUpInstancing(1, scalevec, translations);
 	m_top_tile.Render();
 	delete[] translations;
-	
-	/*
-	if (m_texthandler_ptr != nullptr)
+
+	GameMap *gm_ptr = GameMap::GetInstance();
+	std::vector<Character *> cur_heroes;
+	gm_ptr->GetCurHeroes(cur_heroes);
+
+	glm::vec3 char_scalevec(m_top_tile.GetRelativeWidth_01() * 2,
+		m_top_tile.GetRelativeHeight_01() * 2, 1);
+	char_scalevec.x *= .1;
+	char_scalevec.y *= .2;
+
+	for (int cc = 0; cc < cur_heroes.size(); cc++)
 	{
 		double xdrawpos = m_top_tile.GetXDrawPos_N11();
 		double ydrawpos = m_top_tile.GetYDrawPos_N11();
-		double textposx = xdrawpos + (m_top_tile.GetRelativeWidth_01() * 2) * .05;
-		double textposy = ydrawpos + (m_top_tile.GetRelativeHeight_01() * 2) *.8;
-		std::ostringstream util;
-		m_texthandler_ptr->Render("Throwdown Zone", textposx, textposy, TextAlignType::LEFT);
+		double charoriginx = xdrawpos + (m_top_tile.GetRelativeWidth_01() * 2) * .85;
+		double charoriginy = ydrawpos + (m_top_tile.GetRelativeHeight_01() * 2) * (.8 - (cc * .22));
+		Mesh curchar;
+		curchar.LoadMesh(GetMeshFilename(cur_heroes[cc]->GetTileType()));
+		curchar.UseTexture(GetTextureFilename(cur_heroes[cc]->GetTileType()));
+		glm::mat4 *translations = new glm::mat4[1];
+
+		if (m_hero_turn && m_hero_turn_idx == cc)
+		{
+			charoriginx = charoriginx + (m_top_tile.GetRelativeWidth_01() * m_anim_dir * (.22 * m_hero_anim_pct / 100.0));
+			m_hero_anim_pct += 10;
+			if (m_hero_anim_pct > 100) m_hero_anim_pct = 100;
+		}
+
+		translations[0] =
+			glm::translate(glm::mat4(1.0),
+			glm::vec3(charoriginx, charoriginy, 0));
+		curchar.SetUpInstancing(1, char_scalevec, translations);
+		delete[] translations;
+		curchar.Render();
 	}
-	*/
 }
 
-void FightMode::DrawMonsterStatsWindow()
+void FightMode::DrawMonsterWindow()
 {
 	glUseProgram(m_primary_shaderid);
 
@@ -120,7 +147,8 @@ void FightMode::DrawMonsterStatsWindow()
 	double my = oy + (yd / 2.0);
 	double mx2 = mx - .5;
 	double my2 = my - .5;
-	glm::vec3 scalevec(m_monsterstats_tile.GetRelativeWidth_01() * 2, m_monsterstats_tile.GetRelativeHeight_01() * 2, 1);
+	glm::vec3 scalevec(m_monsterstats_tile.GetRelativeWidth_01() * 2, 
+		               m_monsterstats_tile.GetRelativeHeight_01() * 2, 1);
 	mx2 *= scalevec.x;
 	my2 *= scalevec.y;
 	glm::vec3 transvec(2 * mx2, 2 * my2, 0);
@@ -137,14 +165,13 @@ void FightMode::DrawMonsterStatsWindow()
 
 		for (int curmon = 0; curmon < m_monsters.size(); curmon++)
 		{
- 			double textypos = ydrawpos + (m_monsterstats_tile.GetRelativeHeight_01() * 2) * (.8 - (TEXT_VERT_SPACING * curmon));
+ 			double textypos = ydrawpos + (m_monsterstats_tile.GetRelativeHeight_01() * 2) * (.85 - (MONSTER_VERT_SPACING * curmon));
 			m_texthandler_ptr->Render(m_monsters[curmon].GetName(), textxpos, textypos, TextAlignType::LEFT);
 		}
 	}
-
 }
 
-void FightMode::DrawHeroStatsWindow()
+void FightMode::DrawHeroWindow()
 {
 	glUseProgram(m_primary_shaderid);
 
@@ -180,8 +207,11 @@ void FightMode::DrawHeroStatsWindow()
 
 		for (int cc = 0; cc < cur_heroes.size(); cc++)
 		{
-			double textypos = ydrawpos + (m_herostats_tile.GetRelativeHeight_01() * 2) * (.8 - (TEXT_VERT_SPACING * cc));
+			
+			double textypos = ydrawpos + (m_herostats_tile.GetRelativeHeight_01() * 2) * 
+				              (.85 - (HERO_VERT_SPACING * cc));
 			m_texthandler_ptr->Render(cur_heroes[cc]->GetName(), textxpos, textypos, TextAlignType::LEFT);
+			m_texthandler_ptr->Render(cur_heroes[cc]->GetHPString(), .35, textypos, TextAlignType::LEFT);
 		}
 	}
 

@@ -23,11 +23,19 @@ enum class CharacterType
 class CharacterAttributes
 {
 public:
-	CharacterAttributes() :m_hp(50), m_mp(50), m_str(50), m_dodge(50), m_magicskillz(50), m_level(1){}
-
+	CharacterAttributes() :m_hp(50), m_maxhp(150), m_mp(50), m_maxmp(50), m_str(50), m_dodge(50), m_magicskillz(50), m_level(1){}
+	int GetHP(){ return m_hp; }
+	void SetHP(int dat){ m_hp = dat; }
+	int GetMaxHP(){ return m_maxhp; }
+	void SetMaxHP(int dat){ m_maxhp = dat; }
+	int GetMP(){ return m_mp; }
+	void SetMP(int dat){ m_mp = dat; }
+	
 private:
 	int  m_hp;
+	int m_maxhp;
 	int  m_mp;
+	int m_maxmp;
 	int  m_str;
 	int  m_dodge;
 	double m_magicskillz;
@@ -117,6 +125,7 @@ class Character
    int GetX();
    int GetY();
    std::string GetName() { return m_name; }
+   std::string GetHPString();;
         
 protected:
 	

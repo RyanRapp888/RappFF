@@ -3,6 +3,7 @@
 #include <map>
 #include <algorithm>
 #include <iterator>
+#include <sstream>
 
 bool permission_initialized = 0;
 static std::map< CharacterType, std::vector<TileType> > travel_permissions;
@@ -129,3 +130,10 @@ bool Character::SetLocation(int x, int y)
 int Character::GetX() { return m_worldx; }
 
 int Character::GetY() { return m_worldy; }
+
+std::string Character::GetHPString()
+{
+	std::ostringstream aa;
+	aa << m_attr.GetHP() << " / " << m_attr.GetMaxHP();
+	return aa.str();
+}
