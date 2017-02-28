@@ -8,9 +8,7 @@
 
 class FontShader
 {
-
 public:
-
 	FontShader(const std::string& fileName);
 	void Bind();
 	void Detach();

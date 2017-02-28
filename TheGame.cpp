@@ -1,4 +1,3 @@
-
 #include <glad.h>
 #include "TheGame.h"
 #include "TiledGameBoard.h"
@@ -40,8 +39,7 @@ void TheGame::Play()
 	Shader basicShader("res\\basicShader");
 	//SkyboxShader skyboxShader("res\\skyboxshader");
 	FontShader fontShader("res\\fontShader");
-
-
+	
 	Text testtext(m_display_ptr->GetWinWidth(), m_display_ptr->GetWinHeight());
 	testtext.Init(fontShader.GetProgramId(), 35);
 	
@@ -70,7 +68,7 @@ void TheGame::Play()
 	otherchars[3].SetLocation(120, 45);
 	otherchars[4].SetName("Maddy");
 	otherchars[4].SetCharacterType(CharacterType::MERMAID);
-	otherchars[4].SetLocation(128, 9);
+	otherchars[4].SetLocation(128, 19);
 
 	gamemap_ptr->AddToHeroParty(&m_mainchar);
 	gamemap_ptr->AddToHeroParty(&otherchars[0]);
@@ -96,6 +94,10 @@ void TheGame::Play()
 		return;
 	}
 	*/
+	Tile thotbubs;
+	thotbubs.SetTileType(TileType::BLACK);
+	thotbubs.SetRelativeLocation(0, 0, 1, .2);
+	m_display_ptr->AddObject(&thotbubs);
 
 	while (!m_display_ptr->WindowShouldClose())
 	{
@@ -141,6 +143,7 @@ void TheGame::Play()
 		m_display_ptr->Refresh();
 		if (m_chatting)
 		{
+			
 			if (m_chat_char != nullptr)
 			{
 				std::vector<std::string> dialogue = m_chat_char->GetDialogueLines();
@@ -166,7 +169,6 @@ void TheGame::Play()
 					textorigx = 0;
 					textorigy = -.3;
 				}
-
 				
 				for (int aa = 0; aa < dialogue.size(); aa++)
 				{
@@ -221,7 +223,6 @@ void TheGame::SetCurMode(GameMode dat)
 	}
 	m_cur_mode = dat;
 }
-
 
 void TheGame::KeyHandler(int key, int scancode, int action, int mods)
 {

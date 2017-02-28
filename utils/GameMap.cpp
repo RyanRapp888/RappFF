@@ -24,7 +24,6 @@ GameMap *GameMap::GetInstance()
 
 int GameMap::GetMonsterOdds(int x, int y)
 {
-	return -1;
 	TileType cc;
 	GetTileType(x, y,cc);
 	if (cc == TileType::BRICKS || cc == TileType::PLANK)
@@ -33,7 +32,7 @@ int GameMap::GetMonsterOdds(int x, int y)
 	}
 	else
 	{
-		return 100;
+		return 5;
 	}
 	return -1;
 }
@@ -114,7 +113,6 @@ bool GameMap::LoadGameMap(int x_tiles, int y_tiles)
 	input_file.close();
 	return true;
 }
-
 
 Character *GameMap::GetMainCharPtr()
 {
@@ -222,18 +220,27 @@ std::vector<Character> GameMap::GetMonsters(int x, int y)
 	results.resize(4);
 	results[0].SetName("Unskeleton");
 	results[0].SetCharacterType(CharacterType::SKELETON);
+	//results[0].
+	results[0].SetHP(20); 
+	results[0].SetMaxHP(20);
 	results[0].SetLocation(-99, -99);
 
 	results[1].SetName("Weasel");
 	results[1].SetCharacterType(CharacterType::WEASEL);
+	results[0].SetHP(20);
+	results[0].SetMaxHP(20);
 	results[1].SetLocation(-99, -99);
 
 	results[2].SetName("Jello Skeleton");
 	results[2].SetCharacterType(CharacterType::SKELETON);
+	results[0].SetHP(20);
+	results[0].SetMaxHP(20);
 	results[2].SetLocation(-99, -99);
 
 	results[3].SetName("Bear");
 	results[3].SetCharacterType(CharacterType::SKELETON);
+	results[0].SetHP(20);
+	results[0].SetMaxHP(20);
 	results[3].SetLocation(-99, -99);
 	return results;
 }

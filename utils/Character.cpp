@@ -29,12 +29,12 @@ void Character::SetCharacterType(const CharacterType &ctype)
 	m_chartype = ctype;
 }
 
-CharacterType Character::GetCharacterType()
+CharacterType Character::GetCharacterType() const
 {
 	return m_chartype;
 }
 
-TileType Character::GetTileType()
+TileType Character::GetTileType() const
 {
 	return CTypeToTileType[m_chartype];
 }
@@ -68,7 +68,7 @@ static void InitTravelPermissions()
 	permission_initialized = true;
 }
 
-bool Character::CanOccupyLocation(int x, int y)
+bool Character::CanOccupyLocation(int x, int y) const
 {
 	if (!permission_initialized) InitTravelPermissions();
 	
@@ -127,18 +127,18 @@ bool Character::SetLocation(int x, int y)
 	return false;
 }
 
-int Character::GetX() { return m_worldx; }
+int Character::GetX() const { return m_worldx; }
 
-int Character::GetY() { return m_worldy; }
+int Character::GetY() const { return m_worldy; }
 
-std::string Character::GetHPString()
+std::string Character::GetHPString() const
 {
 	std::ostringstream aa;
 	aa << m_attr.GetHP() << " / " << m_attr.GetMaxHP();
 	return aa.str();
 }
 
-std::vector<std::string> Character::GetDialogueLines()
+std::vector<std::string> Character::GetDialogueLines() const
 {
 	std::vector<std::string> results;
 	results.emplace_back("Hi! I'm " + GetName());
