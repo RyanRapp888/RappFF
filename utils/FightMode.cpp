@@ -342,7 +342,6 @@ void FightMode::DrawTopWindow()
 	}
 }
 
-
 void FightMode::DrawMonsterWindow()
 {
 	glUseProgram(m_primary_shaderid);
@@ -380,23 +379,43 @@ void FightMode::DrawMonsterWindow()
 			m_texthandler_ptr->Render(m_monsters[curmon].GetName(), textxpos, textypos, TextAlignType::LEFT);
 		}
 	}
-
-	if (m_sub_mode == FightSubMode::PICK_ACTION && m_texthandler_ptr != nullptr)
+	
+	if (m_sub_mode == FightSubMode::PICK_ACTION || m_sub_mode == FightSubMode::PICK_ITEM && m_texthandler_ptr != nullptr)
 	{
-		std::vector<std::string> fightopts = GetFightOptions();
+		std::vector<std::string> options;
+		int cur_idx(0);
+		if (m_sub_mode == FightSubMode::PICK_ACTION)
+		{
+			options = GetFightOptions();
+			cur_idx = m_cur_action_idx;
+		}
+		else if (m_sub_mode == FightSubMode::PICK_ITEM)
+		{
+			cur_idx = m_cur_item_idx;
+			GameMap *mapptr = GameMap::GetInstance();
+			std::vector<Character *> heroes;
+			mapptr->GetCurHeroes(heroes);
+			int nitems = heroes[m_hero_turn_idx]->GetNItems();
+			for (int aa = 0; aa < nitems; aa++)
+			{
+				const Item &curitem = heroes[m_hero_turn_idx]->GetItemRef(aa);
+				options.emplace_back(curitem.GetName());
+			}
+		}
+			
 		double xdrawpos = m_monsterstats_tile.GetXDrawPos_N11() + (m_monsterstats_tile.GetRelativeWidth_01() * 2) * .5;
 		double ydrawpos = m_monsterstats_tile.GetYDrawPos_N11();
 
-		for (int aa = 0; aa < fightopts.size(); aa++)
+		for (int aa = 0; aa < options.size(); aa++)
 		{
 		    double textypos = ydrawpos + (m_monsterstats_tile.GetRelativeHeight_01() * 2) *
 			                         	   (.85 - (MONSTER_VERT_SPACING * aa));
-			if (m_cur_action_idx == aa)
+			if (cur_idx == aa)
 			{
 				double arrowxpos = m_monsterstats_tile.GetXDrawPos_N11() + (m_monsterstats_tile.GetRelativeWidth_01() * 2) * .45;
 				m_texthandler_ptr->Render("-->", arrowxpos, textypos, TextAlignType::LEFT);
 			}
-			m_texthandler_ptr->Render(fightopts[aa], xdrawpos, textypos, TextAlignType::LEFT);
+			m_texthandler_ptr->Render(options[aa], xdrawpos, textypos, TextAlignType::LEFT);
 		}
 	}
 }

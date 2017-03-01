@@ -4,6 +4,7 @@ Text::Text(int screenwidth,int screenheight)
 {
 	m_screenWidth = screenwidth;
 	m_screenHeight = screenheight;
+	m_currentSize = 10;
 }
 
 Text::~Text()
@@ -26,6 +27,7 @@ void Text::Init(GLuint shaderid, int size)
 		exit(1);
 	}
 	
+	m_currentSize = size;
 	FT_Set_Pixel_Sizes(m_face, 0, size);
 	m_shaderProgram = shaderid;
 
@@ -128,6 +130,7 @@ bool Text::GetGlyph(char c, GlyphData &returned_glyph)
 	if (FT_Load_Char(m_face, c, FT_LOAD_RENDER))
 	{
 		printf("Freetype is unable to load char: %c\n", c);
+		return false;
 	}
 
 	m_glyphslot = m_face->glyph;
@@ -143,6 +146,7 @@ bool Text::GetGlyph(char c, GlyphData &returned_glyph)
 	returned_glyph.c = c;
 	returned_glyph.size = m_currentSize;
 	m_glyphlookup[c] = returned_glyph;
+	return true;
 }
 
 void Text::FontOpt(int opt, int value) 
