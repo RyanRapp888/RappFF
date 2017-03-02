@@ -16,7 +16,9 @@ static std::map<CharacterType, TileType> CTypeToTileType
 	{ CharacterType::MAINCHAR, TileType::MAINCHAR },
 	{ CharacterType::MERMAID, TileType::MERMAID },
 	{ CharacterType::OCTOPUS, TileType::OCTOPUS },
-	{ CharacterType::PRINCESS, TileType::PRINCESS }
+	{ CharacterType::PRINCESS, TileType::PRINCESS },
+	{ CharacterType::SKELETON, TileType::SKELETON },
+		{ CharacterType::BEAR, TileType::BEAR }
 };
 
 void Character::SetName(const std::string &name)

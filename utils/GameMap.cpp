@@ -32,7 +32,7 @@ int GameMap::GetMonsterOdds(int x, int y)
 	}
 	else
 	{
-		return 5;
+		return 50;
 	}
 	return -1;
 }
@@ -218,27 +218,27 @@ std::vector<Character> GameMap::GetMonsters(int x, int y)
 {
 	std::vector<Character> results;
 	results.resize(4);
-	results[0].SetName("Unskeleton");
+	results[0].SetName("Skeleton");
 	results[0].SetCharacterType(CharacterType::SKELETON);
 	//results[0].
 	results[0].SetHP(20); 
 	results[0].SetMaxHP(20);
 	results[0].SetLocation(-99, -99);
 
-	results[1].SetName("Weasel");
-	results[1].SetCharacterType(CharacterType::WEASEL);
+	results[1].SetName("Skeleton");
+	results[1].SetCharacterType(CharacterType::SKELETON);
 	results[0].SetHP(20);
 	results[0].SetMaxHP(20);
 	results[1].SetLocation(-99, -99);
 
-	results[2].SetName("Jello Skeleton");
-	results[2].SetCharacterType(CharacterType::SKELETON);
+	results[2].SetName("Enraged Bear");
+	results[2].SetCharacterType(CharacterType::BEAR);
 	results[0].SetHP(20);
 	results[0].SetMaxHP(20);
 	results[2].SetLocation(-99, -99);
 
-	results[3].SetName("Bear");
-	results[3].SetCharacterType(CharacterType::SKELETON);
+	results[3].SetName("Magic Bear");
+	results[3].SetCharacterType(CharacterType::BEAR);
 	results[0].SetHP(20);
 	results[0].SetMaxHP(20);
 	results[3].SetLocation(-99, -99);

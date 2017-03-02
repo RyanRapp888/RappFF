@@ -16,7 +16,7 @@ enum class CharacterType
 	OCTOPUS,
 	PRINCESS,
 	SKELETON,
-	WEASEL,
+	BEAR,
 	SIZE
 };
 
@@ -181,6 +181,7 @@ public:
 		m_armors.push_back(Armor("Helmet #17", ArmorType::HEAD));
 		m_items.push_back(Item("Heal Potion", UseType::FRIENDLY_SINGLE));
 		m_items.push_back(Item("Mega Heal Potion", UseType::FRIENDLY_AOE));
+		m_items.push_back(Item("Throwy Glass", UseType::VS_SINGLE));
 		m_items.push_back(Item("Scary Box", UseType::VS_AOE));
 		m_spells.push_back(Spell("Hello Spell", UseType::FRIENDLY_SINGLE));
 	}

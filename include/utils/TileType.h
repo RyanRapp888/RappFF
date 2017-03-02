@@ -28,8 +28,10 @@ enum class TileType
 	WATER = 19,
 	WOOD = 20,
 	FRAME = 21,
-	NTILETYPES = 22,
-	UNDEF = 23
+	SKELETON = 22,
+	BEAR = 23,
+	NTILETYPES = 24,
+	UNDEF = 25
 };
 
 

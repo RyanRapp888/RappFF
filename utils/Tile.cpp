@@ -23,7 +23,9 @@ static std::map<TileType, std::string> tiletype_to_mesh
 	{ TileType::ROOF, "res\\flattile.robj" },
 	{ TileType::WATER, "res\\flattile.robj" },
 	{ TileType::WOOD, "res\\flattile.robj" },
-	{ TileType::FRAME, "res\\flattile.robj"}
+	{ TileType::FRAME, "res\\flattile.robj"},
+	{ TileType::SKELETON, "res\\cube.robj" },
+	{ TileType::BEAR, "res\\cube.robj" } 
 };
 
 static std::map<TileType, std::string> tiletype_to_texture
@@ -49,7 +51,9 @@ static std::map<TileType, std::string> tiletype_to_texture
 	{ TileType::ROOF, "res\\roof.png" },
 	{ TileType::WATER, "res\\Water.png" },
 	{ TileType::WOOD, "res\\Wood.png" },
-	{ TileType::FRAME, "res\\framewhite.jpg"}
+	{ TileType::FRAME, "res\\framewhite.jpg"},
+	{ TileType::SKELETON, "res\\skeleton.jpg"},
+	{ TileType::BEAR, "res\\bear.jpg"}
 };
 
 std::string GetMeshFilename(TileType tt)

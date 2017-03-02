@@ -77,10 +77,6 @@ void FightMode::Refresh()
 
 void FightMode::DoFightAction()
 {
-
-
-
-
 	return;
 }
 
@@ -169,6 +165,7 @@ bool FightMode::HandleKey(int key, int scancode, int action, int mods)
 				const Item &curitem = heroes[m_hero_turn_idx]->GetItemRef(m_cur_item_idx);
 				if (curitem.GetType() == UseType::FRIENDLY_SINGLE)
 				{
+					m_cur_item_target_idx++;
 					if (m_cur_item_target_idx >= heroes.size())
 					{
 						m_cur_item_target_idx = heroes.size() - 1;
@@ -176,6 +173,7 @@ bool FightMode::HandleKey(int key, int scancode, int action, int mods)
 				}
 				else if (curitem.GetType() == UseType::VS_SINGLE)
 				{
+					m_cur_item_target_idx++;
 					if (m_cur_item_target_idx >= m_monsters.size())
 					{
 						m_cur_item_target_idx = m_monsters.size() - 1;
@@ -307,7 +305,7 @@ void FightMode::DrawTopWindow()
 	gm_ptr->GetCurHeroes(cur_heroes);
 
 	glm::vec3 char_scalevec(m_top_tile.GetRelativeWidth_01() * 2,
-		m_top_tile.GetRelativeHeight_01() * 2, 1);
+		                    m_top_tile.GetRelativeHeight_01() * 2, 1);
 	char_scalevec.x *= .1;
 	char_scalevec.y *= .2;
 
@@ -339,6 +337,62 @@ void FightMode::DrawTopWindow()
 		curchar.SetUpInstancing(1, char_scalevec, translations);
 		delete[] translations;
 		curchar.Render();
+
+		if (m_sub_mode == FightSubMode::PICK_ITEM_TARGET)
+		{
+			const Item &curitem = cur_heroes[m_hero_turn_idx]->GetItemRef(m_cur_item_idx);
+			if (curitem.GetType() == UseType::FRIENDLY_SINGLE)
+			{
+				if (m_cur_item_target_idx == cc)
+				{
+					double arrowxpos = m_top_tile.GetXDrawPos_N11() + (m_top_tile.GetRelativeWidth_01() * 2) * .67;
+					double arrowypos = charoriginy;
+					m_texthandler_ptr->Render("-->", arrowxpos, arrowypos, TextAlignType::LEFT);
+					glUseProgram(m_primary_shaderid);
+				}
+			}
+			else if (curitem.GetType() == UseType::VS_SINGLE)
+			{
+				if (m_cur_item_target_idx == cc)
+				{
+					double arrowxpos = m_top_tile.GetXDrawPos_N11() + (m_top_tile.GetRelativeWidth_01() * 2) * .3;
+					double arrowypos = charoriginy;
+					m_texthandler_ptr->Render("<--", arrowxpos, arrowypos, TextAlignType::LEFT);
+					glUseProgram(m_primary_shaderid);
+				}
+			}
+		}
+	}
+
+	for (int dd = 0; dd < m_monsters.size(); dd++)
+	{
+		double xdrawpos = m_top_tile.GetXDrawPos_N11();
+		double ydrawpos = m_top_tile.GetYDrawPos_N11();
+		double monsteroriginx = xdrawpos + (m_top_tile.GetRelativeWidth_01() * 2) * .15;
+		double monsteroriginy = ydrawpos + (m_top_tile.GetRelativeHeight_01() * 2) * (.8 - (dd * .22));
+		Mesh curmonster;
+		curmonster.LoadMesh(GetMeshFilename(m_monsters[dd].GetTileType()));
+		curmonster.UseTexture(GetTextureFilename(m_monsters[dd].GetTileType()));
+		glm::mat4 *translations = new glm::mat4[1];
+
+		translations[0] =
+			glm::translate(glm::mat4(1.0),
+			glm::vec3(monsteroriginx, monsteroriginy, 0));
+		curmonster.SetUpInstancing(1, char_scalevec, translations);
+		delete[] translations;
+		curmonster.Render();
+
+		if (m_sub_mode == FightSubMode::PICK_MONSTER)
+		{
+			if (m_cur_monster_idx == dd)
+			{
+				double arrowxpos = m_top_tile.GetXDrawPos_N11() + (m_top_tile.GetRelativeWidth_01() * 2) * .3;
+				double arrowypos = monsteroriginy;
+				m_texthandler_ptr->Render("<--", arrowxpos, arrowypos, TextAlignType::LEFT);
+				glUseProgram(m_primary_shaderid);
+			}
+		}
+
 	}
 }
 
