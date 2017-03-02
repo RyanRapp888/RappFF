@@ -3,8 +3,6 @@
 *.lo
 *.o
 *.obj
-
-# junk
 *.pdb
 *.ilk
 *.suo
@@ -40,3 +38,13 @@
 *.exe
 *.out
 *.app
+RappFF.sdf
+*.log
+*.log
+utils/x64/Debug/Utils.tlog/CL.command.1.tlog
+*.tlog
+utils/x64/Debug/Utils.tlog/CL.write.1.tlog
+*.tlog
+utils/x64/Debug/Utils.tlog/lib.command.1.tlog
+*.lastbuildstate
+x64/Debug/RappFF.Build.CppClean.log
