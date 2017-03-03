@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BattleManager.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="Display.cpp" />
     <ClCompile Include="DrawableObj.cpp" />
@@ -32,6 +33,7 @@
     <ClCompile Include="WindowSection.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\utils\BattleManager.h" />
     <ClInclude Include="..\include\utils\Camera.h" />
     <ClInclude Include="..\include\utils\Character.h" />
     <ClInclude Include="..\include\utils\CharMotion.h" />

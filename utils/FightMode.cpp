@@ -21,13 +21,35 @@ WindowSection(vpt, origxpct, origypct, w_pct, h_pct), m_texthandler_ptr(nullptr)
 	m_herostats_tile.SetTileType(TileType::FRAME);
 	m_herostats_tile.SetRelativeLocation(.5, 0, .5, .5);
 
-	m_enable = false;
 	m_fight_ended = false;
+	m_enable = false;
 	m_sub_mode = FightSubMode::PICK_NOMODE;
-	m_cur_action_idx = 0;
-	m_cur_item_idx = 0;
-	m_cur_item_target_idx = 0;
-	m_cur_monster_idx = 0;
+	m_hero_turn = true;
+	m_hero_turn_idx = 0;
+}
+
+void FightMode::StartFight()
+{
+   GameMap *gm = GameMap::GetInstance();
+   Character *mainchar = gm->GetMainCharPtr();
+  
+   std::vector<Character *> tmp;
+   gm->GetCurHeroes(tmp);
+   m_battle.Clear();
+   m_battle.SetHeroes(tmp);
+   m_battle.SetMobs(gm->GetMonsters(mainchar->GetX(), mainchar->GetY()));
+
+   m_hero_turn_idx = 0;
+   m_cur_action_idx = 0;
+   m_cur_monster_idx = 0;
+   m_cur_item_idx = 0;
+   m_cur_item_target_idx = 0;
+   m_fight_ended = false;
+   m_hero_anim_pct = 0;
+   m_hero_anim_dir = -1;
+   
+   bool m_hero_turn = true;
+   m_sub_mode = FightSubMode::PICK_ACTION;
 }
 
 bool FightMode::SetTextHandler(Text *texthandler)
@@ -42,28 +64,6 @@ bool FightMode::SetPrimaryShader(GLuint primary_shader)
 	return true;
 }
 
-static std::vector<std::string> GetFightOptions()
-{
-	std::vector<std::string> results = { "Attack", "Special Move", "Item", "Retreat" };
-	return results;
-}
-
-void FightMode::StartFight()
-{ 
-	// Eventually, we can look for "boss fights"
-	m_battle_queue.clear();
-	m_fight_ended = false;
-	GameMap *gm = GameMap::GetInstance();
-	m_monsters.clear();
-	Character *mainchar = gm->GetMainCharPtr();
-	m_monsters = gm->GetMonsters(mainchar->GetX(), mainchar->GetY());
-	m_hero_turn = true;
-	
-	m_hero_turn_idx = -1;
-	AdvanceToNextHero();
-	
-}
-
 void FightMode::Refresh()
 {
 	if (!m_enable) return;
@@ -75,23 +75,12 @@ void FightMode::Refresh()
 	WindowSection::Refresh();
 }
 
-void FightMode::DoFightAction()
-{
-	return;
-}
-
 void FightMode::AdvanceToNextHero()
 {
-	m_hero_anim_pct = 0;
-	
-	GameMap *gm_ptr = GameMap::GetInstance();
-	std::vector<Character *> cur_heroes;
-	gm_ptr->GetCurHeroes(cur_heroes);
-
 	do
 	{
 		m_hero_turn_idx++;
-		if (m_hero_turn_idx >= cur_heroes.size())
+		if (m_hero_turn_idx >= m_battle.GetNHeroes())
 		{
 			m_hero_turn = false;
 			m_hero_turn_idx = 0;
@@ -100,14 +89,11 @@ void FightMode::AdvanceToNextHero()
 			m_cur_item_target_idx = 0;
 			m_cur_monster_idx = 0;
 			m_sub_mode = FightSubMode::PICK_NOMODE;
-			// Now we are ready to process the queue, and give the monsters a chance.
 			break;
 		}
 
-		if (cur_heroes[m_hero_turn_idx]->IsActive())
+		if (m_battle.IsHeroActive(m_hero_turn_idx))
 		{
-			m_hero_anim_pct = 0;
-			m_hero_anim_dir = -1;
 			m_cur_action_idx = 0;
 			m_cur_item_idx = 0;
 			m_cur_item_target_idx = 0;
@@ -115,9 +101,10 @@ void FightMode::AdvanceToNextHero()
 			m_sub_mode = FightSubMode::PICK_ACTION;
 			break;
 		}
-		
-	} while (m_hero_turn_idx <= cur_heroes.size() && m_hero_turn == true);
+
+	} while (m_hero_turn_idx <= m_battle.GetNHeroes() && m_hero_turn == true);
 }
+	
 
 bool FightMode::HandleKey(int key, int scancode, int action, int mods)
 {
@@ -132,7 +119,7 @@ bool FightMode::HandleKey(int key, int scancode, int action, int mods)
 			if (m_sub_mode == FightSubMode::PICK_ACTION)
 			{
 				m_cur_action_idx++;
-				std::vector<std::string> fo = GetFightOptions();
+				std::vector<std::string> fo = m_battle.GetFightOptions();
 				if (m_cur_action_idx >= fo.size())
 				{
 					m_cur_action_idx = fo.size() - 1;
@@ -141,9 +128,9 @@ bool FightMode::HandleKey(int key, int scancode, int action, int mods)
 			else if (m_sub_mode == FightSubMode::PICK_MONSTER)
 			{
 				m_cur_monster_idx++;
-				if (m_cur_monster_idx >= m_monsters.size())
+				if (m_cur_monster_idx >= m_battle.GetNMonsters())
 				{
-					m_cur_monster_idx = m_monsters.size() - 1;
+					m_cur_monster_idx = m_battle.GetNMonsters() - 1;
 				}
 			}
 			else if (m_sub_mode == FightSubMode::PICK_ITEM)
@@ -174,9 +161,9 @@ bool FightMode::HandleKey(int key, int scancode, int action, int mods)
 				else if (curitem.GetType() == UseType::VS_SINGLE)
 				{
 					m_cur_item_target_idx++;
-					if (m_cur_item_target_idx >= m_monsters.size())
+					if (m_cur_item_target_idx >= m_battle.GetNMonsters())
 					{
-						m_cur_item_target_idx = m_monsters.size() - 1;
+						m_cur_item_target_idx = m_battle.GetNMonsters() - 1;
 					}
 				}
 			}
@@ -227,14 +214,14 @@ bool FightMode::HandleKey(int key, int scancode, int action, int mods)
 				{
 					BattleEvent be_retreat;
 					be_retreat.SetAsRetreatEvent(m_hero_turn_idx);
-					m_battle_queue.emplace_back(be_retreat);
+					m_battle.AddBattleEvent(be_retreat);
 					AdvanceToNextHero();
 				}
 			}
 			else if (m_sub_mode == FightSubMode::PICK_MONSTER)
 			{
 				BattleEvent be_single_monster(true, false, false, m_hero_turn_idx, m_cur_monster_idx, m_cur_action_idx, m_cur_item_idx);
-				m_battle_queue.emplace_back(be_single_monster);
+				m_battle.AddBattleEvent(be_single_monster);
 				AdvanceToNextHero();
 			}
 			else if (m_sub_mode == FightSubMode::PICK_ITEM)
@@ -252,7 +239,7 @@ bool FightMode::HandleKey(int key, int scancode, int action, int mods)
 				{
 					bool is_aoe_target_heroes = (curitem.GetType() == UseType::FRIENDLY_AOE);
 					BattleEvent aoe_event(true, true, is_aoe_target_heroes, m_hero_turn_idx, -1, m_cur_action_idx, m_cur_item_idx);
-					m_battle_queue.emplace_back(aoe_event);
+					m_battle.AddBattleEvent(aoe_event);
 					AdvanceToNextHero();
 				}
 			}
@@ -266,7 +253,7 @@ bool FightMode::HandleKey(int key, int scancode, int action, int mods)
 				{
 					bool is_target_a_hero = (curitem.GetType() == UseType::FRIENDLY_SINGLE);
 					BattleEvent item_use_event(true, false, false, m_hero_turn_idx, m_cur_item_target_idx, m_cur_action_idx, m_cur_item_idx);
-					m_battle_queue.emplace_back(item_use_event);
+					m_battle.AddBattleEvent(item_use_event);
 					AdvanceToNextHero();
 				}
 			}
@@ -364,15 +351,15 @@ void FightMode::DrawTopWindow()
 		}
 	}
 
-	for (int dd = 0; dd < m_monsters.size(); dd++)
+	for (int dd = 0; dd < m_battle.GetNMonsters(); dd++)
 	{
 		double xdrawpos = m_top_tile.GetXDrawPos_N11();
 		double ydrawpos = m_top_tile.GetYDrawPos_N11();
 		double monsteroriginx = xdrawpos + (m_top_tile.GetRelativeWidth_01() * 2) * .15;
 		double monsteroriginy = ydrawpos + (m_top_tile.GetRelativeHeight_01() * 2) * (.8 - (dd * .22));
 		Mesh curmonster;
-		curmonster.LoadMesh(GetMeshFilename(m_monsters[dd].GetTileType()));
-		curmonster.UseTexture(GetTextureFilename(m_monsters[dd].GetTileType()));
+		curmonster.LoadMesh(GetMeshFilename(m_battle.GetMonsterTileType(dd)));
+		curmonster.UseTexture(GetTextureFilename(m_battle.GetMonsterTileType(dd)));
 		glm::mat4 *translations = new glm::mat4[1];
 
 		translations[0] =
@@ -427,10 +414,10 @@ void FightMode::DrawMonsterWindow()
 		double ydrawpos = m_monsterstats_tile.GetYDrawPos_N11();
 		double textxpos = xdrawpos + (m_monsterstats_tile.GetRelativeWidth_01() * 2) * .08;
 
-		for (int curmon = 0; curmon < m_monsters.size(); curmon++)
+		for (int curmon = 0; curmon < m_battle.GetNMonsters(); curmon++)
 		{
  			double textypos = ydrawpos + (m_monsterstats_tile.GetRelativeHeight_01() * 2) * (.85 - (MONSTER_VERT_SPACING * curmon));
-			m_texthandler_ptr->Render(m_monsters[curmon].GetName(), textxpos, textypos, TextAlignType::LEFT);
+			m_texthandler_ptr->Render(m_battle.GetMonsterName(curmon), textxpos, textypos, TextAlignType::LEFT);
 		}
 	}
 	
@@ -440,7 +427,7 @@ void FightMode::DrawMonsterWindow()
 		int cur_idx(0);
 		if (m_sub_mode == FightSubMode::PICK_ACTION)
 		{
-			options = GetFightOptions();
+			options = m_battle.GetFightOptions();
 			cur_idx = m_cur_action_idx;
 		}
 		else if (m_sub_mode == FightSubMode::PICK_ITEM)
