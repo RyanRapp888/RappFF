@@ -220,7 +220,8 @@ bool FightMode::HandleKey(int key, int scancode, int action, int mods)
 			}
 			else if (m_sub_mode == FightSubMode::PICK_MONSTER)
 			{
-				BattleEvent be_single_monster(true, false, false, m_hero_turn_idx, m_cur_monster_idx, m_cur_action_idx, m_cur_item_idx);
+				ActionType tmp = static_cast<ActionType>(m_cur_action_idx);
+				BattleEvent be_single_monster(true, false, false, m_hero_turn_idx, m_cur_monster_idx, tmp, m_cur_item_idx);
 				m_battle.AddBattleEvent(be_single_monster);
 				AdvanceToNextHero();
 			}
@@ -238,7 +239,8 @@ bool FightMode::HandleKey(int key, int scancode, int action, int mods)
 				else if (curitem.GetType() == UseType::FRIENDLY_AOE || curitem.GetType() == UseType::VS_AOE)
 				{
 					bool is_aoe_target_heroes = (curitem.GetType() == UseType::FRIENDLY_AOE);
-					BattleEvent aoe_event(true, true, is_aoe_target_heroes, m_hero_turn_idx, -1, m_cur_action_idx, m_cur_item_idx);
+					ActionType tmp = static_cast<ActionType>(m_cur_action_idx);
+					BattleEvent aoe_event(true, true, is_aoe_target_heroes, m_hero_turn_idx, -1, tmp, m_cur_item_idx);
 					m_battle.AddBattleEvent(aoe_event);
 					AdvanceToNextHero();
 				}
@@ -252,7 +254,8 @@ bool FightMode::HandleKey(int key, int scancode, int action, int mods)
 				if (curitem.GetType() == UseType::FRIENDLY_SINGLE || curitem.GetType() == UseType::VS_SINGLE)
 				{
 					bool is_target_a_hero = (curitem.GetType() == UseType::FRIENDLY_SINGLE);
-					BattleEvent item_use_event(true, false, false, m_hero_turn_idx, m_cur_item_target_idx, m_cur_action_idx, m_cur_item_idx);
+					ActionType tmp = static_cast<ActionType>(m_cur_action_idx);
+					BattleEvent item_use_event(true, false, false, m_hero_turn_idx, m_cur_item_target_idx, tmp, m_cur_item_idx);
 					m_battle.AddBattleEvent(item_use_event);
 					AdvanceToNextHero();
 				}

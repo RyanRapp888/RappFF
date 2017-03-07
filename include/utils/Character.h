@@ -35,7 +35,7 @@ class CharacterAttributes
 {
 
 public:
-	CharacterAttributes() :m_hp(50), m_maxhp(150), m_mp(50), m_maxmp(50), m_str(50), m_dodge(50), m_magicskillz(50), m_level(1), m_state(CharacterState::GOOD){}
+	CharacterAttributes() :m_hp(50), m_maxhp(150), m_mp(50), m_maxmp(50), m_str(50), m_dodge(50), m_magicskillz(50), m_level(1), m_state(CharacterState::GOOD), m_flee(50){}
 	int GetHP() const { return m_hp; }
 	void SetHP(int dat){ m_hp = dat; }
 	int GetMaxHP() const { return m_maxhp; }
@@ -53,6 +53,8 @@ public:
 		
 		return result;
 	}
+	int GetFlee() const{ return m_flee; }
+	void SetFlee(int dat){ m_flee = dat; }
 
 private:
 	int m_hp;
@@ -63,8 +65,8 @@ private:
 	int m_dodge;
 	double m_magicskillz;
 	int m_level;
+	int m_flee;
 	CharacterState m_state;
-
 };
 
 enum class WeaponType
@@ -111,7 +113,6 @@ enum class ArmorType
 
 class Armor
 {
-
 public:
 	Armor() {}
 	Armor(const std::string &name, ArmorType at): m_name(name), m_type(at),
@@ -124,7 +125,6 @@ public:
 	void SetAntiCritPct0_100(int cp){ m_anticrit = cp; }
 
 private:
-	
 	std::string m_name;
 	ArmorType m_type;
 	int m_anticrit;
@@ -205,27 +205,28 @@ class Character
 public:
 
    Character(){}
+
    std::string GetName() const { return m_name; }
-   void SetName(const std::string &name);
-   void SetCharacterType(const CharacterType &ctype);
-  
    std::string GetHPString() const;
    std::vector<std::string> Character::GetDialogueLines() const;
-   
-   void SetHP(int dat){ m_attr.SetHP(dat); }
-   void SetMaxHP(int dat){ m_attr.SetMaxHP(dat); }
-   bool IsActive()const{ return m_attr.IsActive(); }
-
    int GetNItems() const { return m_inv.GetNItems(); }
-   const Item &GetItemRef(int idx) const{ return m_inv.GetItemRef(idx);}
+   const Item &GetItemRef(int idx) const{ return m_inv.GetItemRef(idx); }
    CharacterType GetCharacterType() const;
    TileType GetTileType() const;
-   void SetCharMotion(const CharMotion &cmot);
-   bool CanOccupyLocation(int x, int y) const;
-   bool SetLocation(int x, int y);
+   bool IsActive()const{ return m_attr.IsActive(); }
    int GetX() const;
    int GetY() const;
+   bool CanOccupyLocation(int x, int y) const;
+   int GetFlee(){ return m_attr.GetFlee(); }
 
+   void SetName(const std::string &name);
+   void SetCharacterType(const CharacterType &ctype);
+   void SetHP(int dat){ m_attr.SetHP(dat); }
+   void SetMaxHP(int dat){ m_attr.SetMaxHP(dat); }
+   void SetCharMotion(const CharMotion &cmot);
+   bool SetLocation(int x, int y);
+   void SetFlee(int dat){ m_attr.SetFlee(dat); }
+ 
 protected:
 	
    private:

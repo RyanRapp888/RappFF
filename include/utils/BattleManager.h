@@ -4,6 +4,15 @@
 #include <vector>
 #include "Character.h"
 
+enum class ActionType
+{
+	NOACTION = -1,
+	ATTACK = 0,
+	SPECIAL = 1,
+	ITEM = 2,
+	RETREAT = 3
+};
+
 struct BattleEvent
 {
 	BattleEvent()
@@ -13,11 +22,11 @@ struct BattleEvent
 		is_aoe_target_heroes = false;
 		actor_idx = -1;
 		target_idx = -1;
-		action_type_id = -1;
+		action_type_id = ActionType::NOACTION;
 		item_idx = -1;
 	}
 
-	BattleEvent(bool iah, bool ia, bool iath, int ai, int ti, int ati, int ii)
+	BattleEvent(bool iah, bool ia, bool iath, int ai, int ti, ActionType ati, int ii)
 	{
 		is_actor_hero = iah;
 		is_aoe = ia;
@@ -35,7 +44,7 @@ struct BattleEvent
 		is_aoe_target_heroes = false;
 		actor_idx = actor_retreating_idx;
 		target_idx = -1;
-		action_type_id = 3;
+		action_type_id = ActionType::RETREAT;
 		item_idx = -1;
 	}
 
@@ -44,15 +53,16 @@ struct BattleEvent
 	bool is_aoe_target_heroes;
 	int actor_idx;
 	int target_idx;
-	int action_type_id;
+	ActionType action_type_id;
 	int item_idx;
 };
 
 enum class BattleRoundOutcome
 {
 	ALL_HEROES_DIED,
-	ALL_ENEMIES_DIED,
+	ALL_MOBS_DIED,
 	HEROES_RETREATED,
+	MOBS_RETREATED,
     BATTLE_ONGOING
 };
 
@@ -79,6 +89,7 @@ public:
 	void SetMobs(std::vector<Character> dat);
 	void SetHeroes(std::vector<Character *> &dat);
 	void AddBattleEvent(BattleEvent be){ m_battle_queue.emplace_back(be); }
+	void ClearFightEnded(){ m_fight_ended = false; }
 	
 	int GetNMonsters() const{ return m_mobs.size(); }
 	int GetNItems(int hero_idx){ return m_hero_ptrs[hero_idx]->GetNItems(); }
@@ -94,6 +105,10 @@ private:
 	std::vector<Character> m_mobs;
 	std::vector<Character *> m_hero_ptrs;
 	std::vector<BattleEvent> m_battle_queue;
+	void ProcessAttackEvent(BattleEvent &cur_be, BattleRoundOutcome &outcome);
+	void ProcessSpecialEvent(BattleEvent &cur_be, BattleRoundOutcome &outcome);
+	void ProcessItemEvent(BattleEvent &cur_be, BattleRoundOutcome &outcome);
+	void ProcessRetreatEvent(BattleEvent &cur_be, BattleRoundOutcome &outcome);
 };
 
 #endif
