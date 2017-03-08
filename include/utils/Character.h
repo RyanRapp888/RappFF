@@ -35,7 +35,7 @@ class CharacterAttributes
 {
 
 public:
-	CharacterAttributes() :m_hp(50), m_maxhp(150), m_mp(50), m_maxmp(50), m_str(50), m_dodge(50), m_magicskillz(50), m_level(1), m_state(CharacterState::GOOD), m_flee(50){}
+	CharacterAttributes() :m_hp(50), m_maxhp(150), m_mp(50), m_maxmp(50), m_dodge(50), m_level(1), m_state(CharacterState::GOOD), m_flee(50){}
 	int GetHP() const { return m_hp; }
 	void SetHP(int dat){ m_hp = dat; }
 	int GetMaxHP() const { return m_maxhp; }
@@ -44,71 +44,61 @@ public:
 	void SetMP(int dat){ m_mp = dat; }
 	CharacterState GetState() const{ return m_state; }
 	bool IsActive() const
-	{ 
+	{
 		bool result(false);
 		if (m_state == CharacterState::BEASTMODE || m_state == CharacterState::GOOD || m_state == CharacterState::CONFUSED || m_state == CharacterState::BLINDED)
 		{
 			result = true;
 		}
-		
+
 		return result;
 	}
+	bool IsDead() const { return m_state == CharacterState::DEAD; }
 	int GetFlee() const{ return m_flee; }
+	int GetAccuracy() const{ return m_accuracy; }
+	int GetDodge() const{ return m_dodge; }
 	void SetFlee(int dat){ m_flee = dat; }
+	void SetAccuracy(int dat){ m_accuracy = dat; }
+	void SetDodge(int dat){ m_dodge = dat; }
 
 private:
 	int m_hp;
 	int m_maxhp;
 	int m_mp;
 	int m_maxmp;
-	int m_str;
+	int m_accuracy;
 	int m_dodge;
-	double m_magicskillz;
 	int m_level;
 	int m_flee;
 	CharacterState m_state;
-};
-
-enum class WeaponType
-{
-	MELEE,
-	RANGED
 };
 
 class Weapon
 {
 public:
 	Weapon() {}
-	Weapon(const std::string &name, WeaponType wt)
+	Weapon(const std::string &name)
 	{
 		m_name = name;
-		m_type = wt;
-		m_critpct = 10;
-		m_attack = 10;
-		m_accuracy = 20;
+		m_accuracy = 50;
 	}
-	std::string GetName() const { return m_name;}
+	std::string GetName() const { return m_name; }
 	void SetName(std::string name){ m_name = name; }
-	WeaponType GetType() const { return m_type; }
-	void SetType(WeaponType wt){ m_type = wt; }
-	int GetCritPct0_100() const { return m_critpct; }
-	void SetCritPct0_100(int cp){ m_critpct = cp; }
+	int GetAccuracy() const { return m_accuracy; }
+	void SetAccuracy(int dat){ m_accuracy = dat; }
 
 private:
 
 	std::string m_name;
-	WeaponType m_type;
-	int m_critpct;
-	double m_attack;
 	int m_accuracy;
 };
 
 enum class ArmorType
 {
-	HEAD,
-	BODY,
-	LEGS,
-	FEET
+	HEAD = 0,
+	BODY = 1,
+	LEGS = 2,
+	FEET = 3
 };
 
 class Armor
@@ -116,19 +106,17 @@ class Armor
 public:
 	Armor() {}
 	Armor(const std::string &name, ArmorType at): m_name(name), m_type(at),
-		m_anticrit(10), m_protect(10), m_dodge(20){}
+		m_dodge(50){}
 	std::string GetName() const { return m_name; }
 	void SetName(std::string name){ m_name = name; }
 	ArmorType GetType() const { return m_type; }
 	void SetType(ArmorType at){ m_type = at; }
-	int GetAntiCritPct0_100() const { return m_anticrit; }
-	void SetAntiCritPct0_100(int cp){ m_anticrit = cp; }
-
+	int GetDodge() const{ return m_dodge; }
+	void SetDodge(int dat){ m_dodge = dat; }
+	
 private:
 	std::string m_name;
 	ArmorType m_type;
-	int m_anticrit;
-	int m_protect;
 	int m_dodge;
 };
 
@@ -177,22 +165,83 @@ class CharacterInventory
 public:
 	CharacterInventory():m_money(0)
 	{
-		m_weapons.push_back(Weapon("Sword", WeaponType::MELEE));
-		m_armors.push_back(Armor("Helmet #17", ArmorType::HEAD));
+		m_weapons.push_back(Weapon("Sword"));
+		m_head_armors.push_back(Armor("Helmet #17", ArmorType::HEAD));
+		m_head_armors.push_back(Armor("Body", ArmorType::BODY));
+		m_head_armors.push_back(Armor("Jeans", ArmorType::LEGS));
+		m_head_armors.push_back(Armor("Crocs", ArmorType::FEET));
 		m_items.push_back(Item("Heal Potion", UseType::FRIENDLY_SINGLE));
 		m_items.push_back(Item("Mega Heal Potion", UseType::FRIENDLY_AOE));
 		m_items.push_back(Item("Throwy Glass", UseType::VS_SINGLE));
 		m_items.push_back(Item("Scary Box", UseType::VS_AOE));
 		m_spells.push_back(Spell("Hello Spell", UseType::FRIENDLY_SINGLE));
 	}
+
 	int GetNWeapons() const { return m_weapons.size(); }
-	int GetNArmor() const { return m_armors.size(); }
+	//int GetNArmor() const { return m_armors.size(); }
 	int GetNItems() const { return m_items.size(); }
 	const Item &GetItemRef(int idx) const { return m_items[idx]; }
 	int GetNSpells() const { return m_items.size(); }
+	int GetWeaponAccuracy() const
+	{
+		if (equipped_w_idx >= 0)
+		{
+			return m_weapons[equipped_w_idx].GetAccuracy();
+		}
+		return 1;
+	}
+
+	int GetArmorDodge(ArmorType at) const
+	{
+		int results(0);
+
+		if (at == ArmorType::BODY)
+		{
+			if (equipped_body_idx >= 0)
+			{
+				results = m_body_armors[equipped_body_idx].GetDodge();
+			}
+			results = 0;
+		}
+		else if (at == ArmorType::FEET)
+		{
+			if (equipped_feet_idx >= 0)
+			{
+				results = m_feet_armors[equipped_feet_idx].GetDodge();
+			}
+			results = 0;
+		}
+		else if (at == ArmorType::HEAD)
+		{
+			if (equipped_head_idx >= 0)
+			{
+				results = m_head_armors[equipped_head_idx].GetDodge();
+			}
+			results = 0;
+		}
+		else  //ArmorType::LEGS
+		{
+			if (equipped_legs_idx >= 0)
+			{
+				results = m_legs_armors[equipped_legs_idx].GetDodge();
+			}
+			results = 0;
+		}
+
+		return results;
+	}
+
 private:
+	int equipped_w_idx;
+	int equipped_head_idx;
+	int equipped_body_idx;
+	int equipped_legs_idx;
+	int equipped_feet_idx;
 	std::vector< Weapon > m_weapons;
-	std::vector< Armor > m_armors;
+	std::vector< Armor > m_head_armors;
+	std::vector< Armor > m_body_armors;
+	std::vector< Armor > m_legs_armors;
+	std::vector< Armor > m_feet_armors;
 	std::vector< Spell > m_spells;
 	std::vector< Item > m_items;
 	int m_money;
@@ -200,12 +249,11 @@ private:
 
 class Character
 {
-   friend class GameMap;
-   
+
 public:
 
    Character(){}
-
+   friend class GameMap;
    std::string GetName() const { return m_name; }
    std::string GetHPString() const;
    std::vector<std::string> Character::GetDialogueLines() const;
@@ -213,11 +261,16 @@ public:
    const Item &GetItemRef(int idx) const{ return m_inv.GetItemRef(idx); }
    CharacterType GetCharacterType() const;
    TileType GetTileType() const;
-   bool IsActive()const{ return m_attr.IsActive(); }
+   bool IsActive() const { return m_attr.IsActive(); }
+   bool IsDead() const { return m_attr.IsDead(); }
    int GetX() const;
    int GetY() const;
    bool CanOccupyLocation(int x, int y) const;
-   int GetFlee(){ return m_attr.GetFlee(); }
+   int GetFlee() const { return m_attr.GetFlee(); }
+   int GetAccuracy() const { return m_attr.GetAccuracy(); }
+   int GetWeaponAccuracy() const { return m_inv.GetWeaponAccuracy(); }
+   int GetDodge() const { return m_attr.GetDodge(); }
+   int GetArmorDodge(ArmorType &typ) const{ return m_inv.GetArmorDodge(typ); }
 
    void SetName(const std::string &name);
    void SetCharacterType(const CharacterType &ctype);
@@ -226,6 +279,8 @@ public:
    void SetCharMotion(const CharMotion &cmot);
    bool SetLocation(int x, int y);
    void SetFlee(int dat){ m_attr.SetFlee(dat); }
+   void SetAccuracy(int dat){ m_attr.SetAccuracy(dat);}
+   void SetDodge(int dat){ m_attr.SetDodge(dat); }
  
 protected:
 	

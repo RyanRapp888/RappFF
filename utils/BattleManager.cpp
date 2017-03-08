@@ -49,7 +49,55 @@ static int get_rand_0_99()
 
 void BattleManager::ProcessAttackEvent(BattleEvent &cur_be, BattleRoundOutcome &outcome)
 {
+	bool is_hit(false);
+	bool is_crit(false);
 
+	if (cur_be.is_actor_hero)
+	{
+		Character *cc = m_hero_ptrs[cur_be.actor_idx];
+		if (cc->IsActive())
+		{
+			int hero_acc = cc->GetAccuracy();
+			int hero_w_acc = cc->GetWeaponAccuracy();
+			Character &mm = m_mobs[cur_be.target_idx];
+			if (!mm.IsActive() && !mm.IsDead())
+			{
+				is_hit = true;
+				is_crit = true;
+			}
+			else
+			{
+				int armtyp = rand() % 4;
+				ArmorType at = static_cast<ArmorType>(armtyp);
+				int mob_dodge = mm.GetDodge();
+				int mob_armor_dodge = mm.GetArmorDodge(at);
+				int hero_avg = (double) (hero_acc + hero_w_acc) / 2.0;
+				int mob_avg = (double)(mob_dodge + mob_armor_dodge) / 2.0;
+				int diff = hero_avg - mob_avg;
+				float pct = ((double)diff / 2.0) + 49.5;
+				int rand = get_rand_0_99();
+				if (pct >= rand)
+				{
+					is_hit = true;
+					if (rand < 3) //critval
+					{
+						is_crit = true;
+					}
+				}
+			}
+		}
+
+		if (is_hit)
+		{
+
+			//Stuff
+		}
+
+	}
+	else
+	{
+		// An enemy is attacking a hero
+	}
 
 }
 
