@@ -35,9 +35,15 @@ class CharacterAttributes
 {
 
 public:
-	CharacterAttributes() :m_hp(50), m_maxhp(150), m_mp(50), m_maxmp(50), m_dodge(50), m_level(1), m_state(CharacterState::GOOD), m_flee(50){}
+	CharacterAttributes() :m_hp(50), m_maxhp(150), m_mp(50), m_maxmp(50), m_accuracy(50), m_dodge(50), m_level(1), m_state(CharacterState::GOOD), m_flee(50){}
 	int GetHP() const { return m_hp; }
-	void SetHP(int dat){ m_hp = dat; }
+	void SetHP(int dat){ m_hp = dat; ValidateHP(); }
+	void ModifyHP(int delta)
+	{
+		m_hp += delta;
+    	ValidateHP();
+		
+	}
 	int GetMaxHP() const { return m_maxhp; }
 	void SetMaxHP(int dat){ m_maxhp = dat; }
 	int GetMP() const { return m_mp; }
@@ -62,6 +68,17 @@ public:
 	void SetDodge(int dat){ m_dodge = dat; }
 
 private:
+	void ValidateHP()
+	{
+		if (m_hp > GetMaxHP())
+		{
+			m_hp = GetMaxHP();
+		}
+		else if (m_hp <= 0)
+		{
+			m_state = CharacterState::DEAD;
+		}
+	}
 	int m_hp;
 	int m_maxhp;
 	int m_mp;
@@ -76,7 +93,7 @@ private:
 class Weapon
 {
 public:
-	Weapon() {}
+	Weapon(): m_name(""), m_accuracy(50) {}
 	Weapon(const std::string &name)
 	{
 		m_name = name;
@@ -104,7 +121,7 @@ enum class ArmorType
 class Armor
 {
 public:
-	Armor() {}
+	Armor() :m_name(""),m_type(ArmorType::BODY),m_dodge(50){}
 	Armor(const std::string &name, ArmorType at): m_name(name), m_type(at),
 		m_dodge(50){}
 	std::string GetName() const { return m_name; }
@@ -131,9 +148,8 @@ enum class UseType
 class Item
 {
 public:
-	Item() {}
-	Item(const std::string &name, UseType ut) :m_name(name), m_type(ut),
-		m_level(1){}
+	Item() :m_name(""), m_type(UseType::VS_SINGLE){}
+	Item(const std::string &name, UseType ut) :m_name(name), m_type(ut){}
 	std::string GetName() const { return m_name; }
 	void SetName(std::string name){ m_name = name; }
 	UseType GetType() const { return m_type; }
@@ -141,7 +157,6 @@ public:
 private:
 	std::string m_name;
 	UseType m_type;
-	int m_level;
 };
 
 class Spell
@@ -166,10 +181,11 @@ public:
 	CharacterInventory():m_money(0)
 	{
 		m_weapons.push_back(Weapon("Sword"));
+		m_equipped_w_idx = 0;
 		m_head_armors.push_back(Armor("Helmet #17", ArmorType::HEAD));
-		m_head_armors.push_back(Armor("Body", ArmorType::BODY));
-		m_head_armors.push_back(Armor("Jeans", ArmorType::LEGS));
-		m_head_armors.push_back(Armor("Crocs", ArmorType::FEET));
+		m_body_armors.push_back(Armor("Body", ArmorType::BODY));
+		m_legs_armors.push_back(Armor("Jeans", ArmorType::LEGS));
+		m_feet_armors.push_back(Armor("Crocs", ArmorType::FEET));
 		m_items.push_back(Item("Heal Potion", UseType::FRIENDLY_SINGLE));
 		m_items.push_back(Item("Mega Heal Potion", UseType::FRIENDLY_AOE));
 		m_items.push_back(Item("Throwy Glass", UseType::VS_SINGLE));
@@ -184,9 +200,9 @@ public:
 	int GetNSpells() const { return m_items.size(); }
 	int GetWeaponAccuracy() const
 	{
-		if (equipped_w_idx >= 0)
+		if (m_equipped_w_idx >= 0)
 		{
-			return m_weapons[equipped_w_idx].GetAccuracy();
+			return m_weapons[m_equipped_w_idx].GetAccuracy();
 		}
 		return 1;
 	}
@@ -197,33 +213,33 @@ public:
 
 		if (at == ArmorType::BODY)
 		{
-			if (equipped_body_idx >= 0)
+			if (m_equipped_body_idx >= 0)
 			{
-				results = m_body_armors[equipped_body_idx].GetDodge();
+				results = m_body_armors[m_equipped_body_idx].GetDodge();
 			}
 			results = 0;
 		}
 		else if (at == ArmorType::FEET)
 		{
-			if (equipped_feet_idx >= 0)
+			if (m_equipped_feet_idx >= 0)
 			{
-				results = m_feet_armors[equipped_feet_idx].GetDodge();
+				results = m_feet_armors[m_equipped_feet_idx].GetDodge();
 			}
 			results = 0;
 		}
 		else if (at == ArmorType::HEAD)
 		{
-			if (equipped_head_idx >= 0)
+			if (m_equipped_head_idx >= 0)
 			{
-				results = m_head_armors[equipped_head_idx].GetDodge();
+				results = m_head_armors[m_equipped_head_idx].GetDodge();
 			}
 			results = 0;
 		}
 		else  //ArmorType::LEGS
 		{
-			if (equipped_legs_idx >= 0)
+			if (m_equipped_legs_idx >= 0)
 			{
-				results = m_legs_armors[equipped_legs_idx].GetDodge();
+				results = m_legs_armors[m_equipped_legs_idx].GetDodge();
 			}
 			results = 0;
 		}
@@ -232,11 +248,11 @@ public:
 	}
 
 private:
-	int equipped_w_idx;
-	int equipped_head_idx;
-	int equipped_body_idx;
-	int equipped_legs_idx;
-	int equipped_feet_idx;
+	int m_equipped_w_idx;
+	int m_equipped_head_idx;
+	int m_equipped_body_idx;
+	int m_equipped_legs_idx;
+	int m_equipped_feet_idx;
 	std::vector< Weapon > m_weapons;
 	std::vector< Armor > m_head_armors;
 	std::vector< Armor > m_body_armors;
@@ -272,6 +288,7 @@ public:
    int GetDodge() const { return m_attr.GetDodge(); }
    int GetArmorDodge(ArmorType &typ) const{ return m_inv.GetArmorDodge(typ); }
 
+   void ModifyHP(int delta){ m_attr.ModifyHP(delta); }
    void SetName(const std::string &name);
    void SetCharacterType(const CharacterType &ctype);
    void SetHP(int dat){ m_attr.SetHP(dat); }

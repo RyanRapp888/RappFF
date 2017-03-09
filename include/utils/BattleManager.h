@@ -57,7 +57,7 @@ struct BattleEvent
 	int item_idx;
 };
 
-enum class BattleRoundOutcome
+enum class OutcomeType
 {
 	ALL_HEROES_DIED,
 	ALL_MOBS_DIED,
@@ -80,6 +80,24 @@ struct Loot
 	std::vector<Weapon> m_weapons;
 };
 
+
+
+class BattleRoundOutcome
+{
+public:
+
+	BattleRoundOutcome() :m_type(OutcomeType::BATTLE_ONGOING){}
+	void SetOutcomeType(OutcomeType dat){ m_type = dat; }
+	OutcomeType GetOutcomeType() const{ return m_type; }
+	void SetLoot(Loot &dat){ m_loot = dat; }
+	Loot GetLoot() const{ return m_loot; }
+private:
+
+	Loot m_loot;
+	OutcomeType m_type;
+
+};
+
 class BattleManager
 {
 
@@ -89,7 +107,7 @@ public:
 	void SetMobs(std::vector<Character> dat);
 	void SetHeroes(std::vector<Character *> &dat);
 	void AddBattleEvent(BattleEvent be){ m_battle_queue.emplace_back(be); }
-	void ClearFightEnded(){ m_fight_ended = false; }
+	void ClearFightEnded(){ m_battle_queue.clear(); m_fight_ended = false; }
 	
 	int GetNMonsters() const{ return m_mobs.size(); }
 	int GetNItems(int hero_idx){ return m_hero_ptrs[hero_idx]->GetNItems(); }
@@ -98,7 +116,10 @@ public:
 	TileType GetMonsterTileType(int monster_id){ return m_mobs[monster_id].GetTileType(); }
 	std::string GetMonsterName(int monster_id){ return m_mobs[monster_id].GetName(); }
 	void Clear(){ m_mobs.clear(); m_hero_ptrs.clear(); m_battle_queue.clear(); }
-	void ProcessQueue(BattleRoundOutcome &outcome, Loot &loot);
+	void ProcessQueue(BattleRoundOutcome &outcome);
+	void CheckMobParty(BattleRoundOutcome &outcome);
+	void CheckHeroParty(BattleRoundOutcome &outcome);
+	void CalculateLoot(BattleRoundOutcome &outcome);
 
 private:
 	bool m_fight_ended;

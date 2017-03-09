@@ -47,6 +47,34 @@ static int get_rand_0_99()
 	return result;
 }
 
+void BattleManager::CalculateLoot(BattleRoundOutcome &outcome)
+{
+	Loot testloot;
+	testloot.m_pooled_money = 50;
+	testloot.m_items.push_back(Item("Pot of Dust", UseType::FRIENDLY_AOE));
+	testloot.m_weapons.push_back(Weapon("Hickory Switch"));
+	outcome.SetLoot(testloot);
+}
+
+void BattleManager::CheckMobParty(BattleRoundOutcome &outcome)
+{
+	bool all_mobs_dead(true);
+	for (int mm = 0; mm < m_mobs.size(); mm++)
+	{
+		if (!m_mobs[mm].IsDead())
+		{
+			all_mobs_dead = false;
+			break;
+		}
+	}
+
+	if (all_mobs_dead)
+	{
+		outcome.SetOutcomeType(OutcomeType::ALL_MOBS_DIED);
+		
+	}
+}
+
 void BattleManager::ProcessAttackEvent(BattleEvent &cur_be, BattleRoundOutcome &outcome)
 {
 	bool is_hit(false);
@@ -85,14 +113,13 @@ void BattleManager::ProcessAttackEvent(BattleEvent &cur_be, BattleRoundOutcome &
 					}
 				}
 			}
+
+			if (is_hit)
+			{
+				mm.ModifyHP(-100);
+				CheckMobParty(outcome);
+    		}
 		}
-
-		if (is_hit)
-		{
-
-			//Stuff
-		}
-
 	}
 	else
 	{
@@ -115,7 +142,7 @@ void BattleManager::ProcessItemEvent(BattleEvent &cur_be, BattleRoundOutcome &ou
 
 void BattleManager::ProcessRetreatEvent(BattleEvent &cur_be, BattleRoundOutcome &outcome)
 {
-	outcome = BattleRoundOutcome::BATTLE_ONGOING;
+	outcome.SetOutcomeType(OutcomeType::BATTLE_ONGOING);
 
 	if (cur_be.is_actor_hero)
 	{
@@ -139,7 +166,7 @@ void BattleManager::ProcessRetreatEvent(BattleEvent &cur_be, BattleRoundOutcome 
 			if (n_active_mobs == 0)
 			{
 				// This should never happen
-				outcome = BattleRoundOutcome::HEROES_RETREATED;
+				outcome.SetOutcomeType(OutcomeType::HEROES_RETREATED);
 				return;
 			}
 			else
@@ -149,7 +176,7 @@ void BattleManager::ProcessRetreatEvent(BattleEvent &cur_be, BattleRoundOutcome 
 				int rand = get_rand_0_99();
 				if (pct >= rand)
 				{
-					outcome = BattleRoundOutcome::HEROES_RETREATED;
+					outcome.SetOutcomeType(OutcomeType::HEROES_RETREATED);
 				}
 			}
 		}
@@ -175,7 +202,7 @@ void BattleManager::ProcessRetreatEvent(BattleEvent &cur_be, BattleRoundOutcome 
 
 			if (n_active_heroes == 0)
 			{
-				outcome = BattleRoundOutcome::MOBS_RETREATED;
+				outcome.SetOutcomeType(OutcomeType::MOBS_RETREATED);
 				return;
 			}
 			else
@@ -185,17 +212,17 @@ void BattleManager::ProcessRetreatEvent(BattleEvent &cur_be, BattleRoundOutcome 
 				int rand = get_rand_0_99();
 				if (pct >= rand)
 				{
-					outcome = BattleRoundOutcome::MOBS_RETREATED;
+					outcome.SetOutcomeType(OutcomeType::MOBS_RETREATED);
 				}
 			}
 		}
 	}
 }
 
-void BattleManager::ProcessQueue(BattleRoundOutcome &outcome, Loot &loot)
+void BattleManager::ProcessQueue(BattleRoundOutcome &outcome)
 {
 	int pos(0);
-	outcome = BattleRoundOutcome::BATTLE_ONGOING;
+	outcome.SetOutcomeType(OutcomeType::BATTLE_ONGOING);
 
 	while(!m_fight_ended && pos < m_battle_queue.size())
 	{
@@ -216,13 +243,21 @@ void BattleManager::ProcessQueue(BattleRoundOutcome &outcome, Loot &loot)
 		else if (cur_be.action_type_id == ActionType::RETREAT)
 		{
 			ProcessRetreatEvent(cur_be, outcome);
-			if (outcome == BattleRoundOutcome::HEROES_RETREATED ||
-				outcome == BattleRoundOutcome::MOBS_RETREATED)
+			if (outcome.GetOutcomeType() == OutcomeType::HEROES_RETREATED ||
+				outcome.GetOutcomeType() == OutcomeType::MOBS_RETREATED)
 			{
 				m_fight_ended = true;
-				m_battle_queue.clear();
 			}
 		}
+
+		if (outcome.GetOutcomeType() == OutcomeType::ALL_MOBS_DIED)
+		{
+			CalculateLoot(outcome);
+			m_fight_ended = true;
+		}
+
 		pos++;
 	}
+
+	m_battle_queue.clear();
 }
