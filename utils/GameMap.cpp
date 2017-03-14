@@ -227,20 +227,20 @@ std::vector<Character> GameMap::GetMonsters(int x, int y)
 
 	results[1].SetName("Skeleton");
 	results[1].SetCharacterType(CharacterType::SKELETON);
-	results[0].SetHP(20);
-	results[0].SetMaxHP(20);
+	results[1].SetHP(20);
+	results[1].SetMaxHP(20);
 	results[1].SetLocation(-99, -99);
 
 	results[2].SetName("Enraged Bear");
 	results[2].SetCharacterType(CharacterType::BEAR);
-	results[0].SetHP(20);
-	results[0].SetMaxHP(20);
+	results[2].SetHP(20);
+	results[2].SetMaxHP(20);
 	results[2].SetLocation(-99, -99);
 
 	results[3].SetName("Magic Bear");
 	results[3].SetCharacterType(CharacterType::BEAR);
-	results[0].SetHP(20);
-	results[0].SetMaxHP(20);
+	results[3].SetHP(20);
+	results[3].SetMaxHP(20);
 	results[3].SetLocation(-99, -99);
 	return results;
 }

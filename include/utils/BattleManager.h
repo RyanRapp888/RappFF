@@ -17,44 +17,44 @@ struct BattleEvent
 {
 	BattleEvent()
 	{
-		is_actor_hero = true;
-		is_aoe = false;
-		is_aoe_target_heroes = false;
-		actor_idx = -1;
-		target_idx = -1;
-		action_type_id = ActionType::NOACTION;
-		item_idx = -1;
+		m_is_actor_hero = true;
+		m_is_aoe = false;
+		m_is_aoe_target_heroes = false;
+		m_actor_idx = -1;
+		m_target_idx = -1;
+		m_action_type_id = ActionType::NOACTION;
+		m_item_idx = -1;
 	}
 
-	BattleEvent(bool iah, bool ia, bool iath, int ai, int ti, ActionType ati, int ii)
+	BattleEvent(bool is_actor_hero, bool is_aoe, bool is_aoe_target_heroes, int actor_idx, int target_idx, ActionType action_type_id, int itemidx)
 	{
-		is_actor_hero = iah;
-		is_aoe = ia;
-		is_aoe_target_heroes = iath;
-		actor_idx = ai;
-		target_idx = ti;
-		action_type_id = ati;
-		item_idx = ii;
+		m_is_actor_hero = is_actor_hero;
+		m_is_aoe = is_aoe;
+		m_is_aoe_target_heroes = is_aoe_target_heroes;
+		m_actor_idx = actor_idx;
+		m_target_idx = target_idx;
+		m_action_type_id = action_type_id;
+		m_item_idx = itemidx;
 	}
 
 	void SetAsRetreatEvent(int actor_retreating_idx)
 	{
-		is_actor_hero = true;
-		is_aoe = false;
-		is_aoe_target_heroes = false;
-		actor_idx = actor_retreating_idx;
-		target_idx = -1;
-		action_type_id = ActionType::RETREAT;
-		item_idx = -1;
+		m_is_actor_hero = true;
+		m_is_aoe = false;
+		m_is_aoe_target_heroes = false;
+		m_actor_idx = actor_retreating_idx;
+		m_target_idx = -1;
+		m_action_type_id = ActionType::RETREAT;
+		m_item_idx = -1;
 	}
 
-	bool is_actor_hero;
-	bool is_aoe;
-	bool is_aoe_target_heroes;
-	int actor_idx;
-	int target_idx;
-	ActionType action_type_id;
-	int item_idx;
+	bool m_is_actor_hero;
+	bool m_is_aoe;
+	bool m_is_aoe_target_heroes;
+	int m_actor_idx;
+	int m_target_idx;
+	ActionType m_action_type_id;
+	int m_item_idx;
 };
 
 enum class OutcomeType
@@ -107,7 +107,7 @@ public:
 	void SetMobs(std::vector<Character> dat);
 	void SetHeroes(std::vector<Character *> &dat);
 	void AddBattleEvent(BattleEvent be){ m_battle_queue.emplace_back(be); }
-	void ClearFightEnded(){ m_battle_queue.clear(); m_fight_ended = false; }
+	void ClearFightEnded(){ m_battle_queue.clear(); m_fight_ended = false; m_mobs.clear(); }
 	
 	int GetNMonsters() const{ return m_mobs.size(); }
 	int GetNItems(int hero_idx){ return m_hero_ptrs[hero_idx]->GetNItems(); }
@@ -120,6 +120,7 @@ public:
 	void CheckMobParty(BattleRoundOutcome &outcome);
 	void CheckHeroParty(BattleRoundOutcome &outcome);
 	void CalculateLoot(BattleRoundOutcome &outcome);
+	
 
 private:
 	bool m_fight_ended;
@@ -130,6 +131,7 @@ private:
 	void ProcessSpecialEvent(BattleEvent &cur_be, BattleRoundOutcome &outcome);
 	void ProcessItemEvent(BattleEvent &cur_be, BattleRoundOutcome &outcome);
 	void ProcessRetreatEvent(BattleEvent &cur_be, BattleRoundOutcome &outcome);
+	int CalculateAttackPts(Character *agressor, Character *defender, ArmorType &at);
 };
 
 #endif
