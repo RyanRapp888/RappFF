@@ -22,6 +22,7 @@
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="ObjLoader.cpp" />
     <ClCompile Include="Observer.cpp" />
+    <ClCompile Include="RandUtils.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SkyboxShader.cpp" />
     <ClCompile Include="StbImage.c" />
@@ -47,6 +48,7 @@
     <ClInclude Include="..\include\utils\Mesh.h" />
     <ClInclude Include="..\include\utils\ObjLoader.h" />
     <ClInclude Include="..\include\utils\Observer.h" />
+    <ClInclude Include="..\include\utils\RandUtils.h" />
     <ClInclude Include="..\include\utils\RGB.h" />
     <ClInclude Include="..\include\utils\Shader.h" />
     <ClInclude Include="..\include\utils\SkyboxShader.h" />

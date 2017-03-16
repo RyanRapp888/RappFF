@@ -82,6 +82,7 @@ private:
 		else if (m_hp <= 0)
 		{
 			m_state = CharacterState::DEAD;
+			m_hp = 0;
 		}
 	}
 	int m_hp;

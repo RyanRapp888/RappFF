@@ -9,9 +9,9 @@
 #include "StbImage.h"
 #include "Text.h"
 #include <sstream>
-
+#include "RandUtils.h"
 //bool SetUpSkybox(GLuint &cube_vao, GLuint &cube_text_id);
-static int get_rand();
+
 
 void TheGame::Play()
 {
@@ -290,15 +290,15 @@ void TheGame::KeyHandler(int key, int scancode, int action, int mods)
 				if (!m_chatting && m_mainchar.SetLocation(xx, yy))
 				{
 					GameMap *gamemap_ptr = GameMap::GetInstance();
-					int randy = get_rand();
-					int monster_odds = gamemap_ptr->GetMonsterOdds(xx, yy);
-					if (randy <= monster_odds)
+					int randy = get_rand_0_99();
+					int mob_odds = gamemap_ptr->GetMobOdds(xx, yy);
+					if (randy <= mob_odds)
 					{
 						std::cout << "FIGHTY MODE!!!" << std::endl;
 						SetCurMode(GameMode::FightMode);
 
 					}
-					std::cout << randy << " out of " << monster_odds << std::endl;
+					std::cout << randy << " out of " << mob_odds << std::endl;
 					std::cout << "(" << xx << "," << yy << ")" << std::endl;
 				}
 			}
@@ -362,15 +362,3 @@ bool SetUpSkybox(GLuint &cube_vao, GLuint &cube_text_id)
 	return true;
 }
 */
-
-static int get_rand()
-{
-	static bool is_seeded(false);
-	if (!is_seeded)
-	{
-		srand(14);
-		is_seeded = true;
-	}
-	int result = rand() % 100;
-	return result;
-}

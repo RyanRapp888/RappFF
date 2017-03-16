@@ -1,6 +1,6 @@
 #include <iostream>
 #include "FightMode.h"
-
+#include "RandUtils.h"
 using namespace std;
 
 void PopulateMobData(std::vector<Character> &mobs, int level)
@@ -112,9 +112,25 @@ void AttackTest(BattleManager &bm, BattleRoundOutcome &bro)
 
 }
 
-
 int main(void)
 {
+	std::map<int, int> counts;
+	for (int aa = 0; aa < 10000000; aa++)
+	{
+		int rando = get_rand_0_x(3);
+		counts[rando]++;
+	}
+
+	std::cout << "Counts = " << std::endl;
+	for (const auto cur : counts)
+	{
+		std::cout << cur.first << " -> " << cur.second << std::endl;
+	}
+
+	int abc;
+	std::cin >> abc;
+
+	/*
 	GameMap *gamemap_ptr = GameMap::GetInstance();
 
 	if (!gamemap_ptr->LoadGameMap(256, 256))
@@ -136,7 +152,7 @@ int main(void)
 	hptrs[2] = &h[2];
 	hptrs[3] = &h[3];
 	battle_manager.SetHeroes(hptrs);
-	battle_manager.SetMobs(gamemap_ptr->GetMonsters(0,0));
+	battle_manager.SetMobs(gamemap_ptr->GetMobs(0,0));
 
 	BattleRoundOutcome bro;
 	Loot lt;
@@ -171,6 +187,6 @@ int main(void)
 		AttackTest(battle_manager, bro);
 	}
 
-
+	*/
 	return true;
 }

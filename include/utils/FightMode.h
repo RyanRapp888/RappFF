@@ -10,12 +10,12 @@
 
 #define N_FRAMES 3
 
-enum class FightSubMode
+enum class FightPickMode
 {
 	PICK_ACTION,       // m_cur_action_idx
 	PICK_ITEM,         // m_cur_item_idx
 	PICK_ITEM_TARGET,  // m_cur_item_target_idx
-	PICK_MONSTER,      // m_cur_monster_idx
+	PICK_MOB,      // m_cur_mob_idx
 	PICK_NOMODE
 };
 
@@ -29,18 +29,20 @@ public:
 	void Refresh();
 	bool HandleKey(int key, int scancode, int action, int mods);
 	void StartFight();
+	void StartBattleRound();
 	void AdvanceToNextHero();
 	bool FightEnded(){ return m_fight_ended; }
+	
 		
 private:
 
 	void DrawTopWindow();
-	void DrawMonsterWindow();
+	void DrawMobWindow();
 	void DrawHeroWindow();
 	
 	int m_hero_turn_idx;
 	int m_cur_action_idx;
-	int m_cur_monster_idx;
+	int m_cur_mob_idx;
 	int m_cur_item_idx;
 	int m_cur_item_target_idx;
 	bool m_fight_ended;
@@ -49,9 +51,9 @@ private:
 	BattleManager m_battle;
 	bool m_hero_turn;
 	Tile m_top_tile;
-	Tile m_monsterstats_tile;
+	Tile m_mobstats_tile;
 	Tile m_herostats_tile;
-	FightSubMode m_sub_mode;
+	FightPickMode m_sub_mode;
 	Text *m_texthandler_ptr;
 	GLuint m_primary_shaderid;
 };

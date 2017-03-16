@@ -4,7 +4,7 @@
 #include <sstream>
 
 #define HERO_VERT_SPACING .19
-#define MONSTER_VERT_SPACING .1
+#define MOB_VERT_SPACING .1
 
 FightMode::FightMode(Viewport *vpt, double origxpct, double origypct, double w_pct, double h_pct) :
 WindowSection(vpt, origxpct, origypct, w_pct, h_pct), m_texthandler_ptr(nullptr), m_primary_shaderid(0)
@@ -13,9 +13,9 @@ WindowSection(vpt, origxpct, origypct, w_pct, h_pct), m_texthandler_ptr(nullptr)
 	m_top_tile.SetTileType(TileType::GRASS);
 	m_top_tile.SetRelativeLocation(0, .5, 1, .5);
 
-	m_monsterstats_tile.SetTileType(TileType::FRAME);
-	m_monsterstats_tile.SetWindowSectionPtr(this);
-	m_monsterstats_tile.SetRelativeLocation(0, 0, .5, .5);
+	m_mobstats_tile.SetTileType(TileType::FRAME);
+	m_mobstats_tile.SetWindowSectionPtr(this);
+	m_mobstats_tile.SetRelativeLocation(0, 0, .5, .5);
 
 	m_herostats_tile.SetWindowSectionPtr(this);
 	m_herostats_tile.SetTileType(TileType::FRAME);
@@ -23,9 +23,26 @@ WindowSection(vpt, origxpct, origypct, w_pct, h_pct), m_texthandler_ptr(nullptr)
 
 	m_fight_ended = false;
 	m_enable = false;
-	m_sub_mode = FightSubMode::PICK_NOMODE;
+	m_sub_mode = FightPickMode::PICK_NOMODE;
 	m_hero_turn = true;
 	m_hero_turn_idx = 0;
+}
+
+void FightMode::StartBattleRound()
+{
+	m_hero_turn_idx = -1;
+	AdvanceToNextHero();
+
+	m_cur_action_idx = 0;
+	m_battle.LookForAliveMob(0, 1, m_cur_mob_idx);
+	m_cur_item_idx = 0;
+	m_cur_item_target_idx = 0;
+	m_fight_ended = false;
+	m_hero_anim_pct = 0;
+	m_hero_anim_dir = -1;
+
+	bool m_hero_turn = true;
+	m_sub_mode = FightPickMode::PICK_ACTION;
 }
 
 void FightMode::StartFight()
@@ -33,23 +50,26 @@ void FightMode::StartFight()
    GameMap *gm = GameMap::GetInstance();
    Character *mainchar = gm->GetMainCharPtr();
   
+   m_fight_ended = false;
+   m_battle.ClearFightEnded();
    std::vector<Character *> tmp;
    gm->GetCurHeroes(tmp);
+
    m_battle.Clear();
    m_battle.SetHeroes(tmp);
-   m_battle.SetMobs(gm->GetMonsters(mainchar->GetX(), mainchar->GetY()));
 
-   m_hero_turn_idx = 0;
-   m_cur_action_idx = 0;
-   m_cur_monster_idx = 0;
-   m_cur_item_idx = 0;
-   m_cur_item_target_idx = 0;
-   m_fight_ended = false;
-   m_hero_anim_pct = 0;
-   m_hero_anim_dir = -1;
-   
-   bool m_hero_turn = true;
-   m_sub_mode = FightSubMode::PICK_ACTION;
+   int dummy;
+   bool is_party_alive = m_battle.LookForActiveHero(0, 1, dummy);
+   if (is_party_alive)
+   {
+	   m_battle.SetMobs(gm->GetMobs(mainchar->GetX(), mainchar->GetY()));
+	   StartBattleRound();
+   }
+   else
+   {
+	   m_fight_ended = true;
+   }
+
 }
 
 bool FightMode::SetTextHandler(Text *texthandler)
@@ -69,7 +89,7 @@ void FightMode::Refresh()
 	if (!m_enable) return;
 	
 	DrawTopWindow();
-	DrawMonsterWindow();
+	DrawMobWindow();
 	DrawHeroWindow();
 
 	WindowSection::Refresh();
@@ -87,19 +107,22 @@ void FightMode::AdvanceToNextHero()
 			m_cur_action_idx = 0;
 			m_cur_item_idx = 0;
 			m_cur_item_target_idx = 0;
-			m_cur_monster_idx = 0;
-			m_sub_mode = FightSubMode::PICK_NOMODE;
-			break;
+			m_cur_mob_idx = 0;
+			m_sub_mode = FightPickMode::PICK_NOMODE;
+			return;
 		}
 
 		if (m_battle.IsHeroActive(m_hero_turn_idx))
 		{
+			m_hero_turn = true;
 			m_cur_action_idx = 0;
 			m_cur_item_idx = 0;
 			m_cur_item_target_idx = 0;
-			m_cur_monster_idx = 0;
-			m_sub_mode = FightSubMode::PICK_ACTION;
-			break;
+			m_battle.LookForAliveMob(0, 1, m_cur_mob_idx);
+			m_hero_anim_pct = 0;
+			m_hero_anim_dir = -1;
+			m_sub_mode = FightPickMode::PICK_ACTION;
+			return;
 		}
 
 	} while (m_hero_turn_idx <= m_battle.GetNHeroes() && m_hero_turn == true);
@@ -116,7 +139,7 @@ bool FightMode::HandleKey(int key, int scancode, int action, int mods)
 		}
 		else if (key == GLFW_KEY_DOWN)
 		{
-			if (m_sub_mode == FightSubMode::PICK_ACTION)
+			if (m_sub_mode == FightPickMode::PICK_ACTION)
 			{
 				m_cur_action_idx++;
 				std::vector<std::string> fo = m_battle.GetFightOptions();
@@ -125,15 +148,12 @@ bool FightMode::HandleKey(int key, int scancode, int action, int mods)
 					m_cur_action_idx = fo.size() - 1;
 				}
 			}
-			else if (m_sub_mode == FightSubMode::PICK_MONSTER)
+			else if (m_sub_mode == FightPickMode::PICK_MOB)
 			{
-				m_cur_monster_idx++;
-				if (m_cur_monster_idx >= m_battle.GetNMonsters())
-				{
-					m_cur_monster_idx = m_battle.GetNMonsters() - 1;
-				}
+				int start_idx = m_cur_mob_idx + 1;
+				bool found = m_battle.LookForAliveMob(start_idx, 1, m_cur_mob_idx);
 			}
-			else if (m_sub_mode == FightSubMode::PICK_ITEM)
+			else if (m_sub_mode == FightPickMode::PICK_ITEM)
 			{
 				m_cur_item_idx++;
 				GameMap *mapptr = GameMap::GetInstance();
@@ -144,7 +164,7 @@ bool FightMode::HandleKey(int key, int scancode, int action, int mods)
 					m_cur_item_idx = heroes[m_hero_turn_idx]->GetNItems() - 1;
 				}
 			}
-			else if (m_sub_mode == FightSubMode::PICK_ITEM_TARGET)
+			else if (m_sub_mode == FightPickMode::PICK_ITEM_TARGET)
 			{
 				GameMap *mapptr = GameMap::GetInstance();
 				std::vector<Character *> heroes;
@@ -160,55 +180,52 @@ bool FightMode::HandleKey(int key, int scancode, int action, int mods)
 				}
 				else if (curitem.GetType() == UseType::VS_SINGLE)
 				{
-					m_cur_item_target_idx++;
-					if (m_cur_item_target_idx >= m_battle.GetNMonsters())
-					{
-						m_cur_item_target_idx = m_battle.GetNMonsters() - 1;
-					}
-				}
+					int start_idx = m_cur_item_target_idx + 1;
+					bool found = m_battle.LookForAliveMob(start_idx, 1, m_cur_item_target_idx);
+    			}
 			}
 		}
 		else if (key == GLFW_KEY_UP)
 		{
-			if (m_sub_mode == FightSubMode::PICK_ACTION)
+			if (m_sub_mode == FightPickMode::PICK_ACTION)
 			{
 				m_cur_action_idx--;
 				if (m_cur_action_idx < 0) m_cur_action_idx = 0;
 			}
-			else if (m_sub_mode == FightSubMode::PICK_MONSTER)
+			else if (m_sub_mode == FightPickMode::PICK_MOB)
 			{
-				m_cur_monster_idx--;
-				if (m_cur_monster_idx < 0)	m_cur_monster_idx = 0;
+				int start_idx = m_cur_mob_idx - 1;
+				bool found = m_battle.LookForAliveMob(start_idx, -1, m_cur_mob_idx);
 			}
-			else if (m_sub_mode == FightSubMode::PICK_ITEM)
+			else if (m_sub_mode == FightPickMode::PICK_ITEM)
 			{
 				m_cur_item_idx--;
 				if (m_cur_item_idx < 0)	m_cur_item_idx = 0;
 			}
-			else if (m_sub_mode == FightSubMode::PICK_ITEM_TARGET)
+			else if (m_sub_mode == FightPickMode::PICK_ITEM_TARGET)
 			{
-				m_cur_item_target_idx--;
-				if (m_cur_item_target_idx < 0) m_cur_item_target_idx = 0;
+				int start_idx = m_cur_item_target_idx - 1;
+				bool found = m_battle.LookForAliveMob(start_idx, -1, m_cur_item_target_idx);
 			}
 		}
 		else if (key == GLFW_KEY_ENTER)
 		{
-			if (m_sub_mode == FightSubMode::PICK_ACTION)
+			if (m_sub_mode == FightPickMode::PICK_ACTION)
 			{
 				if (m_cur_action_idx == 0)
 				{
-					//single monster fight
-					m_sub_mode = FightSubMode::PICK_MONSTER;
+					//single mob fight
+					m_sub_mode = FightPickMode::PICK_MOB;
 				}
 				else if (m_cur_action_idx == 1)
 				{
 					//special attack (probably single)
-					m_sub_mode = FightSubMode::PICK_MONSTER;
+					m_sub_mode = FightPickMode::PICK_MOB;
 				}
 				else if (m_cur_action_idx == 2)
 				{
 					//item select
-					m_sub_mode = FightSubMode::PICK_ITEM;
+					m_sub_mode = FightPickMode::PICK_ITEM;
 				}
 				else
 				{
@@ -218,14 +235,14 @@ bool FightMode::HandleKey(int key, int scancode, int action, int mods)
 					AdvanceToNextHero();
 				}
 			}
-			else if (m_sub_mode == FightSubMode::PICK_MONSTER)
+			else if (m_sub_mode == FightPickMode::PICK_MOB)
 			{
 				ActionType tmp = static_cast<ActionType>(m_cur_action_idx);
-				BattleEvent be_single_monster(true, false, false, m_hero_turn_idx, m_cur_monster_idx, tmp, m_cur_item_idx);
-				m_battle.AddBattleEvent(be_single_monster);
+				BattleEvent be_single_mob(true, false, false, m_hero_turn_idx, m_cur_mob_idx, tmp, m_cur_item_idx);
+				m_battle.AddBattleEvent(be_single_mob);
 				AdvanceToNextHero();
 			}
-			else if (m_sub_mode == FightSubMode::PICK_ITEM)
+			else if (m_sub_mode == FightPickMode::PICK_ITEM)
 			{
 				GameMap *mapptr = GameMap::GetInstance();
 				std::vector<Character *> heroes;
@@ -234,7 +251,7 @@ bool FightMode::HandleKey(int key, int scancode, int action, int mods)
 				if (curitem.GetType() == UseType::FRIENDLY_SINGLE || curitem.GetType() == UseType::VS_SINGLE)
 				{
 					m_cur_item_target_idx = 0;
-					m_sub_mode = FightSubMode::PICK_ITEM_TARGET;
+					m_sub_mode = FightPickMode::PICK_ITEM_TARGET;
 				}
 				else if (curitem.GetType() == UseType::FRIENDLY_AOE || curitem.GetType() == UseType::VS_AOE)
 				{
@@ -245,7 +262,7 @@ bool FightMode::HandleKey(int key, int scancode, int action, int mods)
 					AdvanceToNextHero();
 				}
 			}
-			else if (m_sub_mode == FightSubMode::PICK_ITEM_TARGET)
+			else if (m_sub_mode == FightPickMode::PICK_ITEM_TARGET)
 			{
 				GameMap *mapptr = GameMap::GetInstance();
 				std::vector<Character *> heroes;
@@ -258,6 +275,41 @@ bool FightMode::HandleKey(int key, int scancode, int action, int mods)
 					BattleEvent item_use_event(true, false, false, m_hero_turn_idx, m_cur_item_target_idx, tmp, m_cur_item_idx);
 					m_battle.AddBattleEvent(item_use_event);
 					AdvanceToNextHero();
+				}
+			}
+			if (!m_hero_turn)
+			{
+				m_battle.AddMobOffenseEvents();
+				BattleRoundOutcome battle_round_outcome;
+				m_battle.ProcessQueue(battle_round_outcome);
+				OutcomeType round_outcome = battle_round_outcome.GetOutcomeType();
+				if (round_outcome == OutcomeType::BATTLE_ONGOING)
+				{
+					m_hero_turn_idx = -1;
+					StartBattleRound();
+				}
+				else if (round_outcome == OutcomeType::ALL_HEROES_DIED)
+				{
+					std::cout << "Boooo! All Heroes Died!" << std::endl;
+					m_fight_ended = true;
+				}
+				else if (round_outcome == OutcomeType::ALL_MOBS_DIED)
+				{
+					std::cout << "Yay! All Mobs Died!" << std::endl;
+					std::cout << "Loot:" << std::endl;
+					std::cout << battle_round_outcome.GetLoot().GetLootString();
+					m_fight_ended = true;
+				}
+				else if (round_outcome == OutcomeType::HEROES_RETREATED)
+				{
+					std::cout << "Heroes Ran Away Bravely!" << std::endl;
+					m_fight_ended = true;
+
+				}
+				else if (round_outcome == OutcomeType::MOBS_RETREATED)
+				{
+					std::cout << "Mobs Ran Away Cowardly!" << std::endl;
+					m_fight_ended = true;
 				}
 			}
 		}
@@ -307,7 +359,16 @@ void FightMode::DrawTopWindow()
 		double charoriginy = ydrawpos + (m_top_tile.GetRelativeHeight_01() * 2) * (.8 - (cc * .22));
 		Mesh curchar;
 		curchar.LoadMesh(GetMeshFilename(cur_heroes[cc]->GetTileType()));
-		curchar.UseTexture(GetTextureFilename(cur_heroes[cc]->GetTileType()));
+
+		if (!cur_heroes[cc]->IsDead())
+		{
+			curchar.UseTexture(GetTextureFilename(cur_heroes[cc]->GetTileType()));
+		}
+		else
+		{
+			curchar.UseTexture(GetTextureFilename(TileType::MUD));
+		}
+			
 		glm::mat4 *translations = new glm::mat4[1];
 
 		if (m_hero_turn && m_hero_turn_idx == cc)
@@ -328,7 +389,7 @@ void FightMode::DrawTopWindow()
 		delete[] translations;
 		curchar.Render();
 
-		if (m_sub_mode == FightSubMode::PICK_ITEM_TARGET)
+		if (m_sub_mode == FightPickMode::PICK_ITEM_TARGET)
 		{
 			const Item &curitem = cur_heroes[m_hero_turn_idx]->GetItemRef(m_cur_item_idx);
 			if (curitem.GetType() == UseType::FRIENDLY_SINGLE)
@@ -354,30 +415,39 @@ void FightMode::DrawTopWindow()
 		}
 	}
 
-	for (int dd = 0; dd < m_battle.GetNMonsters(); dd++)
+	for (int dd = 0; dd < m_battle.GetNMobs(); dd++)
 	{
 		double xdrawpos = m_top_tile.GetXDrawPos_N11();
 		double ydrawpos = m_top_tile.GetYDrawPos_N11();
-		double monsteroriginx = xdrawpos + (m_top_tile.GetRelativeWidth_01() * 2) * .15;
-		double monsteroriginy = ydrawpos + (m_top_tile.GetRelativeHeight_01() * 2) * (.8 - (dd * .22));
-		Mesh curmonster;
-		curmonster.LoadMesh(GetMeshFilename(m_battle.GetMonsterTileType(dd)));
-		curmonster.UseTexture(GetTextureFilename(m_battle.GetMonsterTileType(dd)));
+		double moboriginx = xdrawpos + (m_top_tile.GetRelativeWidth_01() * 2) * .15;
+		double moboriginy = ydrawpos + (m_top_tile.GetRelativeHeight_01() * 2) * (.8 - (dd * .22));
+		Mesh curmob;
+		curmob.LoadMesh(GetMeshFilename(m_battle.GetMobTileType(dd)));
+
+		if (!m_battle.IsMobDead(dd))
+		{
+			curmob.UseTexture(GetTextureFilename(m_battle.GetMobTileType(dd)));
+		}
+		else
+		{
+			curmob.UseTexture(GetTextureFilename(TileType::MUD));
+		}
+
 		glm::mat4 *translations = new glm::mat4[1];
 
 		translations[0] =
 			glm::translate(glm::mat4(1.0),
-			glm::vec3(monsteroriginx, monsteroriginy, 0));
-		curmonster.SetUpInstancing(1, char_scalevec, translations);
+			glm::vec3(moboriginx, moboriginy, 0));
+		curmob.SetUpInstancing(1, char_scalevec, translations);
 		delete[] translations;
-		curmonster.Render();
+		curmob.Render();
 
-		if (m_sub_mode == FightSubMode::PICK_MONSTER)
+		if (m_sub_mode == FightPickMode::PICK_MOB)
 		{
-			if (m_cur_monster_idx == dd)
+			if (m_cur_mob_idx == dd)
 			{
 				double arrowxpos = m_top_tile.GetXDrawPos_N11() + (m_top_tile.GetRelativeWidth_01() * 2) * .3;
-				double arrowypos = monsteroriginy;
+				double arrowypos = moboriginy;
 				m_texthandler_ptr->Render("<--", arrowxpos, arrowypos, TextAlignType::LEFT);
 				glUseProgram(m_primary_shaderid);
 			}
@@ -386,54 +456,63 @@ void FightMode::DrawTopWindow()
 	}
 }
 
-void FightMode::DrawMonsterWindow()
+void FightMode::DrawMobWindow()
 {
 	glUseProgram(m_primary_shaderid);
 
 	int n_instances = 1;
 	glm::mat4 *translations = new glm::mat4[n_instances];
 
-	double ox = m_monsterstats_tile.GetRelativeOriginX_01();
-	double oy = m_monsterstats_tile.GetRelativeOriginY_01();
-	double xd = m_monsterstats_tile.GetRelativeWidth_01();
-	double yd = m_monsterstats_tile.GetRelativeHeight_01();
+	double ox = m_mobstats_tile.GetRelativeOriginX_01();
+	double oy = m_mobstats_tile.GetRelativeOriginY_01();
+	double xd = m_mobstats_tile.GetRelativeWidth_01();
+	double yd = m_mobstats_tile.GetRelativeHeight_01();
 	double mx = ox + (xd / 2.0);
 	double my = oy + (yd / 2.0);
 	double mx2 = mx - .5;
 	double my2 = my - .5;
-	glm::vec3 scalevec(m_monsterstats_tile.GetRelativeWidth_01() * 2, 
-		               m_monsterstats_tile.GetRelativeHeight_01() * 2, 1);
+	glm::vec3 scalevec(m_mobstats_tile.GetRelativeWidth_01() * 2, 
+		               m_mobstats_tile.GetRelativeHeight_01() * 2, 1);
 	mx2 *= scalevec.x;
 	my2 *= scalevec.y;
 	glm::vec3 transvec(2 * mx2, 2 * my2, 0);
 	translations[0] = glm::translate(glm::mat4(1.0), transvec);
-	m_monsterstats_tile.SetUpInstancing(1, scalevec, translations);
-	m_monsterstats_tile.Render();
+	m_mobstats_tile.SetUpInstancing(1, scalevec, translations);
+	m_mobstats_tile.Render();
 	delete[] translations;
 
 	if (m_texthandler_ptr != nullptr)
 	{
-		double xdrawpos = m_monsterstats_tile.GetXDrawPos_N11();
-		double ydrawpos = m_monsterstats_tile.GetYDrawPos_N11();
-		double textxpos = xdrawpos + (m_monsterstats_tile.GetRelativeWidth_01() * 2) * .08;
+		double xdrawpos = m_mobstats_tile.GetXDrawPos_N11();
+		double ydrawpos = m_mobstats_tile.GetYDrawPos_N11();
+		double textxpos = xdrawpos + (m_mobstats_tile.GetRelativeWidth_01() * 2) * .08;
 
-		for (int curmon = 0; curmon < m_battle.GetNMonsters(); curmon++)
+		for (int curmon = 0; curmon < m_battle.GetNMobs(); curmon++)
 		{
- 			double textypos = ydrawpos + (m_monsterstats_tile.GetRelativeHeight_01() * 2) * (.85 - (MONSTER_VERT_SPACING * curmon));
-			m_texthandler_ptr->Render(m_battle.GetMonsterName(curmon), textxpos, textypos, TextAlignType::LEFT);
+ 			double textypos = ydrawpos + (m_mobstats_tile.GetRelativeHeight_01() * 2) * (.85 - (MOB_VERT_SPACING * curmon));
+			std::string text = m_battle.GetMobName(curmon);
+			if (m_battle.IsMobDead(curmon))
+			{
+				text += " (Dead)";
+			}
+			else
+			{
+				text += " (" + m_battle.GetMobPtr(curmon)->GetHPString() + ")";
+			}
+			m_texthandler_ptr->Render(text, textxpos, textypos, TextAlignType::LEFT);
 		}
 	}
 	
-	if (m_sub_mode == FightSubMode::PICK_ACTION || m_sub_mode == FightSubMode::PICK_ITEM && m_texthandler_ptr != nullptr)
+	if (m_sub_mode == FightPickMode::PICK_ACTION || m_sub_mode == FightPickMode::PICK_ITEM && m_texthandler_ptr != nullptr)
 	{
 		std::vector<std::string> options;
 		int cur_idx(0);
-		if (m_sub_mode == FightSubMode::PICK_ACTION)
+		if (m_sub_mode == FightPickMode::PICK_ACTION)
 		{
 			options = m_battle.GetFightOptions();
 			cur_idx = m_cur_action_idx;
 		}
-		else if (m_sub_mode == FightSubMode::PICK_ITEM)
+		else if (m_sub_mode == FightPickMode::PICK_ITEM)
 		{
 			cur_idx = m_cur_item_idx;
 			GameMap *mapptr = GameMap::GetInstance();
@@ -447,16 +526,16 @@ void FightMode::DrawMonsterWindow()
 			}
 		}
 			
-		double xdrawpos = m_monsterstats_tile.GetXDrawPos_N11() + (m_monsterstats_tile.GetRelativeWidth_01() * 2) * .5;
-		double ydrawpos = m_monsterstats_tile.GetYDrawPos_N11();
+		double xdrawpos = m_mobstats_tile.GetXDrawPos_N11() + (m_mobstats_tile.GetRelativeWidth_01() * 2) * .6;
+		double ydrawpos = m_mobstats_tile.GetYDrawPos_N11();
 
 		for (int aa = 0; aa < options.size(); aa++)
 		{
-		    double textypos = ydrawpos + (m_monsterstats_tile.GetRelativeHeight_01() * 2) *
-			                         	   (.85 - (MONSTER_VERT_SPACING * aa));
+		    double textypos = ydrawpos + (m_mobstats_tile.GetRelativeHeight_01() * 2) *
+			                         	   (.85 - (MOB_VERT_SPACING * aa));
 			if (cur_idx == aa)
 			{
-				double arrowxpos = m_monsterstats_tile.GetXDrawPos_N11() + (m_monsterstats_tile.GetRelativeWidth_01() * 2) * .45;
+				double arrowxpos = m_mobstats_tile.GetXDrawPos_N11() + (m_mobstats_tile.GetRelativeWidth_01() * 2) * .55;
 				m_texthandler_ptr->Render("-->", arrowxpos, textypos, TextAlignType::LEFT);
 			}
 			m_texthandler_ptr->Render(options[aa], xdrawpos, textypos, TextAlignType::LEFT);
@@ -503,7 +582,8 @@ void FightMode::DrawHeroWindow()
 			double textypos = ydrawpos + (m_herostats_tile.GetRelativeHeight_01() * 2) * 
 				              (.85 - (HERO_VERT_SPACING * cc));
 			m_texthandler_ptr->Render(cur_heroes[cc]->GetName(), textxpos, textypos, TextAlignType::LEFT);
-			m_texthandler_ptr->Render(cur_heroes[cc]->GetHPString(), .35, textypos, TextAlignType::LEFT);
+			std::string textstring = "(" + cur_heroes[cc]->GetHPString() + ")";
+			m_texthandler_ptr->Render(textstring, .25, textypos, TextAlignType::LEFT);
 		}
 	}
 }

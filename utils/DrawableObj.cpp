@@ -65,7 +65,7 @@ double DrawableObj::GetRelativeHeight_01()
 
 double DrawableObj::GetRelativeOriginX_01()
 {
-	double result;
+	double result(m_rel_originx_01);
 	if (m_viewport_ptr != nullptr)
 	{
 		result = m_rel_originx_01;

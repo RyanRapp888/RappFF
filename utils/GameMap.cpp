@@ -22,7 +22,7 @@ GameMap *GameMap::GetInstance()
 	return m_instance;
 }
 
-int GameMap::GetMonsterOdds(int x, int y)
+int GameMap::GetMobOdds(int x, int y)
 {
 	TileType cc;
 	GetTileType(x, y,cc);
@@ -214,7 +214,7 @@ int GameMap::GetTileIdx(int xpos, int ypos)
 	return (xpos + (ypos * m_xtiles));
 }
 
-std::vector<Character> GameMap::GetMonsters(int x, int y)
+std::vector<Character> GameMap::GetMobs(int x, int y)
 {
 	std::vector<Character> results;
 	results.resize(4);

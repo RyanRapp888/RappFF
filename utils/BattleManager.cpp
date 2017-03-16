@@ -1,4 +1,5 @@
 #include "BattleManager.h"
+#include "RandUtils.h"
 
 std::vector<std::string> BattleManager::GetFightOptions()
 {
@@ -24,27 +25,30 @@ void BattleManager::SetHeroes(std::vector<Character *> &dat)
 	}
 }
 
-/*
-
-bool is_actor_hero;
-bool is_aoe;
-bool is_aoe_target_heroes;
-int actor_idx;
-int target_idx;
-ActionType action_type_id;
-int item_idx;
-*/
-
-static int get_rand_0_99()
+void BattleManager::AddMobOffenseEvents()
 {
-	static bool is_seeded(false);
-	if (!is_seeded)
+	std::vector<int> alive_heroes;
+
+	for (int aa = 0; aa < m_hero_ptrs.size(); aa++)
 	{
-		srand(14);
-		is_seeded = true;
+		if (!m_hero_ptrs[aa]->IsDead())
+		{
+			alive_heroes.push_back(aa);
+		}
 	}
-	int result = rand() % 100;
-	return result;
+
+	if (alive_heroes.size() == 0) return;
+
+	for (int mm = 0; mm < m_mobs.size(); mm++)
+	{
+		if (m_mobs[mm].IsActive())
+		{
+			int m_hero_to_attack = get_rand_0_x(alive_heroes.size() - 1);
+			BattleEvent attack_event(false, false, false, mm, alive_heroes[m_hero_to_attack], ActionType::ATTACK, -1);
+			m_battle_queue.emplace_back(attack_event);
+		}
+	}
+
 }
 
 void BattleManager::CalculateLoot(BattleRoundOutcome &outcome)
@@ -160,6 +164,103 @@ static level_stats_entry &GetLevelAttributes(int level)
 	return bad_level;
 }
 
+bool (*func_ptr_action)(Character *);
+
+static bool func_active(Character *dat)
+{
+	return dat->IsActive();
+}
+
+static bool func_notdead(Character *dat)
+{
+	return !dat->IsDead();
+}
+
+bool BattleManager::LookForBase(std::vector<Character *> actorlist, int start_id, int look_dir, int &found_id)
+{
+	int id = start_id;
+	int ntries = 0;
+	bool found(false);
+	
+	if (id < 0)
+	{
+		id = actorlist.size() - 1;
+	}
+	else if (id >= actorlist.size())
+	{
+		id = 0;
+	}
+
+	if (actorlist.size() == 0) return false;
+
+	while (1)
+	{
+		found = func_ptr_action(actorlist[id]);
+		if (found)
+		{
+			found_id = id;
+			return true;
+		}
+
+		ntries++;
+		if (ntries >= actorlist.size())
+		{
+			found_id = -1;
+			return false;
+		}
+
+		id += look_dir;
+		if (id < 0)
+		{
+			id = actorlist.size() - 1;
+		}
+		else if (id >= actorlist.size())
+		{
+			id = 0;
+		}
+	}
+
+}
+
+// look_dir should be +1 or -1
+// if a matching character was found, then found_id contains the index and return var == true;
+bool BattleManager::LookForActiveMob(int start_id, int look_dir, int &found_id)
+{
+	func_ptr_action = func_active;
+	std::vector<Character *> moblist;
+	moblist.resize(m_mobs.size());
+	for (int aa = 0; aa < m_mobs.size(); aa++)
+	{
+	   moblist[aa] = &(m_mobs[aa]);
+	}
+
+	return LookForBase(moblist, start_id, look_dir, found_id);
+}
+
+bool BattleManager::LookForActiveHero(int start_id, int look_dir, int &found_id)
+{
+	func_ptr_action = func_active;
+	return LookForBase(m_hero_ptrs, start_id, look_dir, found_id);
+}
+
+bool BattleManager::LookForAliveMob(int start_id, int look_dir, int &found_id)
+{
+	func_ptr_action = func_notdead;
+	std::vector<Character *> moblist;
+	moblist.resize(m_mobs.size());
+	for (int aa = 0; aa < m_mobs.size(); aa++)
+	{
+		moblist[aa] = &(m_mobs[aa]);
+	}
+
+	return LookForBase(moblist, start_id, look_dir, found_id);
+}
+
+bool BattleManager::LookForAliveHero(int start_id, int look_dir, int &found_id)
+{
+	func_ptr_action = func_notdead;
+	return LookForBase(m_hero_ptrs, start_id, look_dir, found_id);
+}
 
 int BattleManager::CalculateAttackPts(Character *agressor, Character *defender, ArmorType &at)
 {
@@ -212,12 +313,12 @@ void BattleManager::ProcessAttackEvent(BattleEvent &cur_be, BattleRoundOutcome &
 			outcome.SetOutcomeType(OutcomeType::HEROES_RETREATED);
 			return;
 		}
-		Character *cc = m_hero_ptrs[cur_be.m_actor_idx];
+		Character *hero = m_hero_ptrs[cur_be.m_actor_idx];
 		ArmorType at;
-		if (cc->IsActive())
+		if (hero->IsActive())
 		{
-			int hero_acc = cc->GetAccuracy();
-			int hero_w_acc = cc->GetWeaponAccuracy();
+			int hero_acc = hero->GetAccuracy();
+			int hero_w_acc = hero->GetWeaponAccuracy();
 			if (cur_be.m_target_idx < 0 || cur_be.m_target_idx >= m_mobs.size())
 			{
 				outcome.SetOutcomeType(OutcomeType::MOBS_RETREATED);
@@ -225,30 +326,30 @@ void BattleManager::ProcessAttackEvent(BattleEvent &cur_be, BattleRoundOutcome &
 				return;
 			}
 
-			Character *mm = &(m_mobs[cur_be.m_target_idx]);
-			if (mm->IsDead())
+			int alive_target_idx = cur_be.m_target_idx;
+			bool is_found = LookForAliveMob(cur_be.m_target_idx, 1, alive_target_idx); 
+			if (!is_found)
 			{
-				for (int aa = 0; aa < m_mobs.size(); aa++)
-				{
-					mm = &(m_mobs[aa]);
-					if (!mm->IsDead()) break;
-				}
+				// this should never happen because we check if all are dead after each hit.
+				return;
 			}
 
+			Character *mob = &(m_mobs[alive_target_idx]);
+			
 			int armtyp = rand() % 4;
 			at = static_cast<ArmorType>(armtyp);
-			if (!mm->IsActive()) at = ArmorType::INACTIVE;
-			int mob_dodge = mm->GetDodge();
-			int mob_armor_dodge = mm->GetArmorDodge(at);
+			if (!mob->IsActive()) at = ArmorType::INACTIVE;
+			int mob_dodge = mob->GetDodge();
+			int mob_armor_dodge = mob->GetArmorDodge(at);
 			int hero_avg = (double)(hero_acc + hero_w_acc) / 2.0;
 			int mob_avg = (double)(mob_dodge + mob_armor_dodge) / 2.0;
 			int diff = hero_avg - mob_avg;
 			float pct = ((double)diff / 2.0) + 49.5;
 			int rand = get_rand_0_99();
-			if (pct >= rand || !mm->IsActive())
+			if (pct >= rand || !mob->IsActive())
 			{
 				is_hit = true;
-				if (rand < 3 || !mm->IsActive()) //critval
+				if (rand < 3 || !mob->IsActive()) //critval
 				{
 					is_crit = true;
 				}
@@ -256,8 +357,8 @@ void BattleManager::ProcessAttackEvent(BattleEvent &cur_be, BattleRoundOutcome &
 
 			if (is_hit)
 			{
-				int pts = CalculateAttackPts(cc, mm, at);
-				mm->ModifyHP(-1 * pts);
+				int pts = CalculateAttackPts(hero, mob, at);
+				mob->ModifyHP(-1 * pts);
 				CheckMobParty(outcome);
 			}
 		}
@@ -343,10 +444,10 @@ void BattleManager::ProcessRetreatEvent(BattleEvent &cur_be, BattleRoundOutcome 
 	if (cur_be.m_is_actor_hero)
 	{
 		// Heroes are attempting to retreat
-		Character *cc = m_hero_ptrs[cur_be.m_actor_idx];
-		if (cc->IsActive())
+		Character *hero = m_hero_ptrs[cur_be.m_actor_idx];
+		if (hero->IsActive())
 		{
-			int flee_val = cc->GetFlee();
+			int flee_val = hero->GetFlee();
 			int mobs_sum(0);
 			int n_active_mobs(0);
 

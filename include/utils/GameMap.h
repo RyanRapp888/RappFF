@@ -15,6 +15,8 @@ enum class ProxRel
    FOUND_BELOW
 };
 
+
+
 class GameMap
 {
 public:
@@ -37,8 +39,8 @@ public:
    bool FindCharactersInRange(int minx, int miny, int maxx, int maxy, std::vector<Character *> &found_chars);
    int GetWorldMaxX();
    int GetWorldMaxY();
-   int GetMonsterOdds(int x, int y);
-   std::vector<Character> GetMonsters(int x, int y);
+   int GetMobOdds(int x, int y);
+   std::vector<Character> GetMobs(int x, int y);
       
    private:
    

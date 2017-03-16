@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "Character.h"
+#include <sstream>
 
 enum class ActionType
 {
@@ -68,15 +69,38 @@ enum class OutcomeType
 
 struct Loot
 {
-	Loot::Loot():m_pooled_money(0), m_each_xp(0),m_is_empty(true){}
-	bool IsEmpty(){ return m_is_empty; }
+	Loot::Loot():m_pooled_money(0), m_each_xp(0){}
+	std::string GetLootString() const
+	{
+		std::string result;
+		std::ostringstream rstream;
+		rstream << "m_pooled_money = " << m_pooled_money << std::endl;
+		rstream << "m_each_xp = " << m_each_xp << std::endl;
+		for (const auto item : m_items)
+		{
+			rstream << "m_item[] -> " << item.GetName() << std::endl;
+		}
+		for (const auto spell : m_spells)
+		{
+			rstream << "m_spell[] -> " << spell.GetName() << std::endl;
+		}
+		for (const auto armor : m_armors)
+		{
+			rstream << "m_armor[] -> " << armor.GetName() << std::endl;
+		}
+		for (const auto weapon : m_weapons)
+		{
+			rstream << "m_weapon[] -> " << weapon.GetName() << std::endl;
+		}
+		result = rstream.str();
+		return result;
+	}
 	int m_pooled_money;
 	int m_each_xp;
 	
-	bool m_is_empty;
 	std::vector<Item> m_items;
-	std::vector<Spell> m_spell;
-	std::vector<Armor> m_armor;
+	std::vector<Spell> m_spells;
+	std::vector<Armor> m_armors;
 	std::vector<Weapon> m_weapons;
 };
 
@@ -108,18 +132,26 @@ public:
 	void SetHeroes(std::vector<Character *> &dat);
 	void AddBattleEvent(BattleEvent be){ m_battle_queue.emplace_back(be); }
 	void ClearFightEnded(){ m_battle_queue.clear(); m_fight_ended = false; m_mobs.clear(); }
-	
-	int GetNMonsters() const{ return m_mobs.size(); }
+	bool LookForActiveMob(int start_id, int look_dir, int &found_id);
+	bool LookForActiveHero(int start_id, int look_dir, int &found_id);
+	bool LookForAliveMob(int start_id, int look_dir, int &found_id);
+	bool LookForAliveHero(int start_id, int look_dir, int &found_id);
+
+	Character *GetMobPtr(int mob_id){return &m_mobs[mob_id];}
+	int GetNMobs() const{ return m_mobs.size(); }
 	int GetNItems(int hero_idx){ return m_hero_ptrs[hero_idx]->GetNItems(); }
 	int GetNHeroes(){ return m_hero_ptrs.size(); }
 	bool IsHeroActive(int hero_idx){ return m_hero_ptrs[hero_idx]->IsActive(); }
-	TileType GetMonsterTileType(int monster_id){ return m_mobs[monster_id].GetTileType(); }
-	std::string GetMonsterName(int monster_id){ return m_mobs[monster_id].GetName(); }
+	TileType GetMobTileType(int mob_id){ return m_mobs[mob_id].GetTileType(); }
+	bool IsMobDead(int mob_id){ return m_mobs[mob_id].IsDead(); }
+	std::string GetMobName(int mob_id){ return m_mobs[mob_id].GetName(); }
 	void Clear(){ m_mobs.clear(); m_hero_ptrs.clear(); m_battle_queue.clear(); }
 	void ProcessQueue(BattleRoundOutcome &outcome);
 	void CheckMobParty(BattleRoundOutcome &outcome);
 	void CheckHeroParty(BattleRoundOutcome &outcome);
 	void CalculateLoot(BattleRoundOutcome &outcome);
+
+	void AddMobOffenseEvents();
 	
 
 private:
@@ -132,6 +164,7 @@ private:
 	void ProcessItemEvent(BattleEvent &cur_be, BattleRoundOutcome &outcome);
 	void ProcessRetreatEvent(BattleEvent &cur_be, BattleRoundOutcome &outcome);
 	int CalculateAttackPts(Character *agressor, Character *defender, ArmorType &at);
+	bool LookForBase(std::vector<Character *> actorlist, int start_id, int look_dir, int &found_id);
 };
 
 #endif
