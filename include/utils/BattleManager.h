@@ -130,31 +130,30 @@ public:
 	std::vector<std::string> GetFightOptions();
 	void SetMobs(std::vector<Character> dat);
 	void SetHeroes(std::vector<Character *> &dat);
-	void AddBattleEvent(BattleEvent be){ m_battle_queue.emplace_back(be); }
-	void ClearFightEnded(){ m_battle_queue.clear(); m_fight_ended = false; m_mobs.clear(); }
+	void AddBattleEvent(BattleEvent be);
+	void ClearFightEnded();
 	bool LookForActiveMob(int start_id, int look_dir, int &found_id);
 	bool LookForActiveHero(int start_id, int look_dir, int &found_id);
 	bool LookForAliveMob(int start_id, int look_dir, int &found_id);
 	bool LookForAliveHero(int start_id, int look_dir, int &found_id);
 
-	Character *GetMobPtr(int mob_id){return &m_mobs[mob_id];}
-	int GetNMobs() const{ return m_mobs.size(); }
-	int GetNItems(int hero_idx){ return m_hero_ptrs[hero_idx]->GetNItems(); }
-	int GetNHeroes(){ return m_hero_ptrs.size(); }
-	bool IsHeroActive(int hero_idx){ return m_hero_ptrs[hero_idx]->IsActive(); }
-	TileType GetMobTileType(int mob_id){ return m_mobs[mob_id].GetTileType(); }
-	bool IsMobDead(int mob_id){ return m_mobs[mob_id].IsDead(); }
-	std::string GetMobName(int mob_id){ return m_mobs[mob_id].GetName(); }
-	void Clear(){ m_mobs.clear(); m_hero_ptrs.clear(); m_battle_queue.clear(); }
+	Character *GetMobPtr(int mob_id);
+	int GetNMobs() const;
+	int GetNItems(int hero_idx);
+	int GetNHeroes();
+	bool IsHeroActive(int hero_idx);
+	TileType GetMobTileType(int mob_id);
+	bool IsMobDead(int mob_id);
+	std::string GetMobName(int mob_id);
+	void Clear();
 	void ProcessQueue(BattleRoundOutcome &outcome);
 	void CheckMobParty(BattleRoundOutcome &outcome);
 	void CheckHeroParty(BattleRoundOutcome &outcome);
 	void CalculateLoot(BattleRoundOutcome &outcome);
-
 	void AddMobOffenseEvents();
-	
 
 private:
+
 	bool m_fight_ended;
 	std::vector<Character> m_mobs;
 	std::vector<Character *> m_hero_ptrs;

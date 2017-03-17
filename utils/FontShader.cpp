@@ -45,6 +45,8 @@ void FontShader::Detach()
 	glUseProgram(0);
 }
 
+GLuint FontShader::GetProgramId() { return m_program; }
+
 std::string FontShader::LoadShader(const std::string& fileName)
 {
 	std::ifstream file;

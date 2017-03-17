@@ -22,19 +22,39 @@ GameMap *GameMap::GetInstance()
 	return m_instance;
 }
 
-int GameMap::GetMobOdds(int x, int y)
+bool GameMap::LoadGameMap(int x_tiles, int y_tiles)
 {
-	TileType cc;
-	GetTileType(x, y,cc);
-	if (cc == TileType::BRICKS || cc == TileType::PLANK)
+	m_xtiles = x_tiles;
+	m_ytiles = y_tiles;
+	m_tiletypes.resize(x_tiles * y_tiles);
+
+	std::ifstream input_file("res\\map.csv");
+	if (!input_file.is_open())
 	{
-		return -1;
+		std::cout << "ERROR: Unable to load map file (map.csv)" << std::endl;
+		return false;
 	}
-	else
+
+	for (int row = y_tiles - 1; row >= 0; row--)
 	{
-		return 50;
+		std::string line;
+		std::getline(input_file, line);
+
+		std::stringstream iss(line);
+
+		for (int col = 0; col < x_tiles; col++)
+		{
+			std::string val;
+			std::getline(iss, val, ',');
+
+			std::stringstream tmp_sstr(val);
+			int tmpint;
+			tmp_sstr >> tmpint;
+			m_tiletypes[GetTileIdx(col, row)] = static_cast<TileType>(tmpint);
+		}
 	}
-	return -1;
+	input_file.close();
+	return true;
 }
 
 bool GameMap::AttachMainCharacter(Character *mainchar)
@@ -44,14 +64,10 @@ bool GameMap::AttachMainCharacter(Character *mainchar)
 	return true;
 }
 
-void GameMap::GetCurHeroes(std::vector<Character *> &heroes)
+void GameMap::AttachCharacter(Character *otherchar)
 {
-	heroes.clear();
 
-	for (auto curhero : m_cur_heroes)
-	{
-		heroes.emplace_back(curhero);
-	}
+	m_otherchar_ptrs.emplace_back(otherchar);
 }
 
 void GameMap::AddToHeroParty(Character *hero)
@@ -79,65 +95,19 @@ void GameMap::RemoveFromHeroParty(Character *hero)
 	}
 }
 
-bool GameMap::LoadGameMap(int x_tiles, int y_tiles)
-{
-	m_xtiles = x_tiles;
-	m_ytiles = y_tiles;
-	m_tiletypes.resize(x_tiles * y_tiles);
-
-	std::ifstream input_file("res\\map.csv");
-	if (!input_file.is_open())
-	{
-		std::cout << "ERROR: Unable to load map file (map.csv)" << std::endl;
-		return false;
-	}
-
-	for (int row = y_tiles - 1; row >= 0; row--)
-	{
-		std::string line;
-		std::getline(input_file, line);
-		
-		std::stringstream iss(line);
-
-		for (int col = 0; col < x_tiles; col++)
-		{
-			std::string val;
-			std::getline(iss, val, ',');
-			
-			std::stringstream tmp_sstr(val);
-			int tmpint;
-			tmp_sstr >> tmpint;
-			m_tiletypes[GetTileIdx(col, row)] = static_cast<TileType>(tmpint);
-		}
-	}
-	input_file.close();
-	return true;
-}
-
 Character *GameMap::GetMainCharPtr()
 {
 	return m_mainchar_ptr;
 }
 
-void GameMap::AttachCharacter(Character *otherchar)
+void GameMap::GetCurHeroes(std::vector<Character *> &heroes)
 {
-	
-	m_otherchar_ptrs.emplace_back(otherchar);
-}
+	heroes.clear();
 
-bool GameMap::FindCharactersInRange(int minx, int miny, int maxx, int maxy, std::vector<Character *> &found_chars)
-{
-	found_chars.clear();
-	for (int aa = 0; aa < m_otherchar_ptrs.size(); aa++)
+	for (auto curhero : m_cur_heroes)
 	{
-		Character *cur = m_otherchar_ptrs[aa];
-		if (cur->GetX() >= minx && cur->GetX() <= maxx &&
-			cur->GetY() >= miny && cur->GetY() <= maxy)
-		{
-			found_chars.push_back(cur);
-		}
+		heroes.emplace_back(curhero);
 	}
-	return (found_chars.size() > 0);
 }
 
 bool GameMap::GetTileType(int x, int y, TileType &type)
@@ -177,13 +147,13 @@ bool GameMap::FindTouchingCharacter(int x, int y, Character *&found_char, ProxRe
 	for (int aa = 0; aa < m_otherchar_ptrs.size(); aa++)
 	{
 		Character *cur = m_otherchar_ptrs[aa];
-		if (cur->GetX() == (x-1) && cur->GetY() == y)
+		if (cur->GetX() == (x - 1) && cur->GetY() == y)
 		{
 			found_char = cur;
 			found_prox = ProxRel::FOUND_TO_LEFT;
 			return true;
 		}
-		else if(cur->GetX() == (x+1) && cur->GetY() == y)
+		else if (cur->GetX() == (x + 1) && cur->GetY() == y)
 		{
 			found_char = cur;
 			found_prox = ProxRel::FOUND_TO_RIGHT;
@@ -205,13 +175,38 @@ bool GameMap::FindTouchingCharacter(int x, int y, Character *&found_char, ProxRe
 	return false;
 }
 
+bool GameMap::FindCharactersInRange(int minx, int miny, int maxx, int maxy, std::vector<Character *> &found_chars)
+{
+	found_chars.clear();
+	for (int aa = 0; aa < m_otherchar_ptrs.size(); aa++)
+	{
+		Character *cur = m_otherchar_ptrs[aa];
+		if (cur->GetX() >= minx && cur->GetX() <= maxx &&
+			cur->GetY() >= miny && cur->GetY() <= maxy)
+		{
+			found_chars.push_back(cur);
+		}
+	}
+	return (found_chars.size() > 0);
+}
+
 int GameMap::GetWorldMaxX() { return m_xtiles; }
 
 int GameMap::GetWorldMaxY() { return m_ytiles; }
 
-int GameMap::GetTileIdx(int xpos, int ypos)
+int GameMap::GetMobOdds(int x, int y)
 {
-	return (xpos + (ypos * m_xtiles));
+	TileType cc;
+	GetTileType(x, y,cc);
+	if (cc == TileType::BRICKS || cc == TileType::PLANK)
+	{
+		return -1;
+	}
+	else
+	{
+		return 50;
+	}
+	return -1;
 }
 
 std::vector<Character> GameMap::GetMobs(int x, int y)
@@ -221,7 +216,7 @@ std::vector<Character> GameMap::GetMobs(int x, int y)
 	results[0].SetName("Skeleton");
 	results[0].SetCharacterType(CharacterType::SKELETON);
 	//results[0].
-	results[0].SetHP(20); 
+	results[0].SetHP(20);
 	results[0].SetMaxHP(20);
 	results[0].SetLocation(-99, -99);
 
@@ -243,4 +238,9 @@ std::vector<Character> GameMap::GetMobs(int x, int y)
 	results[3].SetMaxHP(20);
 	results[3].SetLocation(-99, -99);
 	return results;
+}
+
+int GameMap::GetTileIdx(int xpos, int ypos)
+{
+	return (xpos + (ypos * m_xtiles));
 }

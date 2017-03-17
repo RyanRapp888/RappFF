@@ -10,10 +10,10 @@ class FontShader
 {
 public:
 	FontShader(const std::string& fileName);
+	virtual ~FontShader();
 	void Bind();
 	void Detach();
-	GLuint GetProgramId() { return m_program; }
-	virtual ~FontShader();
+	GLuint GetProgramId();
 
 protected:
 

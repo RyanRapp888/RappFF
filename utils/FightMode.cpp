@@ -28,54 +28,10 @@ WindowSection(vpt, origxpct, origypct, w_pct, h_pct), m_texthandler_ptr(nullptr)
 	m_hero_turn_idx = 0;
 }
 
-void FightMode::StartBattleRound()
-{
-	m_hero_turn_idx = -1;
-	AdvanceToNextHero();
-
-	m_cur_action_idx = 0;
-	m_battle.LookForAliveMob(0, 1, m_cur_mob_idx);
-	m_cur_item_idx = 0;
-	m_cur_item_target_idx = 0;
-	m_fight_ended = false;
-	m_hero_anim_pct = 0;
-	m_hero_anim_dir = -1;
-
-	bool m_hero_turn = true;
-	m_sub_mode = FightPickMode::PICK_ACTION;
-}
-
-void FightMode::StartFight()
-{
-   GameMap *gm = GameMap::GetInstance();
-   Character *mainchar = gm->GetMainCharPtr();
-  
-   m_fight_ended = false;
-   m_battle.ClearFightEnded();
-   std::vector<Character *> tmp;
-   gm->GetCurHeroes(tmp);
-
-   m_battle.Clear();
-   m_battle.SetHeroes(tmp);
-
-   int dummy;
-   bool is_party_alive = m_battle.LookForActiveHero(0, 1, dummy);
-   if (is_party_alive)
-   {
-	   m_battle.SetMobs(gm->GetMobs(mainchar->GetX(), mainchar->GetY()));
-	   StartBattleRound();
-   }
-   else
-   {
-	   m_fight_ended = true;
-   }
-
-}
-
 bool FightMode::SetTextHandler(Text *texthandler)
 {
-   m_texthandler_ptr = texthandler;
-   return true;
+	m_texthandler_ptr = texthandler;
+	return true;
 }
 
 bool FightMode::SetPrimaryShader(GLuint primary_shader)
@@ -87,47 +43,13 @@ bool FightMode::SetPrimaryShader(GLuint primary_shader)
 void FightMode::Refresh()
 {
 	if (!m_enable) return;
-	
+
 	DrawTopWindow();
 	DrawMobWindow();
 	DrawHeroWindow();
 
 	WindowSection::Refresh();
 }
-
-void FightMode::AdvanceToNextHero()
-{
-	do
-	{
-		m_hero_turn_idx++;
-		if (m_hero_turn_idx >= m_battle.GetNHeroes())
-		{
-			m_hero_turn = false;
-			m_hero_turn_idx = 0;
-			m_cur_action_idx = 0;
-			m_cur_item_idx = 0;
-			m_cur_item_target_idx = 0;
-			m_cur_mob_idx = 0;
-			m_sub_mode = FightPickMode::PICK_NOMODE;
-			return;
-		}
-
-		if (m_battle.IsHeroActive(m_hero_turn_idx))
-		{
-			m_hero_turn = true;
-			m_cur_action_idx = 0;
-			m_cur_item_idx = 0;
-			m_cur_item_target_idx = 0;
-			m_battle.LookForAliveMob(0, 1, m_cur_mob_idx);
-			m_hero_anim_pct = 0;
-			m_hero_anim_dir = -1;
-			m_sub_mode = FightPickMode::PICK_ACTION;
-			return;
-		}
-
-	} while (m_hero_turn_idx <= m_battle.GetNHeroes() && m_hero_turn == true);
-}
-	
 
 bool FightMode::HandleKey(int key, int scancode, int action, int mods)
 {
@@ -182,7 +104,7 @@ bool FightMode::HandleKey(int key, int scancode, int action, int mods)
 				{
 					int start_idx = m_cur_item_target_idx + 1;
 					bool found = m_battle.LookForAliveMob(start_idx, 1, m_cur_item_target_idx);
-    			}
+				}
 			}
 		}
 		else if (key == GLFW_KEY_UP)
@@ -316,6 +238,89 @@ bool FightMode::HandleKey(int key, int scancode, int action, int mods)
 	}
 	return true;
 }
+
+void FightMode::StartFight()
+{
+	GameMap *gm = GameMap::GetInstance();
+	Character *mainchar = gm->GetMainCharPtr();
+
+	m_fight_ended = false;
+	m_battle.ClearFightEnded();
+	std::vector<Character *> tmp;
+	gm->GetCurHeroes(tmp);
+
+	m_battle.Clear();
+	m_battle.SetHeroes(tmp);
+
+	int dummy;
+	bool is_party_alive = m_battle.LookForActiveHero(0, 1, dummy);
+	if (is_party_alive)
+	{
+		m_battle.SetMobs(gm->GetMobs(mainchar->GetX(), mainchar->GetY()));
+		StartBattleRound();
+	}
+	else
+	{
+		m_fight_ended = true;
+	}
+
+}
+
+void FightMode::StartBattleRound()
+{
+	m_hero_turn_idx = -1;
+	AdvanceToNextHero();
+
+	m_cur_action_idx = 0;
+	m_battle.LookForAliveMob(0, 1, m_cur_mob_idx);
+	m_cur_item_idx = 0;
+	m_cur_item_target_idx = 0;
+	m_fight_ended = false;
+	m_hero_anim_pct = 0;
+	m_hero_anim_dir = -1;
+
+	bool m_hero_turn = true;
+	m_sub_mode = FightPickMode::PICK_ACTION;
+}
+
+void FightMode::AdvanceToNextHero()
+{
+	do
+	{
+		m_hero_turn_idx++;
+		if (m_hero_turn_idx >= m_battle.GetNHeroes())
+		{
+			m_hero_turn = false;
+			m_hero_turn_idx = 0;
+			m_cur_action_idx = 0;
+			m_cur_item_idx = 0;
+			m_cur_item_target_idx = 0;
+			m_cur_mob_idx = 0;
+			m_sub_mode = FightPickMode::PICK_NOMODE;
+			return;
+		}
+
+		if (m_battle.IsHeroActive(m_hero_turn_idx))
+		{
+			m_hero_turn = true;
+			m_cur_action_idx = 0;
+			m_cur_item_idx = 0;
+			m_cur_item_target_idx = 0;
+			m_battle.LookForAliveMob(0, 1, m_cur_mob_idx);
+			m_hero_anim_pct = 0;
+			m_hero_anim_dir = -1;
+			m_sub_mode = FightPickMode::PICK_ACTION;
+			return;
+		}
+
+	} while (m_hero_turn_idx <= m_battle.GetNHeroes() && m_hero_turn == true);
+}
+	
+bool FightMode::FightEnded()
+{ 
+	return m_fight_ended; 
+}
+
 
 void FightMode::DrawTopWindow()
 {

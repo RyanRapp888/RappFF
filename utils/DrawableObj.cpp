@@ -2,17 +2,26 @@
 
 DrawableObj &DrawableObj::operator=(const DrawableObj & other)
 {
-   if (this != &other) // protect against invalid self-assignment
-   {
-	  this->m_rel_originx_01 = other.m_rel_originx_01;
-	  this->m_rel_originy_01 = other.m_rel_originy_01;
-	  this->m_rel_width_01 = other.m_rel_width_01;
-	  this->m_rel_height_01 = other.m_rel_height_01;
-	  if (other.m_winsection_ptr != nullptr) this->m_winsection_ptr = other.m_winsection_ptr;
-	  if (other.m_viewport_ptr != nullptr) this->m_viewport_ptr = other.m_viewport_ptr;
-   }
-   
-   return *this;
+	if (this != &other) // protect against invalid self-assignment
+	{
+		this->m_rel_originx_01 = other.m_rel_originx_01;
+		this->m_rel_originy_01 = other.m_rel_originy_01;
+		this->m_rel_width_01 = other.m_rel_width_01;
+		this->m_rel_height_01 = other.m_rel_height_01;
+		if (other.m_winsection_ptr != nullptr) this->m_winsection_ptr = other.m_winsection_ptr;
+		if (other.m_viewport_ptr != nullptr) this->m_viewport_ptr = other.m_viewport_ptr;
+	}
+	return *this;
+}
+
+void DrawableObj::GetRelativeLocation(
+	double &originx_01, double &originy_01,
+	double &width_01, double &height_01)
+{
+	originx_01 = m_rel_originx_01;
+	originy_01 = m_rel_originy_01;
+	width_01 = m_rel_width_01;
+	height_01 = m_rel_height_01;
 }
 
 void DrawableObj::SetRelativeLocation(
@@ -25,14 +34,9 @@ void DrawableObj::SetRelativeLocation(
 	m_rel_height_01 = height_01;
 }
 
-void DrawableObj::GetRelativeLocation(
-	double &originx_01, double &originy_01,
-	double &width_01, double &height_01)
+void DrawableObj::SetWindowSectionPtr(WindowSection *obj)
 {
-	originx_01 = m_rel_originx_01;
-	originy_01 = m_rel_originy_01;
-	width_01 = m_rel_width_01;
-	height_01 = m_rel_height_01;
+	m_winsection_ptr = obj;
 }
 
 double DrawableObj::GetRelativeWidth_01()

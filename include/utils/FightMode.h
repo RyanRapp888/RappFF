@@ -23,16 +23,15 @@ class FightMode : public WindowSection
 {
 public:
 	FightMode(Viewport *vpt, double origxpct, double origypct, double w_pct, double h_pct);
+	~FightMode() {}
 	bool SetTextHandler(Text *texthandler);
 	bool SetPrimaryShader(GLuint primary_shader);
-	~FightMode() {}
 	void Refresh();
 	bool HandleKey(int key, int scancode, int action, int mods);
 	void StartFight();
 	void StartBattleRound();
 	void AdvanceToNextHero();
-	bool FightEnded(){ return m_fight_ended; }
-	
+	bool FightEnded();
 		
 private:
 
