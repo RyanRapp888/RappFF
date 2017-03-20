@@ -12,6 +12,29 @@
 #include "RandUtils.h"
 //bool SetUpSkybox(GLuint &cube_vao, GLuint &cube_text_id);
 
+TheGame::TheGame() :
+m_display_ptr(nullptr),
+m_cur_mode(GameMode::NewOrLoadMode),
+m_mapwalkingmode_ws(nullptr),
+m_fightmode_ws(nullptr)
+{
+	m_chars.resize(4);
+	for (int bb = 0; bb < m_chars.size(); bb++)
+	{
+		m_chars[bb] = nullptr;
+	}
+	
+	/*
+	for (int bb = 0; bb < m_chars.size(); bb++)
+	{
+		m_chars[bb] = new Character();
+		m_chars[bb]->SetName("MC Janet");
+		if (bb == 0) m_chars[bb]->SetCharacterType(CharacterType::MAINCHAR);
+		else m_chars[bb]->SetCharacterType(CharacterType::OCTOPUS);
+		m_chars[bb]->SetLocation(128, 05);
+	}
+	*/
+}
 
 void TheGame::Play()
 {
@@ -22,34 +45,39 @@ void TheGame::Play()
 	float aspect(initial_ww / static_cast<double>(initial_wh));
 	Camera maincamera(glm::vec3(0, 0, .8), 80.0f, aspect, 0.1f, 30000);
 	if (m_display_ptr == nullptr) return;
+
+	FontShader fontShader("res\\fontShader");
+	Text main_texthandler(m_display_ptr->GetWinWidth(), m_display_ptr->GetWinHeight());
+	main_texthandler.Init(fontShader.GetProgramId(), 35);
 	
 	GameMap *gamemap_ptr = GameMap::GetInstance();
-	
-	if (!gamemap_ptr->LoadGameMap(256, 256))
+		if (!gamemap_ptr->LoadGameMap(256, 256))
 	{
 		std::cout << "Error: Could not load game map" << std::endl;
 	}
-
-	m_mainchar.SetName("MC Janet");
-	m_mainchar.SetCharacterType(CharacterType::MAINCHAR);
-	m_mainchar.SetLocation(128, 05);
-	gamemap_ptr->AttachMainCharacter(&m_mainchar);
+	gamemap_ptr->AttachMainCharacter(m_chars[0]);
 	
 	m_mapwalkingmode_ws = new TiledGameBoard(m_display_ptr, .01, .01, .98, .98);
 	Shader basicShader("res\\basicShader");
+	
 	//SkyboxShader skyboxShader("res\\skyboxshader");
-	FontShader fontShader("res\\fontShader");
-	
-	Text testtext(m_display_ptr->GetWinWidth(), m_display_ptr->GetWinHeight());
-	testtext.Init(fontShader.GetProgramId(), 35);
-	
 	basicShader.Bind();
 	m_mapwalkingmode_ws->SetTileDetails(24, 24);
 	m_display_ptr->AddWindowSection(m_mapwalkingmode_ws);
-		
+
+	m_neworload_ws = new NewOrLoadMode(m_display_ptr, 0, 0, 1, 1);
+	m_neworload_ws->SetPrimaryShader(basicShader.GetProgramId());
+	m_neworload_ws->SetTextHandler(&main_texthandler);
+	m_display_ptr->AddWindowSection(m_neworload_ws);
+
+	m_partybuild_ws = new PartyBuildMode(m_display_ptr, 0, 0, 1, 1);
+	m_partybuild_ws->SetPrimaryShader(basicShader.GetProgramId());
+	m_partybuild_ws->SetTextHandler(&main_texthandler);
+	m_display_ptr->AddWindowSection(m_partybuild_ws);
+
 	m_fightmode_ws = new FightMode(m_display_ptr, 0, 0, 1, 1);
 	m_fightmode_ws->SetPrimaryShader(basicShader.GetProgramId());
-	m_fightmode_ws->SetTextHandler(&testtext);
+	m_fightmode_ws->SetTextHandler(&main_texthandler);
 	m_display_ptr->AddWindowSection(m_fightmode_ws);
 	
 	std::vector<Character> otherchars;
@@ -70,10 +98,10 @@ void TheGame::Play()
 	otherchars[4].SetCharacterType(CharacterType::MERMAID);
 	otherchars[4].SetLocation(128, 19);
 
-	gamemap_ptr->AddToHeroParty(&m_mainchar);
-	gamemap_ptr->AddToHeroParty(&otherchars[0]);
-	gamemap_ptr->AddToHeroParty(&otherchars[1]);
-	gamemap_ptr->AddToHeroParty(&otherchars[2]);
+	gamemap_ptr->AddToHeroParty(m_chars[0]);
+	gamemap_ptr->AddToHeroParty(m_chars[1]);
+	gamemap_ptr->AddToHeroParty(m_chars[2]);
+	gamemap_ptr->AddToHeroParty(m_chars[3]);
 	
 	for (int bb = 0; bb < otherchars.size(); bb++)
 	{
@@ -108,8 +136,8 @@ void TheGame::Play()
 			1);
 		
 		ostringstream location;
-		location << "(" << m_mainchar.GetX() << "," << m_mainchar.GetY() << ")";
-		testtext.Render(location.str(), -.9f, .9f, TextAlignType::CENTER);
+		location << "(" << m_chars[0]->GetX() << "," << m_chars[0]->GetY() << ")";
+		main_texthandler.Render(location.str(), -.9f, .9f, TextAlignType::CENTER);
 		
 		basicShader.Bind();
 
@@ -138,6 +166,14 @@ void TheGame::Play()
 			m_fightmode_ws->Disable();
 			m_mapwalkingmode_ws->Enable();
 			basicShader.Update(maintransform, maincamera);
+		}
+		else if (m_cur_mode == GameMode::NewOrLoadMode)
+		{
+
+		}
+		else if (m_cur_mode == GameMode::PartyBuildMode)
+		{
+
 		}
 		
 		m_display_ptr->Refresh();
@@ -172,7 +208,7 @@ void TheGame::Play()
 				
 				for (int aa = 0; aa < dialogue.size(); aa++)
 				{
-					testtext.Render(dialogue[aa], textorigx, textorigy, TextAlignType::LEFT);
+					main_texthandler.Render(dialogue[aa], textorigx, textorigy, TextAlignType::LEFT);
 					textorigy -= .12;
 				}
 			}
@@ -189,8 +225,8 @@ void TheGame::Interact(int x, int y)
 
 	GameMap *map_ptr = GameMap::GetInstance();
 	bool found = map_ptr->FindTouchingCharacter(
-		m_mainchar.GetX(),
-		m_mainchar.GetY(),
+		m_chars[0]->GetX(),
+		m_chars[0]->GetY(),
 		foundchar, proximity);
 
 	if(found)
@@ -213,13 +249,31 @@ void TheGame::SetCurMode(GameMode dat)
 	if (dat == GameMode::FightMode)
 	{
 		m_mapwalkingmode_ws->Disable();
+		m_neworload_ws->Disable();
+		m_partybuild_ws->Disable();
 		m_fightmode_ws->StartFight();
 		m_fightmode_ws->Enable();
 	}
 	else if (dat == GameMode::MapWalkingMode)
 	{
 		m_fightmode_ws->Disable();
+		m_neworload_ws->Disable();
+		m_partybuild_ws->Disable();
 		m_mapwalkingmode_ws->Enable();
+	}
+	else if (dat == GameMode::NewOrLoadMode)
+	{
+		m_mapwalkingmode_ws->Disable();
+		m_partybuild_ws->Disable();
+		m_fightmode_ws->Disable();
+		m_neworload_ws->Enable();
+	}
+	else if (dat == GameMode::PartyBuildMode)
+	{
+		m_mapwalkingmode_ws->Disable();
+    	m_fightmode_ws->Disable();
+		m_neworload_ws->Disable();
+		m_partybuild_ws->Enable();
 	}
 	m_cur_mode = dat;
 }
@@ -241,8 +295,8 @@ void TheGame::KeyHandler(int key, int scancode, int action, int mods)
 	{
 		if (action == GLFW_PRESS)
 		{
-			int xx = m_mainchar.GetX();
-			int yy = m_mainchar.GetY();
+			int xx = m_chars[0]->GetX();
+			int yy = m_chars[0]->GetY();
 			int dir(1);
 			if (mods == GLFW_MOD_SHIFT) dir *= -1;
 			bool took_step(false);
@@ -280,14 +334,14 @@ void TheGame::KeyHandler(int key, int scancode, int action, int mods)
 				m_zrot -= dir * 5;
 				std::cout << "rot(" << m_xrot << "," << m_yrot << "," << m_zrot << ")\n";
 			case(GLFW_KEY_ENTER) :
-				Interact(m_mainchar.GetX(), m_mainchar.GetY());
+				Interact(m_chars[0]->GetX(), m_chars[0]->GetY());
 			default:
 				break;
 			}
 
 			if (took_step)
 			{
-				if (!m_chatting && m_mainchar.SetLocation(xx, yy))
+				if (!m_chatting && m_chars[0]->SetLocation(xx, yy))
 				{
 					GameMap *gamemap_ptr = GameMap::GetInstance();
 					int randy = get_rand_0_99();
@@ -306,6 +360,9 @@ void TheGame::KeyHandler(int key, int scancode, int action, int mods)
 
 	}
 }
+
+
+
 
 /*
 bool SetUpSkybox(GLuint &cube_vao, GLuint &cube_text_id)

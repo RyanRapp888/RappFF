@@ -6,18 +6,21 @@
 #include "Display.h"
 #include "FightMode.h"
 #include "TiledGameBoard.h"
+#include "PartyBuildMode.h"
+#include "NewOrLoadMode.h"
 
 enum class GameMode
 {
 	MapWalkingMode,
-	FightMode
+	FightMode,
+	PartyBuildMode,
+    NewOrLoadMode
 };
 
 class TheGame
 {
 public:
-	TheGame(): m_display_ptr(nullptr), m_cur_mode(GameMode::MapWalkingMode),
-		       m_mapwalkingmode_ws(nullptr), m_fightmode_ws(nullptr) {}
+	TheGame();
 	void KeyHandler(int key, int scancode, int action, int mods);
 	void Play();
 	~TheGame()
@@ -28,10 +31,15 @@ public:
 private:
 	void SetCurMode(GameMode dat);
 	void Interact(int x, int y);
-	Character m_mainchar;
+	//Character m_mainchar;
+	
+	std::vector<Character *> m_chars;
+	
 	Display *m_display_ptr;
 	TiledGameBoard *m_mapwalkingmode_ws;
 	FightMode *m_fightmode_ws;
+	PartyBuildMode *m_partybuild_ws;
+	NewOrLoadMode *m_neworload_ws;
 	GameMode m_cur_mode;
 	int m_xrot, m_yrot, m_zrot;
 	

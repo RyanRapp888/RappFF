@@ -21,8 +21,10 @@
     <ClCompile Include="GameMap.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="NewOrLoadMode.cpp" />
     <ClCompile Include="ObjLoader.cpp" />
     <ClCompile Include="Observer.cpp" />
+    <ClCompile Include="PartyBuildMode.cpp" />
     <ClCompile Include="RandUtils.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SkyboxShader.cpp" />
@@ -47,8 +49,10 @@
     <ClInclude Include="..\include\utils\linmath.h" />
     <ClInclude Include="..\include\utils\Math3d.h" />
     <ClInclude Include="..\include\utils\Mesh.h" />
+    <ClInclude Include="..\include\utils\NewOrLoadMode.h" />
     <ClInclude Include="..\include\utils\ObjLoader.h" />
     <ClInclude Include="..\include\utils\Observer.h" />
+    <ClInclude Include="..\include\utils\PartyBuildMode.h" />
     <ClInclude Include="..\include\utils\RandUtils.h" />
     <ClInclude Include="..\include\utils\RGB.h" />
     <ClInclude Include="..\include\utils\Shader.h" />
