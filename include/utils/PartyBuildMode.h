@@ -20,12 +20,12 @@ public:
 	bool SetPrimaryShader(GLuint primary_shader);
 	void Refresh();
 	bool HandleKey(int key, int scancode, int action, int mods);
+	bool IsPartyBuildComplete() const;
 
 private:
 
 	PartyBuildSelectType m_select_type;
 	void DrawPartyBuildWindow();
-	bool m_enable;
 	bool m_build_complete;
 	int m_cur_hero_idx;
 	int m_heros_to_build;

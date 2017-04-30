@@ -190,9 +190,15 @@ bool GameMap::FindCharactersInRange(int minx, int miny, int maxx, int maxy, std:
 	return (found_chars.size() > 0);
 }
 
-int GameMap::GetWorldMaxX() { return m_xtiles; }
+int GameMap::GetWorldMaxX()
+{ 
+	return m_xtiles;
+}
 
-int GameMap::GetWorldMaxY() { return m_ytiles; }
+int GameMap::GetWorldMaxY()
+{ 
+	return m_ytiles;
+}
 
 int GameMap::GetMobOdds(int x, int y)
 {

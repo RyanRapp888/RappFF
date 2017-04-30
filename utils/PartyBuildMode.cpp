@@ -38,6 +38,11 @@ void PartyBuildMode::Refresh()
 	WindowSection::Refresh();
 }
 
+bool PartyBuildMode::IsPartyBuildComplete() const
+{
+	return m_build_complete;
+}
+
 bool PartyBuildMode::HandleKey(int key, int scancode, int action, int mods)
 {
 	if (action == GLFW_PRESS)

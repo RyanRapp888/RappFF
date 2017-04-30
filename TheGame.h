@@ -27,12 +27,13 @@ public:
 	{
 		//clean all the stuff
 	}
-
+	bool LoadGameFromFile(const std::string &filename);
+	bool SaveGameToFile(const std::string &filename) const;
+	
 private:
 	void SetCurMode(GameMode dat);
 	void Interact(int x, int y);
-	//Character m_mainchar;
-	
+		
 	std::vector<Character *> m_chars;
 	
 	Display *m_display_ptr;

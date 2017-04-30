@@ -20,13 +20,14 @@ public:
 	bool SetPrimaryShader(GLuint primary_shader);
 	void Refresh();
 	bool HandleKey(int key, int scancode, int action, int mods);
+	// If returned name is blank, then a new save should be created
 	std::string GetSaveFileName();
+	bool IsScreenComplete() const;
 
 private:
 
 	NOL_PICK_MODE m_select_type;
 	void DrawMainScreen();
-	bool m_enable;
 	bool m_screen_complete;
 	int m_opt_idx;
 	Tile m_neworload_tile;

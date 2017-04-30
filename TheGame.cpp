@@ -18,22 +18,6 @@ m_cur_mode(GameMode::NewOrLoadMode),
 m_mapwalkingmode_ws(nullptr),
 m_fightmode_ws(nullptr)
 {
-	m_chars.resize(4);
-	for (int bb = 0; bb < m_chars.size(); bb++)
-	{
-		m_chars[bb] = nullptr;
-	}
-	
-	/*
-	for (int bb = 0; bb < m_chars.size(); bb++)
-	{
-		m_chars[bb] = new Character();
-		m_chars[bb]->SetName("MC Janet");
-		if (bb == 0) m_chars[bb]->SetCharacterType(CharacterType::MAINCHAR);
-		else m_chars[bb]->SetCharacterType(CharacterType::OCTOPUS);
-		m_chars[bb]->SetLocation(128, 05);
-	}
-	*/
 }
 
 void TheGame::Play()
@@ -49,14 +33,7 @@ void TheGame::Play()
 	FontShader fontShader("res\\fontShader");
 	Text main_texthandler(m_display_ptr->GetWinWidth(), m_display_ptr->GetWinHeight());
 	main_texthandler.Init(fontShader.GetProgramId(), 35);
-	
-	GameMap *gamemap_ptr = GameMap::GetInstance();
-		if (!gamemap_ptr->LoadGameMap(256, 256))
-	{
-		std::cout << "Error: Could not load game map" << std::endl;
-	}
-	gamemap_ptr->AttachMainCharacter(m_chars[0]);
-	
+		
 	m_mapwalkingmode_ws = new TiledGameBoard(m_display_ptr, .01, .01, .98, .98);
 	Shader basicShader("res\\basicShader");
 	
@@ -79,35 +56,7 @@ void TheGame::Play()
 	m_fightmode_ws->SetPrimaryShader(basicShader.GetProgramId());
 	m_fightmode_ws->SetTextHandler(&main_texthandler);
 	m_display_ptr->AddWindowSection(m_fightmode_ws);
-	
-	std::vector<Character> otherchars;
-	otherchars.resize(5);
-	otherchars[0].SetName("Emmy");
-	otherchars[0].SetCharacterType(CharacterType::EMMY);
-	otherchars[0].SetLocation( 120, 38);
-	otherchars[1].SetName("Lily");
-	otherchars[1].SetCharacterType(CharacterType::FAIRY);
-	otherchars[1].SetLocation( 115, 33);
-	otherchars[2].SetName("Jerry");
-	otherchars[2].SetCharacterType(CharacterType::OCTOPUS);
-	otherchars[2].SetLocation(120, 9);
-	otherchars[3].SetName("Bella");
-	otherchars[3].SetCharacterType(CharacterType::JELLYBEAN);
-	otherchars[3].SetLocation(120, 45);
-	otherchars[4].SetName("Maddy");
-	otherchars[4].SetCharacterType(CharacterType::MERMAID);
-	otherchars[4].SetLocation(128, 19);
-
-	gamemap_ptr->AddToHeroParty(m_chars[0]);
-	gamemap_ptr->AddToHeroParty(m_chars[1]);
-	gamemap_ptr->AddToHeroParty(m_chars[2]);
-	gamemap_ptr->AddToHeroParty(m_chars[3]);
-	
-	for (int bb = 0; bb < otherchars.size(); bb++)
-	{
-		gamemap_ptr->AttachCharacter(&(otherchars[bb]));
-	}
-		
+			
 	m_xrot = -15;
 	m_yrot = 0;
 	m_zrot = 0;
@@ -126,7 +75,9 @@ void TheGame::Play()
 	thotbubs.SetTileType(TileType::BLACK);
 	thotbubs.SetRelativeLocation(0, 0, 1, .2);
 	m_display_ptr->AddObject(&thotbubs);
-
+	
+	SetCurMode(GameMode::NewOrLoadMode);
+	
 	while (!m_display_ptr->WindowShouldClose())
 	{
 		m_display_ptr->Clear(
@@ -135,45 +86,38 @@ void TheGame::Play()
 			background.GetBlue()/255.0,
 			1);
 		
+		/*
 		ostringstream location;
 		location << "(" << m_chars[0]->GetX() << "," << m_chars[0]->GetY() << ")";
 		main_texthandler.Render(location.str(), -.9f, .9f, TextAlignType::CENTER);
+		*/
 		
 		basicShader.Bind();
-
 		maintransform.SetRot(glm::vec3(m_xrot,m_yrot,m_zrot));
 				
 		if (m_cur_mode == GameMode::FightMode)
 		{
 			maintransform.SetRot(glm::vec3(0,0,0));
-	     	m_mapwalkingmode_ws->Disable();
-			m_fightmode_ws->Enable();
+			//m_mapwalkingmode_ws->Disable();
+			//m_fightmode_ws->Enable();
 			basicShader.Ortho(maintransform);
 		}
 		else if(m_cur_mode == GameMode::MapWalkingMode)
 		{
-			
-			//glDepthMask(GL_FALSE);
-			//skyboxShader.Bind();
-			//skyboxShader.Update(maintransform, maincamera);
-			//glBindVertexArray(skybox_VAO);
-			//glBindTexture(GL_TEXTURE_CUBE_MAP, skybox_texture);
-			//glDrawArrays(GL_TRIANGLES, 0, 36);
-			//glBindVertexArray(0);
-			//glDepthMask(GL_TRUE);
-			//skyboxShader.Detach();
 			basicShader.Bind();
-			m_fightmode_ws->Disable();
-			m_mapwalkingmode_ws->Enable();
+			//m_fightmode_ws->Disable();
+			//m_mapwalkingmode_ws->Enable();
 			basicShader.Update(maintransform, maincamera);
 		}
 		else if (m_cur_mode == GameMode::NewOrLoadMode)
 		{
-
+			maintransform.SetRot(glm::vec3(0, 0, 0));
+			basicShader.Ortho(maintransform);
 		}
 		else if (m_cur_mode == GameMode::PartyBuildMode)
 		{
-
+			maintransform.SetRot(glm::vec3(0, 0, 0));
+			basicShader.Ortho(maintransform);
 		}
 		
 		m_display_ptr->Refresh();
@@ -291,6 +235,37 @@ void TheGame::KeyHandler(int key, int scancode, int action, int mods)
 			}
 		}
 	}
+	else if (m_cur_mode == GameMode::NewOrLoadMode)
+	{
+		if (m_neworload_ws != nullptr)
+		{
+			m_neworload_ws->HandleKey(key, scancode, action, mods);
+			if (m_neworload_ws->IsScreenComplete())
+			{
+				std::string save_file_name = m_neworload_ws->GetSaveFileName();
+				if (save_file_name.size() == 0)
+				{
+					SetCurMode(GameMode::PartyBuildMode);
+				}
+				else
+				{
+					LoadGameFromFile(save_file_name);
+					SetCurMode(GameMode::MapWalkingMode);
+				}
+			}
+		}
+	}
+	else if (m_cur_mode == GameMode::PartyBuildMode)
+	{
+		if (m_partybuild_ws != nullptr)
+		{
+			m_partybuild_ws->HandleKey(key, scancode, action, mods);
+			if (m_partybuild_ws->IsPartyBuildComplete())
+			{
+				SetCurMode(GameMode::MapWalkingMode);
+			}
+		}
+	}
 	else if (m_cur_mode == GameMode::MapWalkingMode)
 	{
 		if (action == GLFW_PRESS)
@@ -361,7 +336,77 @@ void TheGame::KeyHandler(int key, int scancode, int action, int mods)
 	}
 }
 
+bool TheGame::LoadGameFromFile(const std::string &filename)
+{
+	m_chars.resize(9);
+	for (unsigned int aa = 0; aa < m_chars.size(); aa++)
+	{
+		m_chars[aa] = new Character();
+	}
 
+	GameMap *gamemap_ptr = GameMap::GetInstance();
+	if (!gamemap_ptr->LoadGameMap(256, 256))
+	{
+		std::cout << "Error: Could not load game map" << std::endl;
+	}
+
+	m_chars[0]->SetName("MC Janet");
+	m_chars[0]->SetCharacterType(CharacterType::MAINCHAR);
+	m_chars[0]->SetLocation(130, 5);
+	
+	m_chars[1]->SetName("Rocktopus");
+	m_chars[1]->SetCharacterType(CharacterType::OCTOPUS);
+	m_chars[1]->SetLocation(132, 5);
+
+	m_chars[2]->SetName("Ethel Mermaid");
+	m_chars[2]->SetCharacterType(CharacterType::MERMAID);
+	m_chars[2]->SetLocation(134, 5);
+
+	m_chars[3]->SetName("Donkafair");
+	m_chars[3]->SetCharacterType(CharacterType::FAIRY);
+	m_chars[3]->SetLocation(136, 5);
+
+	m_chars[4]->SetName("Emmy");
+	m_chars[4]->SetCharacterType(CharacterType::EMMY);
+	m_chars[4]->SetLocation(120, 38);
+
+	m_chars[5]->SetName("Lily");
+	m_chars[5]->SetCharacterType(CharacterType::FAIRY);
+	m_chars[5]->SetLocation(115, 33);
+
+	m_chars[6]->SetName("Jerry");
+	m_chars[6]->SetCharacterType(CharacterType::OCTOPUS);
+	m_chars[6]->SetLocation(120, 9);
+
+	m_chars[7]->SetName("Bella");
+	m_chars[7]->SetCharacterType(CharacterType::JELLYBEAN);
+	m_chars[7]->SetLocation(120, 45);
+
+	m_chars[8]->SetName("Maddy");
+	m_chars[8]->SetCharacterType(CharacterType::MERMAID);
+	m_chars[8]->SetLocation(128, 19);
+
+	
+	
+	gamemap_ptr->AttachMainCharacter(m_chars[0]);
+	gamemap_ptr->AddToHeroParty(m_chars[0]);
+	gamemap_ptr->AddToHeroParty(m_chars[1]);
+	gamemap_ptr->AddToHeroParty(m_chars[2]);
+	gamemap_ptr->AddToHeroParty(m_chars[3]);
+
+	for (int bb = 0; bb < m_chars.size(); bb++)
+	{
+	   gamemap_ptr->AttachCharacter(m_chars[bb]);
+	}
+
+	return true;
+}
+
+bool TheGame::SaveGameToFile(const std::string &filename) const
+{
+	return true;
+
+}
 
 
 /*
@@ -418,4 +463,16 @@ bool SetUpSkybox(GLuint &cube_vao, GLuint &cube_text_id)
 	glBindVertexArray(0);
 	return true;
 }
+
+//glDepthMask(GL_FALSE);
+//skyboxShader.Bind();
+//skyboxShader.Update(maintransform, maincamera);
+//glBindVertexArray(skybox_VAO);
+//glBindTexture(GL_TEXTURE_CUBE_MAP, skybox_texture);
+//glDrawArrays(GL_TRIANGLES, 0, 36);
+//glBindVertexArray(0);
+//glDepthMask(GL_TRUE);
+//skyboxShader.Detach();
+
+
 */

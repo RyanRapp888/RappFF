@@ -322,28 +322,23 @@ bool Character::SetLocation(int x, int y)
 	bool result;
 	GameMap *map_ptr = GameMap::GetInstance();
 	if (map_ptr == nullptr) return false;
+	
 	if (x < 0)
 	{
 		x = 0;
-		return false;
 	}
-
-	if (x >= map_ptr->GetWorldMaxX())
+	else if (x >= map_ptr->GetWorldMaxX())
 	{
 		x = map_ptr->GetWorldMaxX() - 1;
-		return false;
 	}
 
 	if (y < 0)
 	{
 		y = 0;
-		return false;
 	}
-
-	if (y >= map_ptr->GetWorldMaxY())
+	else if (y >= map_ptr->GetWorldMaxY())
 	{
 		y = map_ptr->GetWorldMaxY() - 1;
-		return false;
 	}
 
 	//CanOccupyLocation looks to see if our character can step on the desired

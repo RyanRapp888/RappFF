@@ -3,7 +3,7 @@
 #include <GLFW/glfw3.h>
 #include <sstream>
 
-#define NOL_VERT_SPACING .19
+#define NOL_VERT_SPACING .08
 
 NewOrLoadMode::NewOrLoadMode(Viewport *vpt, double origxpct, double origypct, double w_pct, double h_pct) :
 WindowSection(vpt, origxpct, origypct, w_pct, h_pct), m_texthandler_ptr(nullptr), m_primary_shaderid(0)
@@ -14,10 +14,18 @@ WindowSection(vpt, origxpct, origypct, w_pct, h_pct), m_texthandler_ptr(nullptr)
 	m_enable = false;
 	m_screen_complete = false;
 	m_opt_idx = 0;
-	m_select_type == NOL_PICK_MODE::NEWORLOAD_PICK;
+	m_select_type = NOL_PICK_MODE::NEWORLOAD_PICK;
 	m_cur_options.push_back("New Game");
 	m_cur_options.push_back("Load Saved Game");
 	m_filename = "";
+}
+
+static bool GetListOfSaves(std::vector<std::string> &save_names)
+{
+	save_names.emplace_back("Save1");
+	save_names.emplace_back("Save2");
+	save_names.emplace_back("Save3");
+	return save_names.size() > 0;
 }
 
 bool NewOrLoadMode::SetTextHandler(Text *texthandler)
@@ -37,6 +45,11 @@ void NewOrLoadMode::Refresh()
 	if (!m_enable) return;
 	DrawMainScreen();
 	WindowSection::Refresh();
+}
+
+bool NewOrLoadMode::IsScreenComplete() const
+{
+	return m_screen_complete;
 }
 
 bool NewOrLoadMode::HandleKey(int key, int scancode, int action, int mods)
@@ -66,15 +79,14 @@ bool NewOrLoadMode::HandleKey(int key, int scancode, int action, int mods)
 				{
 					m_select_type = NOL_PICK_MODE::CHOOSE_LOADABLE;
 					m_cur_options.clear();
-					m_cur_options.push_back("Save1");
-					m_cur_options.push_back("Save2");
-					m_cur_options.push_back("Save3");
+					GetListOfSaves(m_cur_options);
 					m_opt_idx = 0;
 				}
 			}
 			else if (m_select_type == NOL_PICK_MODE::CHOOSE_LOADABLE)
 			{
 				m_filename = m_cur_options[m_opt_idx];
+				m_screen_complete = true;
 			}
 		}
 	}
@@ -118,11 +130,16 @@ void NewOrLoadMode::DrawMainScreen()
 			std::string text = m_cur_options[dd];
 			if (dd == m_opt_idx)
 			{
-				int t2 = textxpos + (m_neworload_tile.GetRelativeWidth_01() * 2) * .1;
+				float t2 = textxpos + (m_neworload_tile.GetRelativeWidth_01() * 2) * .15;
 				m_texthandler_ptr->Render("<==", t2, textypos, TextAlignType::LEFT);
 			}
 			m_texthandler_ptr->Render(text, textxpos, textypos, TextAlignType::LEFT);
 		}
 	}
 
+}
+
+std::string NewOrLoadMode::GetSaveFileName()
+{
+	return m_filename;
 }
