@@ -319,7 +319,6 @@ void Character::SetCharMotion(const CharMotion &cmot)
 
 bool Character::SetLocation(int x, int y)
 {
-	bool result;
 	GameMap *map_ptr = GameMap::GetInstance();
 	if (map_ptr == nullptr) return false;
 	

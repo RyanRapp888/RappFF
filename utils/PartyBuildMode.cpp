@@ -7,14 +7,26 @@ PartyBuildMode::PartyBuildMode(Viewport *vpt, double origxpct, double origypct, 
 WindowSection(vpt, origxpct, origypct, w_pct, h_pct), m_texthandler_ptr(nullptr), m_primary_shaderid(0)
 {
 	m_drawparty_tile.SetWindowSectionPtr(this);
-	m_drawparty_tile.SetTileType(TileType::GRASS);
+	m_drawparty_tile.SetTileType(TileType::FRAME);
 	m_drawparty_tile.SetRelativeLocation(0, 0, 1, 1);
 	m_enable = false;
 	m_build_complete = false;
 	m_cur_hero_idx = 0;
-	m_heros_to_build = 2;
-	m_select_type == PartyBuildSelectType::CHARACTER_CHOOSE;
+	m_heros_to_build = 4;
+	m_select_type = PartyBuildSelectType::CHARACTER_CHOOSE;
 	m_charnames.resize(m_heros_to_build);
+	m_char_build_tiles = new Tile[m_heros_to_build];
+	for (int aa = 0; aa < m_heros_to_build; aa++)
+	{
+		m_char_build_tiles[aa].SetTileType(TileType::MERMAID);
+		m_char_build_tiles[aa].SetRelativeLocation(.25, .25 + (.1 * aa), .1, .1);
+		this->AddObject(&(m_char_build_tiles[aa]));
+	}
+}
+
+PartyBuildMode::~PartyBuildMode()
+{
+	delete[] m_char_build_tiles;
 }
 
 bool PartyBuildMode::SetTextHandler(Text *texthandler)
@@ -54,7 +66,7 @@ bool PartyBuildMode::HandleKey(int key, int scancode, int action, int mods)
 			m_charnames[m_cur_hero_idx] += static_cast<char>(key);
 		}
 		else if (m_select_type == PartyBuildSelectType::TYPE_NAME &&
-			key == GLFW_KEY_BACKSLASH)
+			key == GLFW_KEY_BACKSPACE)
 		{
 			m_charnames[m_cur_hero_idx].erase(m_charnames[m_cur_hero_idx].back());
 		}
@@ -116,6 +128,9 @@ void PartyBuildMode::DrawPartyBuildWindow()
 	m_drawparty_tile.SetUpInstancing(1, scalevec, translations);
 	m_drawparty_tile.Render();
 	delete[] translations;
+	
+	this->Refresh();
+
 	/*
 	std::vector<Character *> heros_elect;
 	
