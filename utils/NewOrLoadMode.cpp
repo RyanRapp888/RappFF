@@ -3,7 +3,7 @@
 #include <GLFW/glfw3.h>
 #include <sstream>
 
-#define NOL_VERT_SPACING .08
+#define NOL_VERT_SPACING .08f
 
 NewOrLoadMode::NewOrLoadMode(Viewport *vpt, double origxpct, double origypct, double w_pct, double h_pct) :
 WindowSection(vpt, origxpct, origypct, w_pct, h_pct), m_texthandler_ptr(nullptr), m_primary_shaderid(0)
@@ -59,7 +59,7 @@ bool NewOrLoadMode::HandleKey(int key, int scancode, int action, int mods)
 		if (key == GLFW_KEY_DOWN)
 		{
 			m_opt_idx++;
-			if (m_opt_idx >= m_cur_options.size()) m_opt_idx = m_cur_options.size() - 1;
+			if (m_opt_idx >= static_cast<int>(m_cur_options.size())) m_opt_idx = static_cast<int>(m_cur_options.size()) - 1;
 		}
 		else if (key == GLFW_KEY_UP)
 		{
@@ -120,17 +120,18 @@ void NewOrLoadMode::DrawMainScreen()
 
 	if (m_texthandler_ptr != nullptr)
 	{
-		double xdrawpos = m_neworload_tile.GetXDrawPos_N11();
-		double ydrawpos = m_neworload_tile.GetYDrawPos_N11();
-		double textxpos = xdrawpos + (m_neworload_tile.GetRelativeWidth_01() * 2) * .08;
+		float xdrawpos = static_cast<float>(m_neworload_tile.GetXDrawPos_N11());
+		float ydrawpos = static_cast<float>(m_neworload_tile.GetYDrawPos_N11());
+		float textxpos = xdrawpos + (static_cast<float>(m_neworload_tile.GetRelativeWidth_01()) * 2.0f) * .08f;
 
 		for (int dd = 0; dd < m_cur_options.size(); dd++)
 		{
-			double textypos = ydrawpos + (m_neworload_tile.GetRelativeHeight_01() * 2) * (.85 - (NOL_VERT_SPACING * dd));
+			float textypos = ydrawpos + (static_cast<float>(m_neworload_tile.GetRelativeHeight_01()) * 2.0f) *
+				                                         (.85f - (NOL_VERT_SPACING * dd));
 			std::string text = m_cur_options[dd];
 			if (dd == m_opt_idx)
 			{
-				float t2 = textxpos + (m_neworload_tile.GetRelativeWidth_01() * 2) * .15;
+				float t2 = textxpos + (static_cast<float>(m_neworload_tile.GetRelativeWidth_01() )* 2.0f * .15f );
 				m_texthandler_ptr->Render("<==", t2, textypos, TextAlignType::LEFT);
 			}
 			m_texthandler_ptr->Render(text, textxpos, textypos, TextAlignType::LEFT);

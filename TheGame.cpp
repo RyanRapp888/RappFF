@@ -26,7 +26,7 @@ void TheGame::Play()
 	int initial_wh(900);
 	m_display_ptr = new Display(initial_ww, initial_wh, "Wheat Ridge");
 	Transform maintransform;
-	float aspect(initial_ww / static_cast<double>(initial_wh));
+	double aspect(initial_ww / static_cast<double>(initial_wh));
 	Camera maincamera(glm::vec3(0, 0, .8), 80.0f, aspect, 0.1f, 30000);
 	if (m_display_ptr == nullptr) return;
 
@@ -81,7 +81,7 @@ void TheGame::Play()
 	while (!m_display_ptr->WindowShouldClose())
 	{
 		m_display_ptr->Clear(
-			background.GetRed()/255.0,
+			background.GetRed()/ 255,
 			background.GetGreen()/255.0,
 			background.GetBlue()/255.0,
 			1);
@@ -128,7 +128,7 @@ void TheGame::Play()
 			{
 				std::vector<std::string> dialogue = m_chat_char->GetDialogueLines();
 
-				double textorigx(0), textorigy(0);
+				float textorigx(0), textorigy(0);
 				if (m_chat_prox == ProxRel::FOUND_TO_LEFT)
 				{
 					textorigx = -.4;

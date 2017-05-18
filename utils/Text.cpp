@@ -119,7 +119,6 @@ void Text::Render(std::string text, float x, float y, TextAlignType align)
 
 bool Text::GetGlyph(char c, GlyphData &returned_glyph) 
 {
-	GlyphData result;
 	auto iter = m_glyphlookup.find(c);
 	if(iter != m_glyphlookup.end()) 
 	{

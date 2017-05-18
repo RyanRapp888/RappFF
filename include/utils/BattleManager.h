@@ -95,6 +95,15 @@ struct Loot
 		result = rstream.str();
 		return result;
 	}
+	bool IsEmpty() const
+	{
+		if (m_items.empty() &&
+			m_spells.empty() &&
+			m_armors.empty() &&
+			m_weapons.empty() &&
+			m_pooled_money == 0) return true;
+		return false;
+	}
 	int m_pooled_money;
 	int m_each_xp;
 	
@@ -138,9 +147,9 @@ public:
 	bool LookForAliveHero(int start_id, int look_dir, int &found_id);
 
 	Character *GetMobPtr(int mob_id);
-	int GetNMobs() const;
-	int GetNItems(int hero_idx);
-	int GetNHeroes();
+	size_t GetNMobs() const;
+	size_t GetNItems(int hero_idx);
+	size_t GetNHeroes();
 	bool IsHeroActive(int hero_idx);
 	TileType GetMobTileType(int mob_id);
 	bool IsMobDead(int mob_id);

@@ -9,7 +9,7 @@ SkyboxShader::SkyboxShader(const std::string& fileName)
 	m_shaderids.emplace_back(CreateShader(LoadShader(fileName + ".vs"), GL_VERTEX_SHADER));
 	m_shaderids.emplace_back(CreateShader(LoadShader(fileName + ".fs"), GL_FRAGMENT_SHADER));
 
-	for (unsigned int i = 0; i < m_shaderids.size(); i++)
+	for (size_t i = 0; i < m_shaderids.size(); i++)
 		glAttachShader(m_program, m_shaderids[i]);
 
 	glBindAttribLocation(m_program, 0, "position");
@@ -26,7 +26,7 @@ SkyboxShader::SkyboxShader(const std::string& fileName)
 
 SkyboxShader::~SkyboxShader()
 {
-	for (unsigned int i = 0; i < m_shaderids.size(); i++)
+	for (size_t i = 0; i < m_shaderids.size(); i++)
 	{
 		glDetachShader(m_program, m_shaderids[i]);
 		glDeleteShader(m_shaderids[i]);
@@ -99,9 +99,9 @@ void SkyboxShader::CheckShaderError(GLuint shader, GLuint flag, bool isProgram, 
 	}
 }
 
-GLuint SkyboxShader::CreateShader(const std::string& text, unsigned int type)
+GLuint SkyboxShader::CreateShader(const std::string& text, size_t type)
 {
-	GLuint shader = glCreateShader(type);
+	GLuint shader = glCreateShader(static_cast<GLenum>(type));
 
 	if (shader == 0)
 		std::cerr << "Error compiling shader type " << type << std::endl;
@@ -109,7 +109,7 @@ GLuint SkyboxShader::CreateShader(const std::string& text, unsigned int type)
 	const GLchar* p[1];
 	p[0] = text.c_str();
 	GLint lengths[1];
-	lengths[0] = text.length();
+	lengths[0] = static_cast<GLint> (text.length());
 
 	glShaderSource(shader, 1, p, lengths);
 	glCompileShader(shader);

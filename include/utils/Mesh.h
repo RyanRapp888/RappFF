@@ -59,7 +59,7 @@ class Mesh : public DrawableObj
    bool LoadMesh(const std::string &meshname);
    virtual ~Mesh();
    bool UseTexture(std::string &texture);
-   void SetUpInstancing(int n_instances, glm::vec3 scale, glm::mat4 *translations);
+   void SetUpInstancing(size_t n_instances, glm::vec3 scale, glm::mat4 *translations);
    void Render();
    
 private:
@@ -70,7 +70,7 @@ private:
      
    GLData *m_gldata;
    Texture *m_texture;
-   int m_num_instances;
+   size_t m_num_instances;
    RGB m_color;
 };
 

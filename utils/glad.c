@@ -3,6 +3,8 @@
 #include <string.h>
 #include <glad.h>
 
+#pragma warning( disable : 6308)
+
 struct gladGLversionStruct GLVersion;
 
 #if defined(GL_ES_VERSION_3_0) || defined(GL_VERSION_3_0)

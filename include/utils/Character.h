@@ -166,10 +166,10 @@ class CharacterInventory
 {
 public:
 	CharacterInventory();
-	int GetNWeapons() const;
-	int GetNItems() const;
+	size_t GetNWeapons() const;
+	size_t GetNItems() const;
 	const Item &GetItemRef(int idx) const;
-	int GetNSpells() const;
+	size_t GetNSpells() const;
 	int GetWeaponAccuracy() const;
 	int GetWeaponDamage() const;
 	int GetArmorDodge(ArmorType at) const;
@@ -203,7 +203,7 @@ public:
    std::string GetName() const;
    std::string GetHPString() const;
    std::vector<std::string> Character::GetDialogueLines() const;
-   int GetNItems() const;
+   size_t GetNItems() const;
    const Item &GetItemRef(int idx) const;
    CharacterType GetCharacterType() const;
    TileType GetTileType() const;

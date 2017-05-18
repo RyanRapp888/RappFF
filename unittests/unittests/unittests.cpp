@@ -114,6 +114,7 @@ void AttackTest(BattleManager &bm, BattleRoundOutcome &bro)
 
 int main(void)
 {
+	/*
 	std::map<int, int> counts;
 	for (int aa = 0; aa < 10000000; aa++)
 	{
@@ -129,8 +130,8 @@ int main(void)
 
 	int abc;
 	std::cin >> abc;
-
-	/*
+	*/
+	
 	GameMap *gamemap_ptr = GameMap::GetInstance();
 
 	if (!gamemap_ptr->LoadGameMap(256, 256))
@@ -187,6 +188,8 @@ int main(void)
 		AttackTest(battle_manager, bro);
 	}
 
-	*/
+	int abc;
+	std::cin >> abc;
+	
 	return true;
 }

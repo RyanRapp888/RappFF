@@ -87,12 +87,13 @@ Display::~Display()
    m_window = nullptr;
 }
 
-void Display::Clear(float r, float g, float b, float a)
+void Display::Clear(double r, double g, double b, double a)
 {
    int width,height;
    glfwGetFramebufferSize(m_window, &width, &height);
    glfwGetWindowSize(m_window, &width, &height);
-   glClearColor(r, g, b, a);
+   glClearColor( static_cast<GLfloat>(r), 
+	   static_cast<GLfloat>(g), static_cast<GLfloat>(b), static_cast<GLfloat>(a));
    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 

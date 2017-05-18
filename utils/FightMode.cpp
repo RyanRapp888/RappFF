@@ -3,8 +3,8 @@
 #include <GLFW/glfw3.h>
 #include <sstream>
 
-#define HERO_VERT_SPACING .19
-#define MOB_VERT_SPACING .1
+#define HERO_VERT_SPACING .19f
+#define MOB_VERT_SPACING .1f
 
 FightMode::FightMode(Viewport *vpt, double origxpct, double origypct, double w_pct, double h_pct) :
 WindowSection(vpt, origxpct, origypct, w_pct, h_pct), m_texthandler_ptr(nullptr), m_primary_shaderid(0)
@@ -67,7 +67,7 @@ bool FightMode::HandleKey(int key, int scancode, int action, int mods)
 				std::vector<std::string> fo = m_battle.GetFightOptions();
 				if (m_cur_action_idx >= fo.size())
 				{
-					m_cur_action_idx = fo.size() - 1;
+					m_cur_action_idx = static_cast<int>(fo.size()) - 1;
 				}
 			}
 			else if (m_sub_mode == FightPickMode::PICK_MOB)
@@ -83,7 +83,7 @@ bool FightMode::HandleKey(int key, int scancode, int action, int mods)
 				mapptr->GetCurHeroes(heroes);
 				if (m_cur_item_idx >= heroes[m_hero_turn_idx]->GetNItems())
 				{
-					m_cur_item_idx = heroes[m_hero_turn_idx]->GetNItems() - 1;
+					m_cur_item_idx = static_cast<int>(heroes[m_hero_turn_idx]->GetNItems()) - 1;
 				}
 			}
 			else if (m_sub_mode == FightPickMode::PICK_ITEM_TARGET)
@@ -97,7 +97,7 @@ bool FightMode::HandleKey(int key, int scancode, int action, int mods)
 					m_cur_item_target_idx++;
 					if (m_cur_item_target_idx >= heroes.size())
 					{
-						m_cur_item_target_idx = heroes.size() - 1;
+						m_cur_item_target_idx = static_cast<int>(heroes.size() - 1);
 					}
 				}
 				else if (curitem.GetType() == UseType::VS_SINGLE)
@@ -353,15 +353,15 @@ void FightMode::DrawTopWindow()
 
 	glm::vec3 char_scalevec(m_top_tile.GetRelativeWidth_01() * 2,
 		                    m_top_tile.GetRelativeHeight_01() * 2, 1);
-	char_scalevec.x *= .1;
-	char_scalevec.y *= .2;
+	char_scalevec.x *= .1f;
+	char_scalevec.y *= .2f;
 
 	for (int cc = 0; cc < cur_heroes.size(); cc++)
 	{
-		double xdrawpos = m_top_tile.GetXDrawPos_N11();
-		double ydrawpos = m_top_tile.GetYDrawPos_N11();
-		double charoriginx = xdrawpos + (m_top_tile.GetRelativeWidth_01() * 2) * .85;
-		double charoriginy = ydrawpos + (m_top_tile.GetRelativeHeight_01() * 2) * (.8 - (cc * .22));
+		float xdrawpos = static_cast<float>(m_top_tile.GetXDrawPos_N11());
+		float ydrawpos = static_cast<float>(m_top_tile.GetYDrawPos_N11());
+		float charoriginx = xdrawpos + (static_cast<float>(m_top_tile.GetRelativeWidth_01()) * 2.0f) * .85f;
+		float charoriginy = ydrawpos + (static_cast<float>(m_top_tile.GetRelativeHeight_01()) * 2.0f) * (.8f - (cc * .22f));
 		Mesh curchar;
 		curchar.LoadMesh(GetMeshFilename(cur_heroes[cc]->GetTileType()));
 
@@ -378,8 +378,8 @@ void FightMode::DrawTopWindow()
 
 		if (m_hero_turn && m_hero_turn_idx == cc)
 		{
-			charoriginx = charoriginx + (m_top_tile.GetRelativeWidth_01() * 
-				                        m_hero_anim_dir * (.22 * m_hero_anim_pct / 100.0));
+			charoriginx = charoriginx + (static_cast<float>(m_top_tile.GetRelativeWidth_01()) * 
+				                        m_hero_anim_dir * (.22f * m_hero_anim_pct / 100.0f));
 			m_hero_anim_pct += 10;
 			if (m_hero_anim_pct > 100)
 			{
@@ -401,8 +401,9 @@ void FightMode::DrawTopWindow()
 			{
 				if (m_cur_item_target_idx == cc)
 				{
-					double arrowxpos = m_top_tile.GetXDrawPos_N11() + (m_top_tile.GetRelativeWidth_01() * 2) * .67;
-					double arrowypos = charoriginy;
+					float arrowxpos = static_cast<float>(m_top_tile.GetXDrawPos_N11()) + 
+						                          static_cast<float>(m_top_tile.GetRelativeWidth_01() * 2.0f) * .67f;
+					float arrowypos = charoriginy;
 					m_texthandler_ptr->Render("-->", arrowxpos, arrowypos, TextAlignType::LEFT);
 					glUseProgram(m_primary_shaderid);
 				}
@@ -411,8 +412,9 @@ void FightMode::DrawTopWindow()
 			{
 				if (m_cur_item_target_idx == cc)
 				{
-					double arrowxpos = m_top_tile.GetXDrawPos_N11() + (m_top_tile.GetRelativeWidth_01() * 2) * .3;
-					double arrowypos = charoriginy;
+					float arrowxpos = static_cast<float>(m_top_tile.GetXDrawPos_N11()) +
+						                         (static_cast<float>(m_top_tile.GetRelativeWidth_01()) * 2.0f) * .3f;
+					float arrowypos = charoriginy;
 					m_texthandler_ptr->Render("<--", arrowxpos, arrowypos, TextAlignType::LEFT);
 					glUseProgram(m_primary_shaderid);
 				}
@@ -422,10 +424,10 @@ void FightMode::DrawTopWindow()
 
 	for (int dd = 0; dd < m_battle.GetNMobs(); dd++)
 	{
-		double xdrawpos = m_top_tile.GetXDrawPos_N11();
-		double ydrawpos = m_top_tile.GetYDrawPos_N11();
-		double moboriginx = xdrawpos + (m_top_tile.GetRelativeWidth_01() * 2) * .15;
-		double moboriginy = ydrawpos + (m_top_tile.GetRelativeHeight_01() * 2) * (.8 - (dd * .22));
+		float xdrawpos = static_cast<float>(m_top_tile.GetXDrawPos_N11());
+		float ydrawpos = static_cast<float>(m_top_tile.GetYDrawPos_N11());
+		float moboriginx = xdrawpos + (static_cast<float>(m_top_tile.GetRelativeWidth_01()) * 2.0f) * .15f;
+		float moboriginy = ydrawpos + (static_cast<float>(m_top_tile.GetRelativeHeight_01()) * 2.0f) * (.8f - (dd * .22f));
 		Mesh curmob;
 		curmob.LoadMesh(GetMeshFilename(m_battle.GetMobTileType(dd)));
 
@@ -451,8 +453,9 @@ void FightMode::DrawTopWindow()
 		{
 			if (m_cur_mob_idx == dd)
 			{
-				double arrowxpos = m_top_tile.GetXDrawPos_N11() + (m_top_tile.GetRelativeWidth_01() * 2) * .3;
-				double arrowypos = moboriginy;
+				float arrowxpos = static_cast<float>(m_top_tile.GetXDrawPos_N11()) + 
+					                         static_cast<float>((m_top_tile.GetRelativeWidth_01()) * 2.0f) * .3f;
+				float arrowypos = moboriginy;
 				m_texthandler_ptr->Render("<--", arrowxpos, arrowypos, TextAlignType::LEFT);
 				glUseProgram(m_primary_shaderid);
 			}
@@ -488,13 +491,14 @@ void FightMode::DrawMobWindow()
 
 	if (m_texthandler_ptr != nullptr)
 	{
-		double xdrawpos = m_mobstats_tile.GetXDrawPos_N11();
-		double ydrawpos = m_mobstats_tile.GetYDrawPos_N11();
-		double textxpos = xdrawpos + (m_mobstats_tile.GetRelativeWidth_01() * 2) * .08;
+		float xdrawpos = static_cast<float>(m_mobstats_tile.GetXDrawPos_N11());
+		float ydrawpos = static_cast<float>(m_mobstats_tile.GetYDrawPos_N11());
+		float textxpos = xdrawpos + (static_cast<float>(m_mobstats_tile.GetRelativeWidth_01()) * 2.0f) * .08f;
 
 		for (int curmon = 0; curmon < m_battle.GetNMobs(); curmon++)
 		{
- 			double textypos = ydrawpos + (m_mobstats_tile.GetRelativeHeight_01() * 2) * (.85 - (MOB_VERT_SPACING * curmon));
+ 			float textypos = ydrawpos +
+				                     static_cast<float>((m_mobstats_tile.GetRelativeHeight_01()) * 2.0f) * (.85f - (MOB_VERT_SPACING * curmon));
 			std::string text = m_battle.GetMobName(curmon);
 			if (m_battle.IsMobDead(curmon))
 			{
@@ -523,7 +527,7 @@ void FightMode::DrawMobWindow()
 			GameMap *mapptr = GameMap::GetInstance();
 			std::vector<Character *> heroes;
 			mapptr->GetCurHeroes(heroes);
-			int nitems = heroes[m_hero_turn_idx]->GetNItems();
+			size_t nitems = heroes[m_hero_turn_idx]->GetNItems();
 			for (int aa = 0; aa < nitems; aa++)
 			{
 				const Item &curitem = heroes[m_hero_turn_idx]->GetItemRef(aa);
@@ -531,16 +535,18 @@ void FightMode::DrawMobWindow()
 			}
 		}
 			
-		double xdrawpos = m_mobstats_tile.GetXDrawPos_N11() + (m_mobstats_tile.GetRelativeWidth_01() * 2) * .6;
-		double ydrawpos = m_mobstats_tile.GetYDrawPos_N11();
+		float xdrawpos = static_cast<float>(m_mobstats_tile.GetXDrawPos_N11()) +
+			                        static_cast<float>((m_mobstats_tile.GetRelativeWidth_01()) * 2.0f) * .6f;
+		float ydrawpos = static_cast<float>(m_mobstats_tile.GetYDrawPos_N11());
 
 		for (int aa = 0; aa < options.size(); aa++)
 		{
-		    double textypos = ydrawpos + (m_mobstats_tile.GetRelativeHeight_01() * 2) *
-			                         	   (.85 - (MOB_VERT_SPACING * aa));
+		    float textypos = ydrawpos + (static_cast<float>(m_mobstats_tile.GetRelativeHeight_01()) * 2.0f) *
+			                         	   (.85f - (MOB_VERT_SPACING * aa));
 			if (cur_idx == aa)
 			{
-				double arrowxpos = m_mobstats_tile.GetXDrawPos_N11() + (m_mobstats_tile.GetRelativeWidth_01() * 2) * .55;
+				float arrowxpos = static_cast<float>(m_mobstats_tile.GetXDrawPos_N11()) + 
+					                          static_cast<float>((m_mobstats_tile.GetRelativeWidth_01()) * 2.0f) * .55f;
 				m_texthandler_ptr->Render("-->", arrowxpos, textypos, TextAlignType::LEFT);
 			}
 			m_texthandler_ptr->Render(options[aa], xdrawpos, textypos, TextAlignType::LEFT);
@@ -578,14 +584,14 @@ void FightMode::DrawHeroWindow()
 
 	if (m_texthandler_ptr != nullptr)
 	{
-		double xdrawpos = m_herostats_tile.GetXDrawPos_N11();
-		double ydrawpos = m_herostats_tile.GetYDrawPos_N11();
-		double textxpos = xdrawpos + (m_herostats_tile.GetRelativeWidth_01() * 2) * .08;
+		float xdrawpos = static_cast<float>(m_herostats_tile.GetXDrawPos_N11());
+		float ydrawpos = static_cast<float>(m_herostats_tile.GetYDrawPos_N11());
+		float textxpos = xdrawpos + (static_cast<float>(m_herostats_tile.GetRelativeWidth_01()) * 2.0f) * .08f;
 
 		for (int cc = 0; cc < cur_heroes.size(); cc++)
 		{
-			double textypos = ydrawpos + (m_herostats_tile.GetRelativeHeight_01() * 2) * 
-				              (.85 - (HERO_VERT_SPACING * cc));
+			float textypos = ydrawpos + (static_cast<float>(m_herostats_tile.GetRelativeHeight_01()) * 2.0f) * 
+				              (.85f - (HERO_VERT_SPACING * cc));
 			m_texthandler_ptr->Render(cur_heroes[cc]->GetName(), textxpos, textypos, TextAlignType::LEFT);
 			std::string textstring = "(" + cur_heroes[cc]->GetHPString() + ")";
 			m_texthandler_ptr->Render(textstring, .25, textypos, TextAlignType::LEFT);

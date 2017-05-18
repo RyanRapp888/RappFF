@@ -61,3 +61,5 @@ Freetype_src/freetype-2.8.tar
 *.tlog
 *.tlog
 *.tlog
+*.log
+*.idb

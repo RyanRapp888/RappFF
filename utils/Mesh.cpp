@@ -26,7 +26,7 @@ static void GenerateVAOVBOS(IndexedModel &model, GLData **gldata)
 {
 	*gldata = new GLData;
 
-	(*gldata)->m_n_vertices = model.m_positions.size();
+	(*gldata)->m_n_vertices = static_cast<int>(model.m_positions.size());
 	glGenVertexArrays(1, &((*gldata)->m_vao));
 	glBindVertexArray((*gldata)->m_vao);
 
@@ -104,7 +104,7 @@ bool Mesh::UseTexture(std::string &texture_filename)
    return false;
 }
 
-void Mesh::SetUpInstancing(int n_instances, glm::vec3 scalevect, glm::mat4 *translations)
+void Mesh::SetUpInstancing(size_t n_instances, glm::vec3 scalevect, glm::mat4 *translations)
 {
 	glBindVertexArray(m_gldata->m_vao);
 	if (m_gldata->m_vbos.size() < 4)
@@ -113,6 +113,7 @@ void Mesh::SetUpInstancing(int n_instances, glm::vec3 scalevect, glm::mat4 *tran
 		glGenBuffers(1, &tmp);
 		m_gldata->m_vbos.push_back(tmp);
 	}
+
    m_num_instances = n_instances;
    
    for (int aa = 0; aa < n_instances; aa++)
@@ -146,7 +147,7 @@ void Mesh::Render()
 
    if (m_num_instances > 0)
    {
-	   glDrawArraysInstanced(GL_TRIANGLES, 0, m_gldata->m_n_vertices, m_num_instances);
+	   glDrawArraysInstanced(GL_TRIANGLES, 0, m_gldata->m_n_vertices, static_cast<GLsizei> (m_num_instances));
 	   glFlush();
    }
    

@@ -5,9 +5,9 @@
 #include <map>
 
 static bool CompareOBJIndexPtr(const OBJIndex* a, const OBJIndex* b);
-static inline unsigned int FindNextChar(unsigned int start, const char* str, unsigned int length, char token);
-static inline unsigned int ParseOBJIndexValue(const std::string& token, unsigned int start, unsigned int end);
-static inline float ParseOBJFloatValue(const std::string& token, unsigned int start, unsigned int end);
+static inline size_t FindNextChar(size_t start, const char* str, size_t length, char token);
+static inline size_t ParseOBJIndexValue(const std::string& token, size_t start, size_t end);
+static inline float ParseOBJFloatValue(const std::string& token, size_t start, size_t end);
 static inline std::vector<std::string> SplitString(const std::string &s, char delim);
 
 OBJModel::OBJModel(const std::string& fileName)
@@ -24,7 +24,7 @@ OBJModel::OBJModel(const std::string& fileName)
         {
             getline(file, line);
         
-            unsigned int lineLength = line.length();
+            size_t lineLength = line.length();
             
             if(lineLength < 2)
                 continue;
@@ -70,7 +70,7 @@ void IndexedModel::CalcNormals()
 		}
 	}
 
-    for(unsigned int i = 0; i < m_indices.size(); i += 3)
+    for(size_t i = 0; i < m_indices.size(); i += 3)
     {
         int i0 = m_indices[i];
         int i1 = m_indices[i + 1];
@@ -86,7 +86,7 @@ void IndexedModel::CalcNormals()
         m_normals[i2] += normal;
     }
     
-    for(unsigned int i = 0; i < m_positions.size(); i++)
+    for(size_t i = 0; i < m_positions.size(); i++)
         m_normals[i] = glm::normalize(m_normals[i]);
 }
 
@@ -95,7 +95,7 @@ IndexedModel OBJModel::ToIndexedModel()
     IndexedModel result;
     IndexedModel normalModel;
     
-    unsigned int numIndices = m_OBJIndices.size();
+    size_t numIndices = m_OBJIndices.size();
 
 	if (numIndices == 0 && 
 		m_vertices.size() > 0)
@@ -123,15 +123,15 @@ IndexedModel OBJModel::ToIndexedModel()
 	    
     std::vector<OBJIndex*> indexLookup;
     
-    for(unsigned int i = 0; i < numIndices; i++)
+    for(size_t i = 0; i < numIndices; i++)
         indexLookup.emplace_back(&m_OBJIndices[i]);
     
     std::sort(indexLookup.begin(), indexLookup.end(), CompareOBJIndexPtr);
     
-    std::map<OBJIndex, unsigned int> normalModelIndexMap;
-    std::map<unsigned int, unsigned int> indexMap;
+    std::map<OBJIndex, size_t> normalModelIndexMap;
+    std::map<size_t, size_t> indexMap;
     
-    for(unsigned int i = 0; i < numIndices; i++)
+    for(size_t i = 0; i < numIndices; i++)
     {
         OBJIndex* currentIndex = &m_OBJIndices[i];
         
@@ -149,16 +149,16 @@ IndexedModel OBJModel::ToIndexedModel()
         else
             currentNormal = glm::vec3(0,0,1);
         
-        unsigned int normalModelIndex;
-        unsigned int resultModelIndex;
+        size_t normalModelIndex;
+        size_t resultModelIndex;
         
         //Create model to properly generate m_normals on
-        std::map<OBJIndex, unsigned int>::iterator it = normalModelIndexMap.find(*currentIndex);
+        std::map<OBJIndex, size_t>::iterator it = normalModelIndexMap.find(*currentIndex);
         if(it == normalModelIndexMap.end())
         {
-            normalModelIndex = normalModel.m_positions.size();
+            normalModelIndex = static_cast<int> (normalModel.m_positions.size());
         
-            normalModelIndexMap.insert(std::pair<OBJIndex, unsigned int>(*currentIndex, normalModelIndex));
+            normalModelIndexMap.insert(std::pair<OBJIndex, size_t>(*currentIndex, normalModelIndex));
             normalModel.m_positions.emplace_back(currentPosition);
             normalModel.m_texCoords.emplace_back(currentTexCoord);
             normalModel.m_normals.emplace_back(currentNormal);
@@ -167,11 +167,11 @@ IndexedModel OBJModel::ToIndexedModel()
             normalModelIndex = it->second;
         
         //Create model which properly separates texture coordinates
-        unsigned int previousVertexLocation = FindLastVertexIndex(indexLookup, currentIndex, result);
+        size_t previousVertexLocation = FindLastVertexIndex(indexLookup, currentIndex, result);
         
-        if(previousVertexLocation == (unsigned int)-1)
+        if(previousVertexLocation == (size_t)-1)
         {
-            resultModelIndex = result.m_positions.size();
+            resultModelIndex = static_cast<int>(result.m_positions.size());
         
             result.m_positions.emplace_back(currentPosition);
             result.m_texCoords.emplace_back(currentTexCoord);
@@ -182,26 +182,26 @@ IndexedModel OBJModel::ToIndexedModel()
         
         normalModel.m_indices.emplace_back(normalModelIndex);
         result.m_indices.emplace_back(resultModelIndex);
-        indexMap.insert(std::pair<unsigned int, unsigned int>(resultModelIndex, normalModelIndex));
+        indexMap.insert(std::pair<size_t, size_t>(resultModelIndex, normalModelIndex));
     }
     
     if(!m_hasNormals)
     {
         normalModel.CalcNormals();
         
-        for(unsigned int i = 0; i < result.m_positions.size(); i++)
+        for(size_t i = 0; i < result.m_positions.size(); i++)
             result.m_normals[i] = normalModel.m_normals[indexMap[i]];
     }
     
     return result;
 };
 
-unsigned int OBJModel::FindLastVertexIndex(const std::vector<OBJIndex*>& indexLookup, const OBJIndex* currentIndex, const IndexedModel& result)
+size_t OBJModel::FindLastVertexIndex(const std::vector<OBJIndex*>& indexLookup, const OBJIndex* currentIndex, const IndexedModel& result)
 {
-    unsigned int start = 0;
-    unsigned int end = indexLookup.size();
-    unsigned int current = (end - start) / 2 + start;
-    unsigned int previous = start;
+    size_t start = 0;
+    size_t end = indexLookup.size();
+    size_t current = (end - start) / 2 + start;
+    size_t previous = start;
     
     while(current != previous)
     {
@@ -209,9 +209,9 @@ unsigned int OBJModel::FindLastVertexIndex(const std::vector<OBJIndex*>& indexLo
         
         if(testIndex->m_vertexIndex == currentIndex->m_vertexIndex)
         {
-            unsigned int countStart = current;
+            size_t countStart = current;
         
-            for(unsigned int i = 0; i < current; i++)
+            for(size_t i = 0; i < current; i++)
             {
                 OBJIndex* possibleIndex = indexLookup[current - i];
                 
@@ -224,7 +224,7 @@ unsigned int OBJModel::FindLastVertexIndex(const std::vector<OBJIndex*>& indexLo
                 countStart--;
             }
             
-            for(unsigned int i = countStart; i < indexLookup.size() - countStart; i++)
+            for(size_t i = countStart; i < indexLookup.size() - countStart; i++)
             {
                 OBJIndex* possibleIndex = indexLookup[current + i];
                 
@@ -250,7 +250,7 @@ unsigned int OBJModel::FindLastVertexIndex(const std::vector<OBJIndex*>& indexLo
                     else
                         currentNormal = glm::vec3(0,0,0);
                     
-                    for(unsigned int j = 0; j < result.m_positions.size(); j++)
+                    for(size_t j = 0; j < result.m_positions.size(); j++)
                     {
                         if(currentPosition == result.m_positions[j] 
                             && ((!m_hasUVs || currentTexCoord == result.m_texCoords[j])
@@ -297,11 +297,11 @@ void OBJModel::CreateOBJFace(const std::string& line)
 
 OBJIndex OBJModel::ParseOBJIndex(const std::string& token, bool* hasUVs, bool* hasNormals)
 {
-    unsigned int tokenLength = token.length();
+    size_t tokenLength = token.length();
     const char* tokenString = token.c_str();
     
-    unsigned int vertIndexStart = 0;
-    unsigned int vertIndexEnd = FindNextChar(vertIndexStart, tokenString, tokenLength, '/');
+    size_t vertIndexStart = 0;
+    size_t vertIndexEnd = FindNextChar(vertIndexStart, tokenString, tokenLength, '/');
     
     OBJIndex result;
     result.m_vertexIndex = ParseOBJIndexValue(token, vertIndexStart, vertIndexEnd);
@@ -331,10 +331,10 @@ OBJIndex OBJModel::ParseOBJIndex(const std::string& token, bool* hasUVs, bool* h
 
 glm::vec3 OBJModel::ParseOBJVec3(const std::string& line) 
 {
-    unsigned int tokenLength = line.length();
+    size_t tokenLength = line.length();
     const char* tokenString = line.c_str();
     
-    unsigned int vertIndexStart = 2;
+    size_t vertIndexStart = 2;
     
     while(vertIndexStart < tokenLength)
     {
@@ -343,7 +343,7 @@ glm::vec3 OBJModel::ParseOBJVec3(const std::string& line)
         vertIndexStart++;
     }
     
-    unsigned int vertIndexEnd = FindNextChar(vertIndexStart, tokenString, tokenLength, ' ');
+    size_t vertIndexEnd = FindNextChar(vertIndexStart, tokenString, tokenLength, ' ');
     
     float x = ParseOBJFloatValue(line, vertIndexStart, vertIndexEnd);
     
@@ -364,10 +364,10 @@ glm::vec3 OBJModel::ParseOBJVec3(const std::string& line)
 
 glm::vec2 OBJModel::ParseOBJVec2(const std::string& line)
 {
-    unsigned int tokenLength = line.length();
+    size_t tokenLength = line.length();
     const char* tokenString = line.c_str();
     
-    unsigned int vertIndexStart = 3;
+    size_t vertIndexStart = 3;
     
     while(vertIndexStart < tokenLength)
     {
@@ -376,7 +376,7 @@ glm::vec2 OBJModel::ParseOBJVec2(const std::string& line)
         vertIndexStart++;
     }
     
-    unsigned int vertIndexEnd = FindNextChar(vertIndexStart, tokenString, tokenLength, ' ');
+    size_t vertIndexEnd = FindNextChar(vertIndexStart, tokenString, tokenLength, ' ');
     
     float x = ParseOBJFloatValue(line, vertIndexStart, vertIndexEnd);
     
@@ -393,9 +393,9 @@ static bool CompareOBJIndexPtr(const OBJIndex* a, const OBJIndex* b)
     return a->m_vertexIndex < b->m_vertexIndex;
 }
 
-static inline unsigned int FindNextChar(unsigned int start, const char* str, unsigned int length, char token)
+static inline size_t FindNextChar(size_t start, const char* str, size_t length, char token)
 {
-    unsigned int result = start;
+    size_t result = start;
     while(result < length)
     {
         result++;
@@ -406,14 +406,14 @@ static inline unsigned int FindNextChar(unsigned int start, const char* str, uns
     return result;
 }
 
-static inline unsigned int ParseOBJIndexValue(const std::string& token, unsigned int start, unsigned int end)
+static inline size_t ParseOBJIndexValue(const std::string& token, size_t start, size_t end)
 {
     return atoi(token.substr(start, end - start).c_str()) - 1;
 }
 
-static inline float ParseOBJFloatValue(const std::string& token, unsigned int start, unsigned int end)
+static inline float ParseOBJFloatValue(const std::string& token, size_t start, size_t end)
 {
-    return atof(token.substr(start, end - start).c_str());
+    return static_cast<float>(atof(token.substr(start, end - start).c_str()));
 }
 
 static inline std::vector<std::string> SplitString(const std::string &s, char delim)
@@ -421,9 +421,9 @@ static inline std::vector<std::string> SplitString(const std::string &s, char de
     std::vector<std::string> elems;
         
     const char* cstr = s.c_str();
-    unsigned int strLength = s.length();
-    unsigned int start = 0;
-    unsigned int end = 0;
+    size_t strLength = s.length();
+    size_t start = 0;
+    size_t end = 0;
         
     while(end <= strLength)
     {

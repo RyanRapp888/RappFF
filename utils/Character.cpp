@@ -147,10 +147,10 @@ CharacterInventory::CharacterInventory():m_money(0)
 	m_items.push_back(Item("Scary Box", UseType::VS_AOE));
 	m_spells.push_back(Spell("Hello Spell", UseType::FRIENDLY_SINGLE));
 }
-int CharacterInventory::GetNWeapons() const { return m_weapons.size(); }
-int CharacterInventory::GetNItems() const { return m_items.size(); }
+size_t CharacterInventory::GetNWeapons() const { return m_weapons.size(); }
+size_t CharacterInventory::GetNItems() const { return m_items.size(); }
 const Item &CharacterInventory::GetItemRef(int idx) const { return m_items[idx]; }
-int CharacterInventory::GetNSpells() const { return m_items.size(); }
+size_t CharacterInventory::GetNSpells() const { return m_items.size(); }
 int CharacterInventory::GetWeaponAccuracy() const
 {
 	if (m_equipped_w_idx >= 0)
@@ -287,7 +287,7 @@ std::vector<std::string> Character::GetDialogueLines() const
 	return results;
 }
 
-int Character::GetNItems() const { return m_inv.GetNItems(); }
+size_t Character::GetNItems() const { return m_inv.GetNItems(); }
 const Item &Character::GetItemRef(int idx) const{ return m_inv.GetItemRef(idx); }
 CharacterType Character::GetCharacterType() const
 {

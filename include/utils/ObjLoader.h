@@ -9,9 +9,9 @@
 
 struct OBJIndex
 {
-    unsigned int m_vertexIndex;
-    unsigned int m_uvIndex;
-    unsigned int m_normalIndex;
+    size_t m_vertexIndex;
+    size_t m_uvIndex;
+    size_t m_normalIndex;
     
     bool operator<(const OBJIndex& r) const { return m_vertexIndex < r.m_vertexIndex; }
 };
@@ -48,7 +48,7 @@ public:
     
     IndexedModel ToIndexedModel();
 private:
-    unsigned int FindLastVertexIndex(const std::vector<OBJIndex*>& indexLookup, const OBJIndex* currentIndex, const IndexedModel& result);
+    size_t FindLastVertexIndex(const std::vector<OBJIndex*>& indexLookup, const OBJIndex* currentIndex, const IndexedModel& result);
     void CreateOBJFace(const std::string& line);
     
     glm::vec2 ParseOBJVec2(const std::string& line);

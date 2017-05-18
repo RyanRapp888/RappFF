@@ -126,7 +126,7 @@ void TiledGameBoard::Refresh()
 	for (it1 = ids_per_tiletype.begin(); it1 != ids_per_tiletype.end(); it1++)
 	{
 		Tile *curtiletype = &(m_tiles[it1->second[0]]);
-		int n_instances = it1->second.size();
+		size_t n_instances = it1->second.size();
 		glm::mat4 *translations = new glm::mat4[n_instances];
 		for (int aa = 0; aa < it1->second.size(); aa++)
 		{

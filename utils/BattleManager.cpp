@@ -5,9 +5,9 @@
 struct level_stats_entry
 {
 	level_stats_entry() :low_dmg(0), hi_dmg(0){}
-	level_stats_entry(int lo, int hi) :low_dmg(lo), hi_dmg(hi){}
-	int low_dmg;
-	int hi_dmg;
+	level_stats_entry(double lo, double hi) :low_dmg(lo), hi_dmg(hi){}
+	double low_dmg;
+	double hi_dmg;
 
 };
 
@@ -158,9 +158,9 @@ bool BattleManager::LookForAliveHero(int start_id, int look_dir, int &found_id)
 }
 
 Character *BattleManager::GetMobPtr(int mob_id){ return &m_mobs[mob_id]; }
-int BattleManager::GetNMobs() const{ return m_mobs.size(); }
-int BattleManager::GetNItems(int hero_idx){ return m_hero_ptrs[hero_idx]->GetNItems(); }
-int BattleManager::GetNHeroes(){ return m_hero_ptrs.size(); }
+size_t BattleManager::GetNMobs() const{ return m_mobs.size(); }
+size_t BattleManager::GetNItems(int hero_idx){ return m_hero_ptrs[hero_idx]->GetNItems(); }
+size_t BattleManager::GetNHeroes(){ return m_hero_ptrs.size(); }
 bool BattleManager::IsHeroActive(int hero_idx){ return m_hero_ptrs[hero_idx]->IsActive(); }
 TileType BattleManager::GetMobTileType(int mob_id){ return m_mobs[mob_id].GetTileType(); }
 bool BattleManager::IsMobDead(int mob_id){ return m_mobs[mob_id].IsDead(); }
@@ -277,7 +277,7 @@ void BattleManager::AddMobOffenseEvents()
 	{
 		if (m_mobs[mm].IsActive())
 		{
-			int m_hero_to_attack = get_rand_0_x(alive_heroes.size() - 1);
+			int m_hero_to_attack = get_rand_0_x(static_cast<int>(alive_heroes.size()) - 1);
 			BattleEvent attack_event(false, false, false, mm, alive_heroes[m_hero_to_attack], ActionType::ATTACK, -1);
 			m_battle_queue.emplace_back(attack_event);
 		}
@@ -326,10 +326,10 @@ void BattleManager::ProcessAttackEvent(BattleEvent &cur_be, BattleRoundOutcome &
 			if (!mob->IsActive()) at = ArmorType::INACTIVE;
 			int mob_dodge = mob->GetDodge();
 			int mob_armor_dodge = mob->GetArmorDodge(at);
-			int hero_avg = (double)(hero_acc + hero_w_acc) / 2.0;
-			int mob_avg = (double)(mob_dodge + mob_armor_dodge) / 2.0;
+			int hero_avg = static_cast<int>((hero_acc + hero_w_acc) / 2.0);
+			int mob_avg = static_cast<int>((mob_dodge + mob_armor_dodge) / 2.0);
 			int diff = hero_avg - mob_avg;
-			float pct = ((double)diff / 2.0) + 49.5;
+			float pct = (static_cast<float>(diff) / 2.0f) + 49.5f;
 			int rand = get_rand_0_99();
 			if (pct >= rand || !mob->IsActive())
 			{
@@ -384,10 +384,10 @@ void BattleManager::ProcessAttackEvent(BattleEvent &cur_be, BattleRoundOutcome &
 			at = static_cast<ArmorType>(armtyp);
 			int hero_dodge = hero->GetDodge();
 			int hero_armor_dodge = hero->GetArmorDodge(at);
-			int mob_avg = (double)(mob_acc + mob_w_acc) / 2.0;
-			int hero_avg = (double)(hero_dodge + hero_armor_dodge) / 2.0;
+			int mob_avg = static_cast<int>((mob_acc + mob_w_acc) / 2.0f);
+			int hero_avg = static_cast<int>((hero_dodge + hero_armor_dodge) / 2.0f);
 			int diff = mob_avg - hero_avg;
-			float pct = ((double)diff / 2.0) + 49.5;
+			float pct = (static_cast<float>(diff) / 2.0f) + 49.5f;
 			int rand = get_rand_0_99();
 			if (pct >= rand || !hero->IsActive())
 			{
@@ -451,10 +451,10 @@ void BattleManager::ProcessSpecialEvent(BattleEvent &cur_be, BattleRoundOutcome 
 			if (!mob->IsActive()) at = ArmorType::INACTIVE;
 			int mob_dodge = mob->GetDodge();
 			int mob_armor_dodge = mob->GetArmorDodge(at);
-			int hero_avg = (double)(hero_acc + hero_w_acc) / 2.0;
-			int mob_avg = (double)(mob_dodge + mob_armor_dodge) / 2.0;
+			int hero_avg = static_cast<int>((hero_acc + hero_w_acc) / 2.0);
+			int mob_avg = static_cast<int>((mob_dodge + mob_armor_dodge) / 2.0);
 			int diff = hero_avg - mob_avg;
-			float pct = ((double)diff / 2.0) + 49.5;
+			float pct = (static_cast<float>(diff) / 2.0f) + 49.5f;
 			int rand = get_rand_0_99();
 			if (pct >= rand || !mob->IsActive())
 			{
@@ -510,10 +510,10 @@ void BattleManager::ProcessSpecialEvent(BattleEvent &cur_be, BattleRoundOutcome 
 			at = static_cast<ArmorType>(armtyp);
 			int hero_dodge = hero->GetDodge();
 			int hero_armor_dodge = hero->GetArmorDodge(at);
-			int mob_avg = (double)(mob_acc + mob_w_acc) / 2.0;
-			int hero_avg = (double)(hero_dodge + hero_armor_dodge) / 2.0;
+			int mob_avg = static_cast<int>((mob_acc + mob_w_acc) / 2.0);
+			int hero_avg = static_cast<int>((hero_dodge + hero_armor_dodge) / 2.0);
 			int diff = mob_avg - hero_avg;
-			float pct = ((double)diff / 2.0) + 49.5;
+			float pct = (static_cast<float>(diff) / 2.0f) + 49.5f;
 			int rand = get_rand_0_99();
 			if (pct >= rand || !hero->IsActive())
 			{
@@ -562,7 +562,7 @@ void BattleManager::ProcessItemEvent(BattleEvent &cur_be, BattleRoundOutcome &ou
 			Character *mob = &(m_mobs[alive_target_idx]);
 			ArmorType at = ArmorType::BODY;
 			int pts = CalculateAttackPts(hero, mob, at);
-			pts *= 1.5;
+			pts = static_cast<int>(pts *1.5f);
 			mob->ModifyHP(-1 * pts);
 			CheckMobParty(outcome);
 		}
@@ -574,7 +574,7 @@ void BattleManager::ProcessItemEvent(BattleEvent &cur_be, BattleRoundOutcome &ou
 				{
 					ArmorType at = ArmorType::BODY;
 					int pts = CalculateAttackPts(hero, &m_mobs[mm], at);
-					pts *= 1.5;
+					pts = static_cast<int>(pts * 1.5);
 					m_mobs[mm].ModifyHP(-1 * pts);
 					CheckMobParty(outcome);
 				}
@@ -593,7 +593,7 @@ void BattleManager::ProcessItemEvent(BattleEvent &cur_be, BattleRoundOutcome &ou
 			Character *item_friendly_target = m_hero_ptrs[alive_target_idx];
 			ArmorType at = ArmorType::BODY;
 			int pts = CalculateAttackPts(hero, item_friendly_target, at);
-			pts *= 1.5;
+			pts = static_cast<int>(pts * 1.5f);
 			item_friendly_target->ModifyHP(pts);
 		}
 		else if (hero_item.GetType() == UseType::FRIENDLY_AOE)
@@ -604,7 +604,7 @@ void BattleManager::ProcessItemEvent(BattleEvent &cur_be, BattleRoundOutcome &ou
 				{
 					ArmorType at = ArmorType::BODY;
 					int pts = CalculateAttackPts(hero, m_hero_ptrs[mm], at);
-					pts *= 1.5;
+					pts = static_cast<int>(pts * 1.5);
 					m_mobs[mm].ModifyHP(pts);
 				}
 			}
@@ -643,8 +643,8 @@ void BattleManager::ProcessRetreatEvent(BattleEvent &cur_be, BattleRoundOutcome 
 			}
 			else
 			{
-				int diff = flee_val - (static_cast<double>(mobs_sum) / n_active_mobs);
-				float pct = (static_cast<double>(diff) / 2.0) + 49.5;
+				int diff = static_cast<int>(flee_val - (static_cast<double>(mobs_sum) / n_active_mobs));
+				float pct = (static_cast<float>(diff) / 2.0f) + 49.5f;
 				int rand = get_rand_0_99();
 				if (pct >= rand)
 				{
@@ -679,8 +679,8 @@ void BattleManager::ProcessRetreatEvent(BattleEvent &cur_be, BattleRoundOutcome 
 			}
 			else
 			{
-				int diff = flee_val - (static_cast<double>(heroes_sum) / n_active_heroes);
-				float pct = (static_cast<double>(diff) / 2.0) + 49.5;
+				int diff = static_cast<int>(flee_val - (static_cast<float>(heroes_sum) / n_active_heroes));
+				float pct = (static_cast<float>(diff) / 2.0f) + 49.5f;
 				int rand = get_rand_0_99();
 				if (pct >= rand)
 				{
@@ -696,32 +696,32 @@ int BattleManager::CalculateAttackPts(Character *agressor, Character *defender, 
 	int results(0);
 	int ag_attack_skill = agressor->GetAttackSkill();
 	int ag_weapon_dmg_rating = agressor->GetWeaponDamage();
-	int attack_avg = static_cast<double>(ag_attack_skill + ag_weapon_dmg_rating) / 2.0;
+	int attack_avg = static_cast<int>((ag_attack_skill + ag_weapon_dmg_rating) / 2.0f);
 	int ag_functional_level = attack_avg / 3;
 	level_stats_entry ag_lse = GetLevelAttributes(ag_functional_level);
-	int deltadmg = ag_lse.hi_dmg - ag_lse.low_dmg;
+	int deltadmg = static_cast<int>(ag_lse.hi_dmg - ag_lse.low_dmg);
 
 	int def_absorb = defender->GetAbsorb();
 	int def_armor_absorb = defender->GetArmorAbsorb(at);
-	int def_avg = static_cast<double>(def_absorb + def_armor_absorb) / 2.0;
+	int def_avg = static_cast<int>((def_absorb + def_armor_absorb) / 2.0f);
 	int def_functional_level = def_avg / 3;
 	level_stats_entry def_lse = GetLevelAttributes(def_functional_level);
 
 	int diff = attack_avg - def_avg;
-	float pct = ((double)diff / 2.0) + 49.5;
+	float pct = (static_cast<float>(diff) / 2.0f) + 49.5f;
 	int rand = get_rand_0_99();
 	if (pct >= rand)
 	{
 		//ADVANTAGE AGRESSOR!
-		float bonus = deltadmg * (pct / 100.0);
-		results = ag_lse.low_dmg + bonus;
+		float bonus = deltadmg * (pct / 100.0f);
+		results = static_cast<int>(ag_lse.low_dmg + bonus);
 	}
 	else
 	{
-		results = ag_lse.low_dmg;
+		results = static_cast<int>(ag_lse.low_dmg);
 		if (rand > 95)
 		{
-			results -= (deltadmg * .25);
+			results = results - static_cast<int>(deltadmg * .25);
 		}
 		// DEFENDER GETS DECENT ABSORB
 	}
@@ -736,9 +736,9 @@ bool BattleManager::LookForBase(std::vector<Character *> actorlist, int start_id
 
 	if (id < 0)
 	{
-		id = actorlist.size() - 1;
+		id = static_cast<int>(actorlist.size()) - 1;
 	}
-	else if (id >= actorlist.size())
+	else if (id >= static_cast<int>(actorlist.size()))
 	{
 		id = 0;
 	}
@@ -764,7 +764,7 @@ bool BattleManager::LookForBase(std::vector<Character *> actorlist, int start_id
 		id += look_dir;
 		if (id < 0)
 		{
-			id = actorlist.size() - 1;
+			id = static_cast<int>(actorlist.size()) - 1;
 		}
 		else if (id >= actorlist.size())
 		{

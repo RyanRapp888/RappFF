@@ -60,6 +60,14 @@
  If your name should be here but isn't, let Sean know.
 
 */
+#pragma warning( disable : 6387)
+#pragma warning( disable : 6386)
+#pragma warning( disable : 6385)
+#pragma warning( disable : 6001)
+#pragma warning( disable : 6262)
+#pragma warning( disable : 4996)
+#pragma warning( disable : 4244)
+
 
 #ifndef STBI_INCLUDE_STB_IMAGE_H
 #define STBI_INCLUDE_STB_IMAGE_H

@@ -9,7 +9,7 @@ FontShader::FontShader(const std::string& fileName)
 	m_shaderids.emplace_back(CreateShader(LoadShader(fileName + ".vs"), GL_VERTEX_SHADER));
 	m_shaderids.emplace_back(CreateShader(LoadShader(fileName + ".fs"), GL_FRAGMENT_SHADER));
 
-	for (unsigned int i = 0; i < m_shaderids.size(); i++)
+	for (size_t i = 0; i < m_shaderids.size(); i++)
 		glAttachShader(m_program, m_shaderids[i]);
 
 	glBindAttribLocation(m_program, 0, "fontCoords");
@@ -26,7 +26,7 @@ FontShader::FontShader(const std::string& fileName)
 
 FontShader::~FontShader()
 {
-	for (unsigned int i = 0; i < m_shaderids.size(); i++)
+	for (size_t i = 0; i < m_shaderids.size(); i++)
 	{
 		glDetachShader(m_program, m_shaderids[i]);
 		glDeleteShader(m_shaderids[i]);
@@ -92,7 +92,7 @@ void FontShader::CheckShaderError(GLuint shader, GLuint flag, bool isProgram, co
 	}
 }
 
-GLuint FontShader::CreateShader(const std::string& text, unsigned int type)
+GLuint FontShader::CreateShader(const std::string& text, GLenum type)
 {
 	GLuint shader = glCreateShader(type);
 
@@ -102,7 +102,7 @@ GLuint FontShader::CreateShader(const std::string& text, unsigned int type)
 	const GLchar* p[1];
 	p[0] = text.c_str();
 	GLint lengths[1];
-	lengths[0] = text.length();
+	lengths[0] = static_cast<GLint>(text.length());
 
 	glShaderSource(shader, 1, p, lengths);
 	glCompileShader(shader);
