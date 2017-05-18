@@ -48,3 +48,16 @@ utils/x64/Debug/Utils.tlog/CL.write.1.tlog
 utils/x64/Debug/Utils.tlog/lib.command.1.tlog
 *.lastbuildstate
 x64/Debug/RappFF.Build.CppClean.log
+*.ipch
+*.db-shm
+*.db-wal
+Freetype_src/freetype-2.8.tar
+*.sdf
+*.htm
+*.log
+*.idb
+*.tlog
+*.tlog
+*.tlog
+*.tlog
+*.tlog

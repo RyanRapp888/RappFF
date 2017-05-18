@@ -129,7 +129,7 @@ void PartyBuildMode::DrawPartyBuildWindow()
 	m_drawparty_tile.Render();
 	delete[] translations;
 	
-	this->Refresh();
+	//this->Refresh();
 
 	/*
 	std::vector<Character *> heros_elect;

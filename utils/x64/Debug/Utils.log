@@ -1,8 +1,2 @@
-﻿  TiledGameBoard.cpp
-c:\devstuff\rappff\utils\tiledgameboard.cpp(112): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-c:\devstuff\rappff\utils\tiledgameboard.cpp(120): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-  Mesh.cpp
-c:\devstuff\rappff\include\utils\util.h(14): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
-c:\devstuff\rappff\utils\mesh.cpp(153): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
-  Generating Code...
-  Utils.vcxproj -> C:\devstuff\RappFF\x64\Debug\Utils.lib
+﻿  PartyBuildMode.cpp
+  Utils.vcxproj -> C:\RappFF\RappFF\x64\Debug\Utils.lib
