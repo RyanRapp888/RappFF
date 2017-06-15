@@ -133,6 +133,17 @@ ObjData::ObjData(const ObjType &objtyp, std::vector<std::string> &row)
 	}
 }
 
+void Toc::GetObjData(const std::string &datatype, std::vector<ObjData> &results)
+{
+	results.clear();
+	for (const auto &dat : m_objdata)
+	{
+		if (dat.m_obj_typename == datatype)
+		{
+			results.emplace_back(dat);
+		}
+	}
+}
 // Note: this function does not rewind,
 // it should remain private
 void Toc::LoadObjects()
@@ -174,6 +185,7 @@ void Toc::LoadObjects()
 			if (found_idx >= 0)
 			{
 				ObjData tempobj(m_objtypes[found_idx], row);
+				tempobj.m_obj_typename = token;
 				m_objdata.emplace_back(tempobj);
 			}
 		}

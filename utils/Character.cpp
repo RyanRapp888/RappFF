@@ -312,6 +312,10 @@ void Character::SetCharacterType(const CharacterType &ctype)
 {
 	m_chartype = ctype;
 }
+void Character::SetCharacterType(const std::string &ctype_as_string)
+{
+	m_chartype = StrToCharType(ctype_as_string);
+}
 void Character::SetCharMotion(const CharMotion &cmot)
 {
 	m_char_motion = cmot;
@@ -390,7 +394,19 @@ bool Character::CanOccupyLocation(int x, int y) const
 	return !(map_ptr->HasACharacter(x, y));
 }
 
-
+CharacterType StrToCharType(const std::string ctype_as_string)
+{
+	if (ctype_as_string == "EMMY") return CharacterType::EMMY;
+	else if (ctype_as_string == "FAIRY") return CharacterType::FAIRY;
+	else if (ctype_as_string == "JELLYBEAN") return CharacterType::JELLYBEAN;
+	else if (ctype_as_string == "MAINCHAR") return CharacterType::MAINCHAR;
+	else if (ctype_as_string == "MERMAID") return CharacterType::MERMAID;
+	else if (ctype_as_string == "OCTOPUS") return CharacterType::OCTOPUS;
+	else if (ctype_as_string == "PRINCESS") return CharacterType::PRINCESS;
+	else if (ctype_as_string == "SKELETON") return CharacterType::SKELETON;
+	else if (ctype_as_string == "BEAR") return CharacterType::BEAR;
+	return CharacterType::SIZE;
+}
 
 
 

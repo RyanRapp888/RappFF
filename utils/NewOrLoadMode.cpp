@@ -2,7 +2,8 @@
 #include <glad.h>
 #include <GLFW/glfw3.h>
 #include <sstream>
-
+#include <windows.h>
+#include "RandUtils.h"
 #define NOL_VERT_SPACING .08f
 
 NewOrLoadMode::NewOrLoadMode(Viewport *vpt, double origxpct, double origypct, double w_pct, double h_pct) :
@@ -22,9 +23,8 @@ WindowSection(vpt, origxpct, origypct, w_pct, h_pct), m_texthandler_ptr(nullptr)
 
 static bool GetListOfSaves(std::vector<std::string> &save_names)
 {
-	save_names.emplace_back("Save1");
-	save_names.emplace_back("Save2");
-	save_names.emplace_back("Save3");
+	std::vector<std::string> results;
+	get_files("res", "toc", save_names);
 	return save_names.size() > 0;
 }
 

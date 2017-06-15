@@ -10,6 +10,8 @@
 #include "Text.h"
 #include <sstream>
 #include "RandUtils.h"
+#include "Toc.h"
+
 //bool SetUpSkybox(GLuint &cube_vao, GLuint &cube_text_id);
 
 TheGame::TheGame() :
@@ -350,49 +352,49 @@ bool TheGame::LoadGameFromFile(const std::string &filename)
 		std::cout << "Error: Could not load game map" << std::endl;
 	}
 
-	m_chars[0]->SetName("MC Janet");
-	m_chars[0]->SetCharacterType(CharacterType::MAINCHAR);
-	m_chars[0]->SetLocation(130, 5);
+	Toc save_game_helper(filename);
+	if (!save_game_helper.HasError())
+	{
+		save_game_helper.LoadObjects();
+	}
+	else
+	{
+		std::cout << "Error: Failed to load objects from " << filename << std::endl;
+	}
+
+	std::vector<ObjData> saved_characters;
+	save_game_helper.GetObjData("character", saved_characters);
+
+	int idx(0);
+	for (auto &cur : saved_characters)
+	{
+		std::string charname = cur.m_str_data["char_name"];
+		std::string chartype = cur.m_str_data["char_type"];
+		int locx(-1), locy(-1);
+		locx = cur.m_int_data["charlocx"];
+		locy = cur.m_int_data["charlocy"];
+		if (!is_blank(charname) && !is_blank(chartype) &&
+			locx >= 0 && locy >= 0)
+		{
+			m_chars[idx]->SetName(charname);
+			m_chars[idx]->SetCharacterType(chartype);
+			m_chars[idx]->SetLocation(locx, locy);
+			idx++;
+		}
+    }
 	
-	m_chars[1]->SetName("Rocktopus");
-	m_chars[1]->SetCharacterType(CharacterType::OCTOPUS);
-	m_chars[1]->SetLocation(132, 5);
-
-	m_chars[2]->SetName("Ethel Mermaid");
-	m_chars[2]->SetCharacterType(CharacterType::MERMAID);
-	m_chars[2]->SetLocation(134, 5);
-
-	m_chars[3]->SetName("Donkafair");
-	m_chars[3]->SetCharacterType(CharacterType::FAIRY);
-	m_chars[3]->SetLocation(136, 5);
-
-	m_chars[4]->SetName("Emmy");
-	m_chars[4]->SetCharacterType(CharacterType::EMMY);
-	m_chars[4]->SetLocation(120, 38);
-
-	m_chars[5]->SetName("Lily");
-	m_chars[5]->SetCharacterType(CharacterType::FAIRY);
-	m_chars[5]->SetLocation(115, 33);
-
-	m_chars[6]->SetName("Jerry");
-	m_chars[6]->SetCharacterType(CharacterType::OCTOPUS);
-	m_chars[6]->SetLocation(120, 9);
-
-	m_chars[7]->SetName("Bella");
-	m_chars[7]->SetCharacterType(CharacterType::JELLYBEAN);
-	m_chars[7]->SetLocation(120, 45);
-
-	m_chars[8]->SetName("Maddy");
-	m_chars[8]->SetCharacterType(CharacterType::MERMAID);
-	m_chars[8]->SetLocation(128, 19);
-
-	
-	
-	gamemap_ptr->AttachMainCharacter(m_chars[0]);
-	gamemap_ptr->AddToHeroParty(m_chars[0]);
-	gamemap_ptr->AddToHeroParty(m_chars[1]);
-	gamemap_ptr->AddToHeroParty(m_chars[2]);
-	gamemap_ptr->AddToHeroParty(m_chars[3]);
+	if (idx >= 3)
+	{
+		gamemap_ptr->AttachMainCharacter(m_chars[0]);
+		gamemap_ptr->AddToHeroParty(m_chars[0]);
+		gamemap_ptr->AddToHeroParty(m_chars[1]);
+		gamemap_ptr->AddToHeroParty(m_chars[2]);
+		gamemap_ptr->AddToHeroParty(m_chars[3]);
+	}
+	else
+	{
+		std::cout << "Error: There must be at least 4 characters in  " << filename << std::endl;
+	}
 
 	for (int bb = 0; bb < m_chars.size(); bb++)
 	{

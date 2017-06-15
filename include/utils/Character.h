@@ -20,6 +20,8 @@ enum class CharacterType
 	SIZE
 };
 
+CharacterType StrToCharType(const std::string ctype_as_string);
+
 enum class CharacterState
 {
 	BEASTMODE,
@@ -212,6 +214,7 @@ public:
    void SetName(const std::string &name);
    void SetHP(int dat);
    void SetMaxHP(int dat);
+   void SetCharacterType(const std::string &ctype_as_string);
    void SetCharacterType(const CharacterType &ctype);
    void SetCharMotion(const CharMotion &cmot);
    bool SetLocation(int x, int y);

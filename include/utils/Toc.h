@@ -27,6 +27,7 @@ class ObjData
 {
 public:
 	ObjData(const ObjType &obj, std::vector<std::string> &row);
+	std::string m_obj_typename;
 	std::map< std::string, double > m_dbl_data;
 	std::map < std::string, int > m_int_data;
 	std::map< std::string, std::string > m_str_data;
@@ -39,6 +40,7 @@ public:
 	void LoadObjects();
 	void PrintSummary() const;
 	bool HasError() const;
+	void GetObjData(const std::string &datatype, std::vector<ObjData> &results);
 	const std::string& GetErrorMessage() const;
 	std::string GetFileName() const;
 
