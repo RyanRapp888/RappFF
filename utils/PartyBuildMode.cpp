@@ -1,7 +1,9 @@
 #include "PartyBuildMode.h"
+#include "Character.h"
 #include <glad.h>
 #include <GLFW/glfw3.h>
 #include <sstream>
+#include "RandUtils.h"
 
 PartyBuildMode::PartyBuildMode(Viewport *vpt, double origxpct, double origypct, double w_pct, double h_pct) :
 WindowSection(vpt, origxpct, origypct, w_pct, h_pct), m_texthandler_ptr(nullptr), m_primary_shaderid(0)
@@ -11,16 +13,15 @@ WindowSection(vpt, origxpct, origypct, w_pct, h_pct), m_texthandler_ptr(nullptr)
 	m_drawparty_tile.SetRelativeLocation(0, 0, 1, 1);
 	m_enable = false;
 	m_build_complete = false;
-	m_cur_hero_idx = 0;
+	m_cur_choice_idx = 0;
 	m_heros_to_build = 4;
-	m_select_type = PartyBuildSelectType::CHARACTER_CHOOSE;
-	m_charnames.resize(m_heros_to_build);
-	m_char_build_tiles = new Tile[m_heros_to_build];
+	m_select_type = PartyBuildSelectType::OPTION_CHOOSE;
+	m_save_name = "Save1";
+	m_charnames = { "Player 1", "Player 2", "Player 3", "Player 4" };
+   m_char_build_tiles = new Tile[m_heros_to_build];
 	for (int aa = 0; aa < m_heros_to_build; aa++)
 	{
 		m_char_build_tiles[aa].SetTileType(TileType::MERMAID);
-		m_char_build_tiles[aa].SetRelativeLocation(.25, .25 + (.1 * aa), .1, .1);
-		this->AddObject(&(m_char_build_tiles[aa]));
 	}
 }
 
@@ -63,44 +64,107 @@ bool PartyBuildMode::HandleKey(int key, int scancode, int action, int mods)
 			((key >= GLFW_KEY_0 && key <= GLFW_KEY_9) ||
 			(key >= GLFW_KEY_A && key <= GLFW_KEY_Z)))
 		{
-			m_charnames[m_cur_hero_idx] += static_cast<char>(key);
+			if (m_cur_choice_idx == 0)
+			{
+				// user is adding a letter to their save name
+				if (m_save_name.size() <= 9)
+				{
+				   const char userkey(static_cast<char>(key));
+				   m_save_name.push_back(userkey);
+				}
+			}
+			else if (m_charnames[m_cur_choice_idx-1].size() <= 9)
+			{
+			   const char userkey(static_cast<char>(key));
+			   m_charnames[m_cur_choice_idx-1].push_back(userkey);
+			}
 		}
 		else if (m_select_type == PartyBuildSelectType::TYPE_NAME &&
 			key == GLFW_KEY_BACKSPACE)
 		{
-			m_charnames[m_cur_hero_idx].erase(m_charnames[m_cur_hero_idx].back());
+			if (m_cur_choice_idx == 0)
+			{
+				// user is removing a letter from their save name
+				if (m_save_name.size() > 0)
+				{
+					m_save_name.pop_back();
+				}
+			}
+			else if (m_charnames[m_cur_choice_idx-1].size() > 0)
+			{
+				m_charnames[m_cur_choice_idx-1].pop_back();
+			}
 		}
 		else if (key == GLFW_KEY_DOWN)
 		{
-			if (m_select_type == PartyBuildSelectType::CHARACTER_CHOOSE)
+			if (m_select_type == PartyBuildSelectType::OPTION_CHOOSE)
 			{
-				m_cur_hero_idx++;
-				if (m_cur_hero_idx >= m_heros_to_build) m_cur_hero_idx = m_heros_to_build - 1;
+				m_cur_choice_idx++;
+				// the +2 is for the "Save Name" and "Done" options
+				if (m_cur_choice_idx >= m_heros_to_build + 2) m_cur_choice_idx = m_heros_to_build;
 			}
 		}
 		else if (key == GLFW_KEY_UP)
 		{
-			if (m_select_type == PartyBuildSelectType::CHARACTER_CHOOSE)
+			if (m_select_type == PartyBuildSelectType::OPTION_CHOOSE)
 			{
-				m_cur_hero_idx--;
-				if (m_cur_hero_idx < 0) m_cur_hero_idx = 0;
+				m_cur_choice_idx--;
+				if (m_cur_choice_idx < 0) m_cur_choice_idx = 0;
 			}
 		}
 		else if (key == GLFW_KEY_ENTER)
 		{
-			if (m_select_type == PartyBuildSelectType::CHARACTER_CHOOSE)
+			if (m_select_type == PartyBuildSelectType::OPTION_CHOOSE)
 			{
-				m_select_type = PartyBuildSelectType::TYPE_NAME;
+				if (m_cur_choice_idx == m_heros_to_build + 1)
+				{
+					ValidateAndFixSave();
+					m_build_complete = true;
+				}
+				else
+				{
+					m_select_type = PartyBuildSelectType::TYPE_NAME;
+				}
 			}
 			else if (m_select_type == PartyBuildSelectType::TYPE_NAME)
 			{
-				m_select_type = PartyBuildSelectType::CHARACTER_CHOOSE;
-				m_cur_hero_idx++;
-				if (m_cur_hero_idx >= m_heros_to_build) m_cur_hero_idx++;
-			}
+				m_select_type = PartyBuildSelectType::OPTION_CHOOSE;
+				if (m_cur_choice_idx == (m_heros_to_build + 1))
+				{
+					ValidateAndFixSave();
+					m_build_complete = true;
+				}
+				else if (m_cur_choice_idx <= m_heros_to_build)
+				{
+					m_cur_choice_idx++;
+				}
+	    	}
 		}
 	}
 	return true;
+}
+
+void  PartyBuildMode::ValidateAndFixSave()
+{
+	// The arrow is on the "Done" option
+	for (auto cur_hero : m_charnames)
+	{
+		if (cur_hero.size() == 0)
+		{
+			cur_hero = "Blanky";
+		}
+		else if (cur_hero.size() > 10)
+		{
+			cur_hero = cur_hero.substr(0, 10);
+		}
+	}
+
+	std::vector<std::string> results;
+	get_files("res", "toc", results);
+
+
+
+	bool abc;
 }
 
 void PartyBuildMode::DrawPartyBuildWindow()
@@ -118,7 +182,6 @@ void PartyBuildMode::DrawPartyBuildWindow()
 	double my = oy + (yd / 2.0);
 	double mx2 = mx - .5;
 	double my2 = my - .5;
-
 	glm::vec3 scalevec(m_drawparty_tile.GetRelativeWidth_01() * 2,
 		m_drawparty_tile.GetRelativeHeight_01() * 2, 1);
 	mx2 *= scalevec.x;
@@ -128,119 +191,61 @@ void PartyBuildMode::DrawPartyBuildWindow()
 	m_drawparty_tile.SetUpInstancing(1, scalevec, translations);
 	m_drawparty_tile.Render();
 	delete[] translations;
-	
-	//this->Refresh();
 
-	/*
-	std::vector<Character *> heros_elect;
-	
-	glm::vec3 char_scalevec(m_top_tile.GetRelativeWidth_01() * 2,
-		m_top_tile.GetRelativeHeight_01() * 2, 1);
-	char_scalevec.x *= .1;
-	char_scalevec.y *= .2;
+	glm::vec3 char_scalevec(m_drawparty_tile.GetRelativeWidth_01() * 2,
+		m_drawparty_tile.GetRelativeHeight_01() * 2, 1);
+	char_scalevec.x *= .1f;
+	char_scalevec.y *= .1f;
 
-	for (int cc = 0; cc < cur_heroes.size(); cc++)
+	int n_choices = m_heros_to_build + 2; // the +2 is for the "Save name" and "Done" options
+	float n_choice_height = 1.0 / (n_choices+2); // +1 here is to add a little space between the text choices
+	
+	for (int aa = 0; aa < n_choices; aa++)
 	{
-		double xdrawpos = m_top_tile.GetXDrawPos_N11();
-		double ydrawpos = m_top_tile.GetYDrawPos_N11();
-		double charoriginx = xdrawpos + (m_top_tile.GetRelativeWidth_01() * 2) * .85;
-		double charoriginy = ydrawpos + (m_top_tile.GetRelativeHeight_01() * 2) * (.8 - (cc * .22));
-		Mesh curchar;
-		curchar.LoadMesh(GetMeshFilename(cur_heroes[cc]->GetTileType()));
-
-		if (!cur_heroes[cc]->IsDead())
+		float xdrawpos = static_cast<float>(m_drawparty_tile.GetXDrawPos_N11());
+		float ydrawpos = static_cast<float>(m_drawparty_tile.GetYDrawPos_N11());
+		float charoriginx = xdrawpos + (static_cast<float>(m_drawparty_tile.GetRelativeWidth_01()) * 2.0f) * .15f;
+		float charoriginy = ydrawpos + (static_cast<float>(m_drawparty_tile.GetRelativeHeight_01()) * 2.0f) * (.83f - (aa * n_choice_height));
+		
+		if (aa > 0 && ((aa-1) < m_heros_to_build))
 		{
-			curchar.UseTexture(GetTextureFilename(cur_heroes[cc]->GetTileType()));
+			Mesh curchar;
+			curchar.LoadMesh(GetMeshFilename(m_char_build_tiles[aa-1].GetTileType()));
+			curchar.UseTexture(GetTextureFilename(m_char_build_tiles[aa-1].GetTileType()));
+
+			glm::mat4 *translations = new glm::mat4[1];
+			translations[0] =
+				glm::translate(glm::mat4(1.0),
+					glm::vec3(charoriginx, charoriginy, 0));
+			curchar.SetUpInstancing(1, char_scalevec, translations);
+			delete[] translations;
+			curchar.Render();
+		}
+
+		if (aa == m_cur_choice_idx)
+		{
+			float  arrowposx = xdrawpos + (static_cast<float>(m_drawparty_tile.GetRelativeWidth_01()) * 2.0f) * .05f;
+			float arrowposy = charoriginy;
+			m_texthandler_ptr->Render("-->", arrowposx, arrowposy, TextAlignType::LEFT);
+		}
+		
+		float  textx = charoriginx + (static_cast<float>(m_drawparty_tile.GetRelativeWidth_01()) * 2.0f) * .1f;
+		float texty = charoriginy;
+
+		if (aa == 0)
+		{
+			m_texthandler_ptr->Render(m_save_name, textx, texty, TextAlignType::LEFT);
+		}
+		else if( aa - 1 < m_charnames.size())
+		{
+			m_texthandler_ptr->Render(m_charnames[aa-1], textx, texty, TextAlignType::LEFT);
 		}
 		else
 		{
-			curchar.UseTexture(GetTextureFilename(TileType::MUD));
+			m_texthandler_ptr->Render("Done", textx, texty, TextAlignType::LEFT);
 		}
-
-		glm::mat4 *translations = new glm::mat4[1];
-
-		if (m_hero_turn && m_hero_turn_idx == cc)
-		{
-			charoriginx = charoriginx + (m_top_tile.GetRelativeWidth_01() *
-				m_hero_anim_dir * (.22 * m_hero_anim_pct / 100.0));
-			m_hero_anim_pct += 10;
-			if (m_hero_anim_pct > 100)
-			{
-				m_hero_anim_pct = 100;
-			}
-		}
-
-		translations[0] =
-			glm::translate(glm::mat4(1.0),
-			glm::vec3(charoriginx, charoriginy, 0));
-		curchar.SetUpInstancing(1, char_scalevec, translations);
-		delete[] translations;
-		curchar.Render();
-
-		if (m_sub_mode == FightPickMode::PICK_ITEM_TARGET)
-		{
-			const Item &curitem = cur_heroes[m_hero_turn_idx]->GetItemRef(m_cur_item_idx);
-			if (curitem.GetType() == UseType::FRIENDLY_SINGLE)
-			{
-				if (m_cur_item_target_idx == cc)
-				{
-					double arrowxpos = m_top_tile.GetXDrawPos_N11() + (m_top_tile.GetRelativeWidth_01() * 2) * .67;
-					double arrowypos = charoriginy;
-					m_texthandler_ptr->Render("-->", arrowxpos, arrowypos, TextAlignType::LEFT);
-					glUseProgram(m_primary_shaderid);
-				}
-			}
-			else if (curitem.GetType() == UseType::VS_SINGLE)
-			{
-				if (m_cur_item_target_idx == cc)
-				{
-					double arrowxpos = m_top_tile.GetXDrawPos_N11() + (m_top_tile.GetRelativeWidth_01() * 2) * .3;
-					double arrowypos = charoriginy;
-					m_texthandler_ptr->Render("<--", arrowxpos, arrowypos, TextAlignType::LEFT);
-					glUseProgram(m_primary_shaderid);
-				}
-			}
-		}
+		glUseProgram(m_primary_shaderid);
 	}
 
-	for (int dd = 0; dd < m_battle.GetNMobs(); dd++)
-	{
-		double xdrawpos = m_top_tile.GetXDrawPos_N11();
-		double ydrawpos = m_top_tile.GetYDrawPos_N11();
-		double moboriginx = xdrawpos + (m_top_tile.GetRelativeWidth_01() * 2) * .15;
-		double moboriginy = ydrawpos + (m_top_tile.GetRelativeHeight_01() * 2) * (.8 - (dd * .22));
-		Mesh curmob;
-		curmob.LoadMesh(GetMeshFilename(m_battle.GetMobTileType(dd)));
 
-		if (!m_battle.IsMobDead(dd))
-		{
-			curmob.UseTexture(GetTextureFilename(m_battle.GetMobTileType(dd)));
-		}
-		else
-		{
-			curmob.UseTexture(GetTextureFilename(TileType::MUD));
-		}
-
-		glm::mat4 *translations = new glm::mat4[1];
-
-		translations[0] =
-			glm::translate(glm::mat4(1.0),
-			glm::vec3(moboriginx, moboriginy, 0));
-		curmob.SetUpInstancing(1, char_scalevec, translations);
-		delete[] translations;
-		curmob.Render();
-
-		if (m_sub_mode == FightPickMode::PICK_MOB)
-		{
-			if (m_cur_mob_idx == dd)
-			{
-				double arrowxpos = m_top_tile.GetXDrawPos_N11() + (m_top_tile.GetRelativeWidth_01() * 2) * .3;
-				double arrowypos = moboriginy;
-				m_texthandler_ptr->Render("<--", arrowxpos, arrowypos, TextAlignType::LEFT);
-				glUseProgram(m_primary_shaderid);
-			}
-		}
-
-	}
-	*/
 }
