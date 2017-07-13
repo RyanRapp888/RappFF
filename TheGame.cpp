@@ -15,10 +15,10 @@
 //bool SetUpSkybox(GLuint &cube_vao, GLuint &cube_text_id);
 
 TheGame::TheGame() :
-m_display_ptr(nullptr),
-m_cur_mode(GameMode::NewOrLoadMode),
-m_mapwalkingmode_ws(nullptr),
-m_fightmode_ws(nullptr)
+	m_display_ptr(nullptr),
+	m_cur_mode(GameMode::NewOrLoadMode),
+	m_mapwalkingmode_ws(nullptr),
+	m_fightmode_ws(nullptr)
 {
 }
 
@@ -35,10 +35,10 @@ void TheGame::Play()
 	FontShader fontShader("res\\fontShader");
 	Text main_texthandler(m_display_ptr->GetWinWidth(), m_display_ptr->GetWinHeight());
 	main_texthandler.Init(fontShader.GetProgramId(), 35);
-		
+
 	m_mapwalkingmode_ws = new TiledGameBoard(m_display_ptr, .01, .01, .98, .98);
 	Shader basicShader("res\\basicShader");
-	
+
 	//SkyboxShader skyboxShader("res\\skyboxshader");
 	basicShader.Bind();
 	m_mapwalkingmode_ws->SetTileDetails(24, 24);
@@ -58,11 +58,11 @@ void TheGame::Play()
 	m_fightmode_ws->SetPrimaryShader(basicShader.GetProgramId());
 	m_fightmode_ws->SetTextHandler(&main_texthandler);
 	m_display_ptr->AddWindowSection(m_fightmode_ws);
-			
+
 	m_xrot = -15;
 	m_yrot = 0;
 	m_zrot = 0;
-	RGB background(255,255,255);
+	RGB background(255, 255, 255);
 
 	/*
 	GLuint skybox_VAO;
@@ -77,34 +77,34 @@ void TheGame::Play()
 	thotbubs.SetTileType(TileType::BLACK);
 	thotbubs.SetRelativeLocation(0, 0, 1, .2);
 	m_display_ptr->AddObject(&thotbubs);
-	
+
 	SetCurMode(GameMode::NewOrLoadMode);
-	
+
 	while (!m_display_ptr->WindowShouldClose())
 	{
 		m_display_ptr->Clear(
-			background.GetRed()/ 255,
-			background.GetGreen()/255.0,
-			background.GetBlue()/255.0,
+			background.GetRed() / 255,
+			background.GetGreen() / 255.0,
+			background.GetBlue() / 255.0,
 			1);
-		
+
 		/*
 		ostringstream location;
 		location << "(" << m_chars[0]->GetX() << "," << m_chars[0]->GetY() << ")";
 		main_texthandler.Render(location.str(), -.9f, .9f, TextAlignType::CENTER);
 		*/
-		
+
 		basicShader.Bind();
-		maintransform.SetRot(glm::vec3(m_xrot,m_yrot,m_zrot));
-				
+		maintransform.SetRot(glm::vec3(m_xrot, m_yrot, m_zrot));
+
 		if (m_cur_mode == GameMode::FightMode)
 		{
-			maintransform.SetRot(glm::vec3(0,0,0));
+			maintransform.SetRot(glm::vec3(0, 0, 0));
 			//m_mapwalkingmode_ws->Disable();
 			//m_fightmode_ws->Enable();
 			basicShader.Ortho(maintransform);
 		}
-		else if(m_cur_mode == GameMode::MapWalkingMode)
+		else if (m_cur_mode == GameMode::MapWalkingMode)
 		{
 			basicShader.Bind();
 			//m_fightmode_ws->Disable();
@@ -121,11 +121,11 @@ void TheGame::Play()
 			maintransform.SetRot(glm::vec3(0, 0, 0));
 			basicShader.Ortho(maintransform);
 		}
-		
+
 		m_display_ptr->Refresh();
 		if (m_chatting)
 		{
-			
+
 			if (m_chat_char != nullptr)
 			{
 				std::vector<std::string> dialogue = m_chat_char->GetDialogueLines();
@@ -151,7 +151,7 @@ void TheGame::Play()
 					textorigx = 0;
 					textorigy = -.3;
 				}
-				
+
 				for (int aa = 0; aa < dialogue.size(); aa++)
 				{
 					main_texthandler.Render(dialogue[aa], textorigx, textorigy, TextAlignType::LEFT);
@@ -175,7 +175,7 @@ void TheGame::Interact(int x, int y)
 		m_chars[0]->GetY(),
 		foundchar, proximity);
 
-	if(found)
+	if (found)
 	{
 		m_chatting = !m_chatting;
 		if (m_chatting)
@@ -217,7 +217,7 @@ void TheGame::SetCurMode(GameMode dat)
 	else if (dat == GameMode::PartyBuildMode)
 	{
 		m_mapwalkingmode_ws->Disable();
-    	m_fightmode_ws->Disable();
+		m_fightmode_ws->Disable();
 		m_neworload_ws->Disable();
 		m_partybuild_ws->Enable();
 	}
@@ -264,6 +264,9 @@ void TheGame::KeyHandler(int key, int scancode, int action, int mods)
 			m_partybuild_ws->HandleKey(key, scancode, action, mods);
 			if (m_partybuild_ws->IsPartyBuildComplete())
 			{
+				LoadGameFromPartyBuild();
+				std::string saveloc = m_partybuild_ws->GetSaveLoc();
+				SaveGameToFile(saveloc);
 				SetCurMode(GameMode::MapWalkingMode);
 			}
 		}
@@ -279,38 +282,38 @@ void TheGame::KeyHandler(int key, int scancode, int action, int mods)
 			bool took_step(false);
 			switch (key)
 			{
-			case(GLFW_KEY_W) :
-			case(GLFW_KEY_UP) :
-							  yy++;
+			case(GLFW_KEY_W):
+			case(GLFW_KEY_UP):
+				yy++;
 				took_step = true;
 				break;
-			case(GLFW_KEY_A) :
-			case(GLFW_KEY_LEFT) :
-								xx--;
+			case(GLFW_KEY_A):
+			case(GLFW_KEY_LEFT):
+				xx--;
 				took_step = true;
 				break;
-			case(GLFW_KEY_S) :
-			case(GLFW_KEY_DOWN) :
-								yy--;
+			case(GLFW_KEY_S):
+			case(GLFW_KEY_DOWN):
+				yy--;
 				took_step = true;
 				break;
-			case(GLFW_KEY_D) :
-			case(GLFW_KEY_RIGHT) :
-								 xx++;
+			case(GLFW_KEY_D):
+			case(GLFW_KEY_RIGHT):
+				xx++;
 				took_step = true;
 				break;
-			case(GLFW_KEY_X) :
+			case(GLFW_KEY_X):
 				m_xrot -= dir * 5;
 				std::cout << "rot(" << m_xrot << "," << m_yrot << "," << m_zrot << ")\n";
 				break;
-			case(GLFW_KEY_Y) :
+			case(GLFW_KEY_Y):
 				m_yrot -= dir * 5;
 				std::cout << "rot(" << m_xrot << "," << m_yrot << "," << m_zrot << ")\n";
 				break;
-			case(GLFW_KEY_Z) :
+			case(GLFW_KEY_Z):
 				m_zrot -= dir * 5;
 				std::cout << "rot(" << m_xrot << "," << m_yrot << "," << m_zrot << ")\n";
-			case(GLFW_KEY_ENTER) :
+			case(GLFW_KEY_ENTER):
 				Interact(m_chars[0]->GetX(), m_chars[0]->GetY());
 			default:
 				break;
@@ -336,6 +339,47 @@ void TheGame::KeyHandler(int key, int scancode, int action, int mods)
 		}
 
 	}
+}
+
+bool TheGame::LoadGameFromPartyBuild()
+{
+	m_chars.resize(4);
+	for (unsigned int aa = 0; aa < m_chars.size(); aa++)
+	{
+		m_chars[aa] = new Character();
+	}
+
+	GameMap *gamemap_ptr = GameMap::GetInstance();
+	if (!gamemap_ptr->LoadGameMap(256, 256))
+	{
+		std::cout << "Error: Could not load game map" << std::endl;
+	}
+	
+	std::vector<std::string> char_names;
+	std::vector<TileType> char_tile_types;
+	m_partybuild_ws->GetPartyCharacterNames(char_names);
+	m_partybuild_ws->GetPartyCharacterTypes(char_tile_types);
+
+	for (int aa = 0; aa < char_names.size() && aa < 4; aa++)
+	{
+		int locx(20), locy(5);
+		m_chars[aa]->SetName(char_names[aa]);
+		m_chars[aa]->SetCharacterType(TileTypeToCharType(char_tile_types[aa]));
+		m_chars[aa]->SetLocation(locx, locy);
+	}
+
+		gamemap_ptr->AttachMainCharacter(m_chars[0]);
+		gamemap_ptr->AddToHeroParty(m_chars[0]);
+		gamemap_ptr->AddToHeroParty(m_chars[1]);
+		gamemap_ptr->AddToHeroParty(m_chars[2]);
+		gamemap_ptr->AddToHeroParty(m_chars[3]);
+		
+	for (int bb = 0; bb < m_chars.size(); bb++)
+	{
+		gamemap_ptr->AttachCharacter(m_chars[bb]);
+	}
+
+	return true;
 }
 
 bool TheGame::LoadGameFromFile(const std::string &filename)
@@ -381,8 +425,8 @@ bool TheGame::LoadGameFromFile(const std::string &filename)
 			m_chars[idx]->SetLocation(locx, locy);
 			idx++;
 		}
-    }
-	
+	}
+
 	if (idx >= 3)
 	{
 		gamemap_ptr->AttachMainCharacter(m_chars[0]);
@@ -398,14 +442,49 @@ bool TheGame::LoadGameFromFile(const std::string &filename)
 
 	for (int bb = 0; bb < m_chars.size(); bb++)
 	{
-	   gamemap_ptr->AttachCharacter(m_chars[bb]);
+		gamemap_ptr->AttachCharacter(m_chars[bb]);
 	}
 
 	return true;
 }
 
+static void GetGameObjTypes(std::vector<ObjType> &objtypes)
+{
+	ObjType game_character("character");
+	game_character.AddAttribute("char_name", "str");
+	game_character.AddAttribute("char_type", "str");
+	game_character.AddAttribute("charlocx", "int");
+	game_character.AddAttribute("charlocy", "int");
+	objtypes.emplace_back(game_character);
+
+	ObjType game_weapon("weapon");
+	game_weapon.AddAttribute("weap_name", "str");
+	game_weapon.AddAttribute("weap_attack", "int");
+	objtypes.emplace_back(game_weapon);
+}
+
 bool TheGame::SaveGameToFile(const std::string &filename) const
 {
+	std::vector<ObjType> m_types;
+	GetGameObjTypes(m_types);
+
+	std::ofstream outfile(filename);
+	outfile << "starttypes" << std::endl;
+	for (auto cur_type : m_types)
+	{
+		outfile << cur_type.AsString();
+	}
+	outfile << "endtypes" << std::endl;
+	outfile << std::endl;
+
+	outfile << "startdata" << std::endl;
+	outfile << "character Moochie OCTOPUS 132 5" << std::endl;
+	outfile << "character Glarbo MERMAID 132 5" << std::endl;
+	outfile << "character TheSpleen JELLYBEAN 132 5" << std::endl;
+	outfile << "character DocRockerton OCTOPUS 132 5" << std::endl;
+	outfile << "enddata" << std::endl;
+	outfile << std::endl;
+
 	return true;
 
 }

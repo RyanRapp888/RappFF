@@ -47,6 +47,19 @@ static std::map<CharacterType, TileType> CTypeToTileType
 		{ CharacterType::BEAR, TileType::BEAR }
 };
 
+CharacterType TileTypeToCharType(const TileType &ttype)
+{
+	for (auto cur : CTypeToTileType)
+	{
+		if (cur.second == ttype)
+		{
+			return cur.first;
+		}
+	}
+	return CharacterType::BEAR;
+}
+
+
 int CharacterAttributes::GetHP() const { return m_hp; }
 void CharacterAttributes::SetHP(int dat){ m_hp = dat; ValidateHP(); }
 void CharacterAttributes::ModifyHP(int delta)

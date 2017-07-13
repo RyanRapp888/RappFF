@@ -17,10 +17,12 @@ enum class CharacterType
 	PRINCESS,
 	SKELETON,
 	BEAR,
-	SIZE
+	SIZE,
+	UNDEF
 };
 
 CharacterType StrToCharType(const std::string ctype_as_string);
+CharacterType TileTypeToCharType(const TileType &tiletype);
 
 enum class CharacterState
 {

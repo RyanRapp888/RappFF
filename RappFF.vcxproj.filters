@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Resource Files\Saved Games">
+      <UniqueIdentifier>{c3930b93-a9e6-4b78-971f-ffe26eccad05}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RappFF.cpp">
@@ -26,5 +29,16 @@
     <ClInclude Include="TheGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\blerb.toc">
+      <Filter>Resource Files\Saved Games</Filter>
+    </None>
+    <None Include="res\nork.toc">
+      <Filter>Resource Files\Saved Games</Filter>
+    </None>
+    <None Include="res\save1.toc">
+      <Filter>Resource Files\Saved Games</Filter>
+    </None>
   </ItemGroup>
 </Project>

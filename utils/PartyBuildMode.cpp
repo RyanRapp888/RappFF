@@ -144,6 +144,11 @@ bool PartyBuildMode::HandleKey(int key, int scancode, int action, int mods)
 	return true;
 }
 
+std::string PartyBuildMode::GetSaveLoc() const
+{
+	return "\\res" + m_save_name;
+}
+
 void  PartyBuildMode::ValidateAndFixSave()
 {
 	// The arrow is on the "Done" option
@@ -159,12 +164,28 @@ void  PartyBuildMode::ValidateAndFixSave()
 		}
 	}
 
-	std::vector<std::string> results;
-	get_files("res", "toc", results);
-
-
-
-	bool abc;
+	std::vector<std::string> pre_existing_save_list;
+	get_files("res", "toc", pre_existing_save_list);
+	
+	std::string save_folder("res\\");
+	std::string proposed_save_loc(save_folder);
+	proposed_save_loc += m_save_name;
+	std::string uppercase_save_loc = to_upper(proposed_save_loc);
+	
+	for (auto cur_prexisting : pre_existing_save_list)
+	{
+		std::string prexisting = to_upper(cur_prexisting);
+		int num = 1;
+		while (prexisting == uppercase_save_loc)
+		{
+			proposed_save_loc = save_folder;
+			m_save_name += to_string(num);
+			num++;
+			proposed_save_loc += m_save_name;
+			uppercase_save_loc = to_upper(proposed_save_loc);
+			if (num > 100) break;
+		}
+	}
 }
 
 void PartyBuildMode::DrawPartyBuildWindow()
@@ -248,4 +269,20 @@ void PartyBuildMode::DrawPartyBuildWindow()
 	}
 
 
+}
+
+void PartyBuildMode::GetPartyCharacterNames(std::vector<std::string> &character_names) const
+{
+	for (auto curname : m_charnames)
+	{
+		character_names.push_back(curname);
+	 }
+}
+
+void PartyBuildMode::GetPartyCharacterTypes(std::vector<TileType> &character_types) const
+{
+	for (int aa = 0; aa < m_heros_to_build; aa++)
+	{
+		character_types.push_back(m_char_build_tiles[aa].GetTileType());
+	}
 }

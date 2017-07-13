@@ -61,35 +61,34 @@ void Toc::LoadObjTypes()
 			{
 				if (curtoken == ":")
 				{
-					att_elect.m_att_name = "";
-					att_elect.m_att_type = "";
+					att_elect.Clear();
 					cur_mode = 1;
 				}
 				else
 				{
 					if (cur_mode == 0)
 					{
-						obj_elect.m_obj_typename = curtoken;
+						obj_elect.SetObjTypename(curtoken);
 						cur_mode++;
 					}
 					else if (cur_mode == 1)
 					{
-						att_elect.m_att_name = curtoken;
+						att_elect.SetAttName(curtoken);
 						cur_mode++;
 					}
 					else
 					{
-						att_elect.m_att_type = curtoken;
-						if (obj_elect.m_obj_typename != "" &&
-							att_elect.m_att_name != "" &&
-							att_elect.m_att_type != "")
+						att_elect.SetAttType(curtoken);
+						if (obj_elect.GetObjTypename() != "" &&
+							att_elect.GetAttName() != "" &&
+							att_elect.GetAttType() != "")
 						{
-							obj_elect.m_atts.emplace_back(att_elect);
+							obj_elect.AddAttribute(att_elect);
 						}
 					}
 				}
 			}
-			if (obj_elect.m_atts.size() > 0) m_objtypes.emplace_back(obj_elect);
+			if (obj_elect.GetNAttributes() > 0) m_objtypes.emplace_back(obj_elect);
 		}
 		row.clear(); // not necessary, but just for safety
 	}
@@ -100,9 +99,9 @@ ObjData::ObjData(const ObjType &objtyp, std::vector<std::string> &row)
 	int rowsize = static_cast<int>(row.size());
 	int cur_token_idx(0);
 	
-	if (rowsize == objtyp.m_atts.size() + 1)
+	if (rowsize == objtyp.GetNAttributes() + 1)
 	{
-		if (row[0] == objtyp.m_obj_typename)
+		if (row[0] == objtyp.GetObjTypename())
 		{
 			cur_token_idx = 1;
 			for (const auto curatt : objtyp.m_atts)
@@ -175,7 +174,7 @@ void Toc::LoadObjects()
 
 			for (int aa = 0; aa < m_objtypes.size(); aa++)
 			{
-				if (token == m_objtypes[aa].m_obj_typename)
+				if (token == m_objtypes[aa].GetObjTypename())
 				{
 					found_idx = aa;
 					break;

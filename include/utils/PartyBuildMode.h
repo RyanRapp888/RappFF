@@ -23,6 +23,9 @@ public:
 	void Refresh();
 	bool HandleKey(int key, int scancode, int action, int mods);
 	bool IsPartyBuildComplete() const;
+	std::string GetSaveLoc() const;
+	void GetPartyCharacterNames(std::vector<std::string> &character_names) const;
+	void GetPartyCharacterTypes(std::vector<TileType> &character_types) const;
 
 private:
 

@@ -95,6 +95,11 @@
   <ItemGroup>
     <ClInclude Include="TheGame.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="res\blerb.toc" />
+    <None Include="res\nork.toc" />
+    <None Include="res\save1.toc" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -28,6 +28,7 @@ public:
 		//clean all the stuff
 	}
 	bool LoadGameFromFile(const std::string &filename);
+	bool LoadGameFromPartyBuild();
 	bool SaveGameToFile(const std::string &filename) const;
 	
 private:

@@ -1,5 +1,6 @@
 #include "RandUtils.h"
 #include <cstdlib>
+#include <locale>
 
 int get_rand_0_99()
 {
@@ -21,6 +22,15 @@ int get_rand_0_x(int x)
 bool is_blank(const std::string &str)
 {
 	return (str.find_first_not_of(' ') == std::string::npos);
+}
+
+std::string to_upper(const std::string &str)
+{
+	std::locale loc;
+	std::string res(str);
+	for (std::string::size_type i = 0; i<res.length(); ++i)
+		std::cout << std::toupper(res[i], loc);
+	return res;
 }
 
 //file_ext should not include asterisk or dot, just the character extension
