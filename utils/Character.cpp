@@ -83,6 +83,25 @@ void CharacterAttributes::SetAccuracy(int dat){ m_accuracy = dat; }
 void CharacterAttributes::SetDodge(int dat){ m_dodge = dat; }
 void CharacterAttributes::SetAttackSkill(int dat){ m_attack_skill = dat; }
 void CharacterAttributes::SetDamageAbsorb(int dat){ m_dmg_absorb = dat; }
+
+// For serializing the objects during save
+void CharacterAttributes::GetObjTypes(std::vector<ObjType> &obj_types)
+{
+	obj_types.resize(1);
+	obj_types[0].SetObjTypename("char_att_collection");
+	obj_types[0].AddAttribute("hp", "int");
+	obj_types[0].AddAttribute("maxhp", "int");
+	obj_types[0].AddAttribute("mp", "int");
+	obj_types[0].AddAttribute("maxmp", "int");
+	obj_types[0].AddAttribute("accuracy", "int");
+	obj_types[0].AddAttribute("dodge", "int");
+	obj_types[0].AddAttribute("level", "int");
+	obj_types[0].AddAttribute("flee", "int");
+	obj_types[0].AddAttribute("attack_skill", "int");
+	obj_types[0].AddAttribute("dmg_absorb", "int");
+	obj_types[0].AddAttribute("state", "str");
+}
+
 void CharacterAttributes::ValidateHP()
 {
 	if (m_hp > GetMaxHP())

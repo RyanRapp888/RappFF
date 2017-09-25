@@ -5,6 +5,7 @@
 #include "CharMotion.h"
 #include "Tile.h"
 #include <string>
+#include "Toc.h"
 
 enum class CharacterType
 {
@@ -61,6 +62,9 @@ public:
 	void SetDodge(int dat);
 	void SetAttackSkill(int dat);
 	void SetDamageAbsorb(int dat);
+	void GetObjTypes(std::vector<ObjType> &types);
+	void GetObjData()
+
 
 private:
 	void ValidateHP();

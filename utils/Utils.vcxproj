@@ -73,6 +73,7 @@
   <ItemGroup>
     <None Include="..\res\basicShader.fs" />
     <None Include="..\res\basicShader.vs" />
+    <None Include="..\res\blerb.toc" />
     <None Include="..\res\cube.robj" />
     <None Include="..\res\flattile.robj" />
     <None Include="..\res\fontshader.fs" />
