@@ -146,7 +146,7 @@ bool PartyBuildMode::HandleKey(int key, int scancode, int action, int mods)
 
 std::string PartyBuildMode::GetSaveLoc() const
 {
-	return "\\res" + m_save_name;
+	return "\\res\\" + m_save_name + m_save_file_ext;
 }
 
 void  PartyBuildMode::ValidateAndFixSave()
@@ -169,7 +169,7 @@ void  PartyBuildMode::ValidateAndFixSave()
 	
 	std::string save_folder("res\\");
 	std::string proposed_save_loc(save_folder);
-	proposed_save_loc += m_save_name;
+	proposed_save_loc += m_save_name + m_save_file_ext;
 	std::string uppercase_save_loc = to_upper(proposed_save_loc);
 	
 	for (auto cur_prexisting : pre_existing_save_list)
@@ -181,7 +181,7 @@ void  PartyBuildMode::ValidateAndFixSave()
 			proposed_save_loc = save_folder;
 			m_save_name += to_string(num);
 			num++;
-			proposed_save_loc += m_save_name;
+			proposed_save_loc += m_save_name + m_save_file_ext;
 			uppercase_save_loc = to_upper(proposed_save_loc);
 			if (num > 100) break;
 		}

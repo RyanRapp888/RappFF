@@ -28,9 +28,11 @@ std::string to_upper(const std::string &str)
 {
 	std::locale loc;
 	std::string res(str);
-	for (std::string::size_type i = 0; i<res.length(); ++i)
-		std::cout << std::toupper(res[i], loc);
-	return res;
+	for (std::string::size_type i = 0; i < res.length(); ++i)
+	{
+		res[i] = std::toupper(res[i], loc);
+	}
+		return res;
 }
 
 //file_ext should not include asterisk or dot, just the character extension
@@ -60,4 +62,9 @@ void get_files(const std::string &dir_to_process,
 	}
 
 	FindClose(hFind);
+}
+
+std::string GetCurrentDirectory()
+{
+	return "";
 }

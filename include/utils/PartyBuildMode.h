@@ -42,6 +42,7 @@ private:
 	std::vector<std::string> m_charnames;
 	Tile *m_char_build_tiles;
 	std::string m_save_name = { "Save1" };
+	std::string m_save_file_ext = { ".toc" };
 
 	};
 

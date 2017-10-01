@@ -329,7 +329,7 @@ void TheGame::KeyHandler(int key, int scancode, int action, int mods)
 					if (randy <= mob_odds)
 					{
 						std::cout << "FIGHTY MODE!!!" << std::endl;
-						SetCurMode(GameMode::FightMode);
+						//SetCurMode(GameMode::FightMode);
 
 					}
 					std::cout << randy << " out of " << mob_odds << std::endl;

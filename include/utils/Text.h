@@ -21,6 +21,7 @@ enum class TextAlignType
 class GlyphData 
 {
 public:
+	GlyphData() :bitmap_buffer(nullptr) {}
 	char c;
 	int size;
 	int bitmap_width;
