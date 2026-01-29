@@ -47,6 +47,7 @@ events:
       - "C:/dev/vcpkg/"
       - "C:/Users/Fam/AppData/Local/Microsoft/WindowsApps/"
       - "C:/Users/Fam/.dotnet/tools/"
+      - "C:/Users/Fam/AppData/Local/GitHubDesktop/bin/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -83,6 +84,7 @@ events:
         - "C:\\dev\\vcpkg"
         - "C:\\Users\\Fam\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\Fam\\.dotnet\\tools"
+        - "C:\\Users\\Fam\\AppData\\Local\\GitHubDesktop\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\PrivateAssemblies\\runtimes\\win-x64\\native"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
@@ -147,6 +149,7 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/debug/dev/vcpkg/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/Microsoft/WindowsApps/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -178,6 +181,7 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/dev/vcpkg/"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/Microsoft/WindowsApps/"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -209,6 +213,7 @@ events:
       - "C:/dev/vcpkg/"
       - "C:/Users/Fam/AppData/Local/Microsoft/WindowsApps/"
       - "C:/Users/Fam/.dotnet/tools/"
+      - "C:/Users/Fam/AppData/Local/GitHubDesktop/bin/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -761,6 +766,27 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/clang.com"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/clang.exe"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/clang"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/cc.com"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/cc.exe"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/cc"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/gcc.com"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/gcc.exe"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/gcc"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/cl.com"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/cl.exe"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/cl"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/bcc.com"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/bcc.exe"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/bcc"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/xlc.com"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/xlc.exe"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/xlc"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/icx.com"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/icx.exe"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/icx"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/clang.com"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/clang.exe"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/clang"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/cc.com"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/cc.exe"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/cc"
@@ -1412,6 +1438,27 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/clang.com"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/clang.exe"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/clang"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/cc.com"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/cc.exe"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/cc"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/gcc.com"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/gcc.exe"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/gcc"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/cl.com"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/cl.exe"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/cl"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/bcc.com"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/bcc.exe"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/bcc"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/xlc.com"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/xlc.exe"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/xlc"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/icx.com"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/icx.exe"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/icx"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/clang.com"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/clang.exe"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/clang"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/cc.com"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/cc.exe"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/cc"
@@ -1560,6 +1607,7 @@ events:
         - "C:\\dev\\vcpkg"
         - "C:\\Users\\Fam\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\Fam\\.dotnet\\tools"
+        - "C:\\Users\\Fam\\AppData\\Local\\GitHubDesktop\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\PrivateAssemblies\\runtimes\\win-x64\\native"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
@@ -1622,6 +1670,7 @@ events:
         - "C:\\dev\\vcpkg"
         - "C:\\Users\\Fam\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\Fam\\.dotnet\\tools"
+        - "C:\\Users\\Fam\\AppData\\Local\\GitHubDesktop\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\PrivateAssemblies\\runtimes\\win-x64\\native"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
@@ -1669,7 +1718,7 @@ events:
       Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.obj"
       
       The C compiler identification is MSVC, found in:
-        C:/RappFF/build/vcpkg-debug/CMakeFiles/4.1.1-msvc1/CompilerIdC/CMakeCCompilerId.exe
+        C:/Users/Fam/Documents/GitHub/RappFF/build/vcpkg-debug/CMakeFiles/4.1.1-msvc1/CompilerIdC/CMakeCCompilerId.exe
       
   -
     kind: "message-v1"
@@ -1681,7 +1730,7 @@ events:
     message: |
       Detecting C compiler /showIncludes prefix:
         main.c
-        Note: including file: C:\\RappFF\\build\\vcpkg-debug\\CMakeFiles\\ShowIncludes\\foo.h
+        Note: including file: C:\\Users\\Fam\\Documents\\GitHub\\RappFF\\build\\vcpkg-debug\\CMakeFiles\\ShowIncludes\\foo.h
         
       Found prefix "Note: including file: "
   -
@@ -1732,6 +1781,7 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/debug/dev/vcpkg/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/Microsoft/WindowsApps/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -1763,6 +1813,7 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/dev/vcpkg/"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/Microsoft/WindowsApps/"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -1794,6 +1845,7 @@ events:
       - "C:/dev/vcpkg/"
       - "C:/Users/Fam/AppData/Local/Microsoft/WindowsApps/"
       - "C:/Users/Fam/.dotnet/tools/"
+      - "C:/Users/Fam/AppData/Local/GitHubDesktop/bin/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -1878,6 +1930,9 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/link.com"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/link.exe"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/link"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/link.com"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/link.exe"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/link"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/link.com"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/link.exe"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/link"
@@ -1971,6 +2026,9 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/link.com"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/link.exe"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/link"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/link.com"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/link.exe"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/link"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/link.com"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/link.exe"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/link"
@@ -2023,6 +2081,7 @@ events:
         - "C:\\dev\\vcpkg"
         - "C:\\Users\\Fam\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\Fam\\.dotnet\\tools"
+        - "C:\\Users\\Fam\\AppData\\Local\\GitHubDesktop\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\PrivateAssemblies\\runtimes\\win-x64\\native"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
@@ -2077,6 +2136,7 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/debug/dev/vcpkg/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/Microsoft/WindowsApps/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -2108,6 +2168,7 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/dev/vcpkg/"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/Microsoft/WindowsApps/"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -2139,6 +2200,7 @@ events:
       - "C:/dev/vcpkg/"
       - "C:/Users/Fam/AppData/Local/Microsoft/WindowsApps/"
       - "C:/Users/Fam/.dotnet/tools/"
+      - "C:/Users/Fam/AppData/Local/GitHubDesktop/bin/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -2223,6 +2285,9 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/lld-link.com"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/lld-link.exe"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/lld-link"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/lld-link.com"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/lld-link.exe"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/lld-link"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/lld-link.com"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/lld-link.exe"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/lld-link"
@@ -2316,6 +2381,9 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/lld-link.com"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/lld-link.exe"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/lld-link"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/lld-link.com"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/lld-link.exe"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/lld-link"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/lld-link.com"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/lld-link.exe"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/lld-link"
@@ -2409,6 +2477,9 @@ events:
       - "C:/Users/Fam/.dotnet/tools/lld-link.com"
       - "C:/Users/Fam/.dotnet/tools/lld-link.exe"
       - "C:/Users/Fam/.dotnet/tools/lld-link"
+      - "C:/Users/Fam/AppData/Local/GitHubDesktop/bin/lld-link.com"
+      - "C:/Users/Fam/AppData/Local/GitHubDesktop/bin/lld-link.exe"
+      - "C:/Users/Fam/AppData/Local/GitHubDesktop/bin/lld-link"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/lld-link.com"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/lld-link.exe"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/lld-link"
@@ -2460,6 +2531,7 @@ events:
         - "C:\\dev\\vcpkg"
         - "C:\\Users\\Fam\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\Fam\\.dotnet\\tools"
+        - "C:\\Users\\Fam\\AppData\\Local\\GitHubDesktop\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\PrivateAssemblies\\runtimes\\win-x64\\native"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
@@ -2512,6 +2584,7 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/debug/dev/vcpkg/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/Microsoft/WindowsApps/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -2543,6 +2616,7 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/dev/vcpkg/"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/Microsoft/WindowsApps/"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -2574,6 +2648,7 @@ events:
       - "C:/dev/vcpkg/"
       - "C:/Users/Fam/AppData/Local/Microsoft/WindowsApps/"
       - "C:/Users/Fam/.dotnet/tools/"
+      - "C:/Users/Fam/AppData/Local/GitHubDesktop/bin/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -2658,6 +2733,9 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/link.com"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/link.exe"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/link"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/link.com"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/link.exe"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/link"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/link.com"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/link.exe"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/link"
@@ -2751,6 +2829,9 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/link.com"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/link.exe"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/link"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/link.com"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/link.exe"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/link"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/link.com"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/link.exe"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/link"
@@ -2803,6 +2884,7 @@ events:
         - "C:\\dev\\vcpkg"
         - "C:\\Users\\Fam\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\Fam\\.dotnet\\tools"
+        - "C:\\Users\\Fam\\AppData\\Local\\GitHubDesktop\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\PrivateAssemblies\\runtimes\\win-x64\\native"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
@@ -2855,6 +2937,7 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/debug/dev/vcpkg/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/Microsoft/WindowsApps/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -2886,6 +2969,7 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/dev/vcpkg/"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/Microsoft/WindowsApps/"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -2917,6 +3001,7 @@ events:
       - "C:/dev/vcpkg/"
       - "C:/Users/Fam/AppData/Local/Microsoft/WindowsApps/"
       - "C:/Users/Fam/.dotnet/tools/"
+      - "C:/Users/Fam/AppData/Local/GitHubDesktop/bin/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -3001,6 +3086,9 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/mt.com"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/mt.exe"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/mt"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/mt.com"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/mt.exe"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/mt"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/mt.com"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/mt.exe"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/mt"
@@ -3094,6 +3182,9 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/mt.com"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/mt.exe"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/mt"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/mt.com"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/mt.exe"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/mt"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/mt.com"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/mt.exe"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/mt"
@@ -3170,6 +3261,7 @@ events:
         - "C:\\dev\\vcpkg"
         - "C:\\Users\\Fam\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\Fam\\.dotnet\\tools"
+        - "C:\\Users\\Fam\\AppData\\Local\\GitHubDesktop\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\PrivateAssemblies\\runtimes\\win-x64\\native"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
@@ -3222,6 +3314,7 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/debug/dev/vcpkg/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/Microsoft/WindowsApps/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -3253,6 +3346,7 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/dev/vcpkg/"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/Microsoft/WindowsApps/"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -3284,6 +3378,7 @@ events:
       - "C:/dev/vcpkg/"
       - "C:/Users/Fam/AppData/Local/Microsoft/WindowsApps/"
       - "C:/Users/Fam/.dotnet/tools/"
+      - "C:/Users/Fam/AppData/Local/GitHubDesktop/bin/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -3368,6 +3463,9 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/lib.com"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/lib.exe"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/lib"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/lib.com"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/lib.exe"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/lib"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/lib.com"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/lib.exe"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/lib"
@@ -3461,6 +3559,9 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/lib.com"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/lib.exe"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/lib"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/lib.com"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/lib.exe"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/lib"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/lib.com"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/lib.exe"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/lib"
@@ -3513,6 +3614,7 @@ events:
         - "C:\\dev\\vcpkg"
         - "C:\\Users\\Fam\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\Fam\\.dotnet\\tools"
+        - "C:\\Users\\Fam\\AppData\\Local\\GitHubDesktop\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\PrivateAssemblies\\runtimes\\win-x64\\native"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
@@ -3609,6 +3711,7 @@ events:
         - "C:\\dev\\vcpkg"
         - "C:\\Users\\Fam\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\Fam\\.dotnet\\tools"
+        - "C:\\Users\\Fam\\AppData\\Local\\GitHubDesktop\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\PrivateAssemblies\\runtimes\\win-x64\\native"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
@@ -3671,6 +3774,7 @@ events:
         - "C:\\dev\\vcpkg"
         - "C:\\Users\\Fam\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\Fam\\.dotnet\\tools"
+        - "C:\\Users\\Fam\\AppData\\Local\\GitHubDesktop\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\PrivateAssemblies\\runtimes\\win-x64\\native"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
@@ -3718,7 +3822,7 @@ events:
       Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CMakeCXXCompilerId.obj"
       
       The CXX compiler identification is MSVC, found in:
-        C:/RappFF/build/vcpkg-debug/CMakeFiles/4.1.1-msvc1/CompilerIdCXX/CMakeCXXCompilerId.exe
+        C:/Users/Fam/Documents/GitHub/RappFF/build/vcpkg-debug/CMakeFiles/4.1.1-msvc1/CompilerIdCXX/CMakeCXXCompilerId.exe
       
   -
     kind: "message-v1"
@@ -3730,7 +3834,7 @@ events:
     message: |
       Detecting CXX compiler /showIncludes prefix:
         main.c
-        Note: including file: C:\\RappFF\\build\\vcpkg-debug\\CMakeFiles\\ShowIncludes\\foo.h
+        Note: including file: C:\\Users\\Fam\\Documents\\GitHub\\RappFF\\build\\vcpkg-debug\\CMakeFiles\\ShowIncludes\\foo.h
         
       Found prefix "Note: including file: "
   -
@@ -3781,6 +3885,7 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/debug/dev/vcpkg/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/Microsoft/WindowsApps/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -3812,6 +3917,7 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/dev/vcpkg/"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/Microsoft/WindowsApps/"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -3843,6 +3949,7 @@ events:
       - "C:/dev/vcpkg/"
       - "C:/Users/Fam/AppData/Local/Microsoft/WindowsApps/"
       - "C:/Users/Fam/.dotnet/tools/"
+      - "C:/Users/Fam/AppData/Local/GitHubDesktop/bin/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -3927,6 +4034,9 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/lld-link.com"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/lld-link.exe"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/lld-link"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/lld-link.com"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/lld-link.exe"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/lld-link"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/lld-link.com"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/lld-link.exe"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/lld-link"
@@ -4020,6 +4130,9 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/lld-link.com"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/lld-link.exe"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/lld-link"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/lld-link.com"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/lld-link.exe"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/lld-link"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/lld-link.com"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/lld-link.exe"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/lld-link"
@@ -4113,6 +4226,9 @@ events:
       - "C:/Users/Fam/.dotnet/tools/lld-link.com"
       - "C:/Users/Fam/.dotnet/tools/lld-link.exe"
       - "C:/Users/Fam/.dotnet/tools/lld-link"
+      - "C:/Users/Fam/AppData/Local/GitHubDesktop/bin/lld-link.com"
+      - "C:/Users/Fam/AppData/Local/GitHubDesktop/bin/lld-link.exe"
+      - "C:/Users/Fam/AppData/Local/GitHubDesktop/bin/lld-link"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/lld-link.com"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/lld-link.exe"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/lld-link"
@@ -4164,6 +4280,7 @@ events:
         - "C:\\dev\\vcpkg"
         - "C:\\Users\\Fam\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\Fam\\.dotnet\\tools"
+        - "C:\\Users\\Fam\\AppData\\Local\\GitHubDesktop\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\PrivateAssemblies\\runtimes\\win-x64\\native"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
@@ -4228,6 +4345,7 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/debug/dev/vcpkg/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/Microsoft/WindowsApps/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -4280,6 +4398,7 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/dev/vcpkg/"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/Microsoft/WindowsApps/"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -4332,6 +4451,7 @@ events:
       - "C:/dev/vcpkg/"
       - "C:/Users/Fam/AppData/Local/Microsoft/WindowsApps/"
       - "C:/Users/Fam/.dotnet/tools/"
+      - "C:/Users/Fam/AppData/Local/GitHubDesktop/bin/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -4455,6 +4575,9 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/rc.com"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/rc.exe"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/rc"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/rc.com"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/rc.exe"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/rc"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/rc.com"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/rc.exe"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/rc"
@@ -4611,6 +4734,9 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/rc.com"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/rc.exe"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/rc"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/rc.com"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/rc.exe"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/rc"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/rc.com"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/rc.exe"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/rc"
@@ -4750,6 +4876,7 @@ events:
         - "C:\\dev\\vcpkg"
         - "C:\\Users\\Fam\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\Fam\\.dotnet\\tools"
+        - "C:\\Users\\Fam\\AppData\\Local\\GitHubDesktop\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\PrivateAssemblies\\runtimes\\win-x64\\native"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
@@ -4771,8 +4898,8 @@ events:
     checks:
       - "Detecting C compiler ABI info"
     directories:
-      source: "C:/RappFF/build/vcpkg-debug/CMakeFiles/CMakeScratch/TryCompile-d92sd5"
-      binary: "C:/RappFF/build/vcpkg-debug/CMakeFiles/CMakeScratch/TryCompile-d92sd5"
+      source: "C:/Users/Fam/Documents/GitHub/RappFF/build/vcpkg-debug/CMakeFiles/CMakeScratch/TryCompile-eblrms"
+      binary: "C:/Users/Fam/Documents/GitHub/RappFF/build/vcpkg-debug/CMakeFiles/CMakeScratch/TryCompile-eblrms"
     cmakeVariables:
       CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS"
       CMAKE_C_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
@@ -4785,11 +4912,11 @@ events:
       variable: "CMAKE_C_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: 'C:/RappFF/build/vcpkg-debug/CMakeFiles/CMakeScratch/TryCompile-d92sd5'
+        Change Dir: 'C:/Users/Fam/Documents/GitHub/RappFF/build/vcpkg-debug/CMakeFiles/CMakeScratch/TryCompile-eblrms'
         
-        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe" -v cmTC_2b77d
-        [1/2] C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\cl.exe  /nologo   /DWIN32 /D_WINDOWS  /Zi /Ob0 /Od /RTC1 -MDd /showIncludes /FoCMakeFiles\\cmTC_2b77d.dir\\CMakeCCompilerABI.c.obj /FdCMakeFiles\\cmTC_2b77d.dir\\ /FS -c "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\share\\cmake-4.1\\Modules\\CMakeCCompilerABI.c"
-        [2/2] C:\\Windows\\system32\\cmd.exe /C "cd . && "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe" -E vs_link_exe --msvc-ver=1950 --intdir=CMakeFiles\\cmTC_2b77d.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_2b77d.dir\\CMakeCCompilerABI.c.obj  /out:cmTC_2b77d.exe /implib:cmTC_2b77d.lib /pdb:cmTC_2b77d.pdb /version:0.0 /machine:x64 /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe" -v cmTC_79d4b
+        [1/2] C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\cl.exe  /nologo   /DWIN32 /D_WINDOWS  /Zi /Ob0 /Od /RTC1 -MDd /showIncludes /FoCMakeFiles\\cmTC_79d4b.dir\\CMakeCCompilerABI.c.obj /FdCMakeFiles\\cmTC_79d4b.dir\\ /FS -c "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\share\\cmake-4.1\\Modules\\CMakeCCompilerABI.c"
+        [2/2] C:\\Windows\\system32\\cmd.exe /C "cd . && "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe" -E vs_link_exe --msvc-ver=1950 --intdir=CMakeFiles\\cmTC_79d4b.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_79d4b.dir\\CMakeCCompilerABI.c.obj  /out:cmTC_79d4b.exe /implib:cmTC_79d4b.lib /pdb:cmTC_79d4b.pdb /version:0.0 /machine:x64 /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
         
       exitCode: 0
   -
@@ -4829,8 +4956,8 @@ events:
     checks:
       - "Detecting CXX compiler ABI info"
     directories:
-      source: "C:/RappFF/build/vcpkg-debug/CMakeFiles/CMakeScratch/TryCompile-tn1se1"
-      binary: "C:/RappFF/build/vcpkg-debug/CMakeFiles/CMakeScratch/TryCompile-tn1se1"
+      source: "C:/Users/Fam/Documents/GitHub/RappFF/build/vcpkg-debug/CMakeFiles/CMakeScratch/TryCompile-9khgyx"
+      binary: "C:/Users/Fam/Documents/GitHub/RappFF/build/vcpkg-debug/CMakeFiles/CMakeScratch/TryCompile-9khgyx"
     cmakeVariables:
       CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /EHsc"
       CMAKE_CXX_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
@@ -4844,11 +4971,11 @@ events:
       variable: "CMAKE_CXX_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: 'C:/RappFF/build/vcpkg-debug/CMakeFiles/CMakeScratch/TryCompile-tn1se1'
+        Change Dir: 'C:/Users/Fam/Documents/GitHub/RappFF/build/vcpkg-debug/CMakeFiles/CMakeScratch/TryCompile-9khgyx'
         
-        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe" -v cmTC_40ec7
-        [1/2] C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP   /DWIN32 /D_WINDOWS /EHsc  /Zi /Ob0 /Od /RTC1 -std:c++20 -MDd /showIncludes /FoCMakeFiles\\cmTC_40ec7.dir\\CMakeCXXCompilerABI.cpp.obj /FdCMakeFiles\\cmTC_40ec7.dir\\ /FS -c "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\share\\cmake-4.1\\Modules\\CMakeCXXCompilerABI.cpp"
-        [2/2] C:\\Windows\\system32\\cmd.exe /C "cd . && "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe" -E vs_link_exe --msvc-ver=1950 --intdir=CMakeFiles\\cmTC_40ec7.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_40ec7.dir\\CMakeCXXCompilerABI.cpp.obj  /out:cmTC_40ec7.exe /implib:cmTC_40ec7.lib /pdb:cmTC_40ec7.pdb /version:0.0 /machine:x64 /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe" -v cmTC_cb867
+        [1/2] C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP   /DWIN32 /D_WINDOWS /EHsc  /Zi /Ob0 /Od /RTC1 -std:c++20 -MDd /showIncludes /FoCMakeFiles\\cmTC_cb867.dir\\CMakeCXXCompilerABI.cpp.obj /FdCMakeFiles\\cmTC_cb867.dir\\ /FS -c "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\share\\cmake-4.1\\Modules\\CMakeCXXCompilerABI.cpp"
+        [2/2] C:\\Windows\\system32\\cmd.exe /C "cd . && "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe" -E vs_link_exe --msvc-ver=1950 --intdir=CMakeFiles\\cmTC_cb867.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_cb867.dir\\CMakeCXXCompilerABI.cpp.obj  /out:cmTC_cb867.exe /implib:cmTC_cb867.lib /pdb:cmTC_cb867.pdb /version:0.0 /machine:x64 /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
         
       exitCode: 0
   -
@@ -4894,8 +5021,8 @@ events:
     checks:
       - "Performing Test CMAKE_HAVE_LIBC_PTHREAD"
     directories:
-      source: "C:/RappFF/build/vcpkg-debug/CMakeFiles/CMakeScratch/TryCompile-sd2niy"
-      binary: "C:/RappFF/build/vcpkg-debug/CMakeFiles/CMakeScratch/TryCompile-sd2niy"
+      source: "C:/Users/Fam/Documents/GitHub/RappFF/build/vcpkg-debug/CMakeFiles/CMakeScratch/TryCompile-5tr57o"
+      binary: "C:/Users/Fam/Documents/GitHub/RappFF/build/vcpkg-debug/CMakeFiles/CMakeScratch/TryCompile-5tr57o"
     cmakeVariables:
       CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS"
       CMAKE_C_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
@@ -4908,13 +5035,13 @@ events:
       variable: "CMAKE_HAVE_LIBC_PTHREAD"
       cached: true
       stdout: |
-        Change Dir: 'C:/RappFF/build/vcpkg-debug/CMakeFiles/CMakeScratch/TryCompile-sd2niy'
+        Change Dir: 'C:/Users/Fam/Documents/GitHub/RappFF/build/vcpkg-debug/CMakeFiles/CMakeScratch/TryCompile-5tr57o'
         
-        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe" -v cmTC_23430
-        [1/2] C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\cl.exe  /nologo -DCMAKE_HAVE_LIBC_PTHREAD  /DWIN32 /D_WINDOWS  /Zi /Ob0 /Od /RTC1 -MDd /showIncludes /FoCMakeFiles\\cmTC_23430.dir\\src.c.obj /FdCMakeFiles\\cmTC_23430.dir\\ /FS -c C:\\RappFF\\build\\vcpkg-debug\\CMakeFiles\\CMakeScratch\\TryCompile-sd2niy\\src.c
-        FAILED: CMakeFiles/cmTC_23430.dir/src.c.obj 
-        C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\cl.exe  /nologo -DCMAKE_HAVE_LIBC_PTHREAD  /DWIN32 /D_WINDOWS  /Zi /Ob0 /Od /RTC1 -MDd /showIncludes /FoCMakeFiles\\cmTC_23430.dir\\src.c.obj /FdCMakeFiles\\cmTC_23430.dir\\ /FS -c C:\\RappFF\\build\\vcpkg-debug\\CMakeFiles\\CMakeScratch\\TryCompile-sd2niy\\src.c
-        C:\\RappFF\\build\\vcpkg-debug\\CMakeFiles\\CMakeScratch\\TryCompile-sd2niy\\src.c(1): fatal error C1083: Cannot open include file: 'pthread.h': No such file or directory
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe" -v cmTC_7788e
+        [1/2] C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\cl.exe  /nologo -DCMAKE_HAVE_LIBC_PTHREAD  /DWIN32 /D_WINDOWS  /Zi /Ob0 /Od /RTC1 -MDd /showIncludes /FoCMakeFiles\\cmTC_7788e.dir\\src.c.obj /FdCMakeFiles\\cmTC_7788e.dir\\ /FS -c C:\\Users\\Fam\\Documents\\GitHub\\RappFF\\build\\vcpkg-debug\\CMakeFiles\\CMakeScratch\\TryCompile-5tr57o\\src.c
+        FAILED: CMakeFiles/cmTC_7788e.dir/src.c.obj 
+        C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\cl.exe  /nologo -DCMAKE_HAVE_LIBC_PTHREAD  /DWIN32 /D_WINDOWS  /Zi /Ob0 /Od /RTC1 -MDd /showIncludes /FoCMakeFiles\\cmTC_7788e.dir\\src.c.obj /FdCMakeFiles\\cmTC_7788e.dir\\ /FS -c C:\\Users\\Fam\\Documents\\GitHub\\RappFF\\build\\vcpkg-debug\\CMakeFiles\\CMakeScratch\\TryCompile-5tr57o\\src.c
+        C:\\Users\\Fam\\Documents\\GitHub\\RappFF\\build\\vcpkg-debug\\CMakeFiles\\CMakeScratch\\TryCompile-5tr57o\\src.c(1): fatal error C1083: Cannot open include file: 'pthread.h': No such file or directory
         ninja: build stopped: subcommand failed.
         
       exitCode: 1
@@ -4932,8 +5059,8 @@ events:
     checks:
       - "Looking for pthread_create in pthreads"
     directories:
-      source: "C:/RappFF/build/vcpkg-debug/CMakeFiles/CMakeScratch/TryCompile-ceggsa"
-      binary: "C:/RappFF/build/vcpkg-debug/CMakeFiles/CMakeScratch/TryCompile-ceggsa"
+      source: "C:/Users/Fam/Documents/GitHub/RappFF/build/vcpkg-debug/CMakeFiles/CMakeScratch/TryCompile-rhe5qx"
+      binary: "C:/Users/Fam/Documents/GitHub/RappFF/build/vcpkg-debug/CMakeFiles/CMakeScratch/TryCompile-rhe5qx"
     cmakeVariables:
       CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS"
       CMAKE_C_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
@@ -4946,14 +5073,14 @@ events:
       variable: "CMAKE_HAVE_PTHREADS_CREATE"
       cached: true
       stdout: |
-        Change Dir: 'C:/RappFF/build/vcpkg-debug/CMakeFiles/CMakeScratch/TryCompile-ceggsa'
+        Change Dir: 'C:/Users/Fam/Documents/GitHub/RappFF/build/vcpkg-debug/CMakeFiles/CMakeScratch/TryCompile-rhe5qx'
         
-        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe" -v cmTC_79f47
-        [1/2] C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\cl.exe  /nologo   /DWIN32 /D_WINDOWS -DCHECK_FUNCTION_EXISTS=pthread_create /Zi /Ob0 /Od /RTC1 -MDd /showIncludes /FoCMakeFiles\\cmTC_79f47.dir\\CheckFunctionExists.c.obj /FdCMakeFiles\\cmTC_79f47.dir\\ /FS -c C:\\RappFF\\build\\vcpkg-debug\\CMakeFiles\\CMakeScratch\\TryCompile-ceggsa\\CheckFunctionExists.c
-        [2/2] C:\\Windows\\system32\\cmd.exe /C "cd . && "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe" -E vs_link_exe --msvc-ver=1950 --intdir=CMakeFiles\\cmTC_79f47.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_79f47.dir\\CheckFunctionExists.c.obj  /out:cmTC_79f47.exe /implib:cmTC_79f47.lib /pdb:cmTC_79f47.pdb /version:0.0 /machine:x64 /debug /INCREMENTAL /subsystem:console  pthreads.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
-        FAILED: cmTC_79f47.exe 
-        C:\\Windows\\system32\\cmd.exe /C "cd . && "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe" -E vs_link_exe --msvc-ver=1950 --intdir=CMakeFiles\\cmTC_79f47.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_79f47.dir\\CheckFunctionExists.c.obj  /out:cmTC_79f47.exe /implib:cmTC_79f47.lib /pdb:cmTC_79f47.pdb /version:0.0 /machine:x64 /debug /INCREMENTAL /subsystem:console  pthreads.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
-        LINK Pass 1: command "C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_79f47.dir\\CheckFunctionExists.c.obj /out:cmTC_79f47.exe /implib:cmTC_79f47.lib /pdb:cmTC_79f47.pdb /version:0.0 /machine:x64 /debug /INCREMENTAL /subsystem:console pthreads.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTFILE:CMakeFiles\\cmTC_79f47.dir/intermediate.manifest CMakeFiles\\cmTC_79f47.dir/manifest.res" failed (exit code 1104) with the following output:\x0d
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe" -v cmTC_c1cae
+        [1/2] C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\cl.exe  /nologo   /DWIN32 /D_WINDOWS -DCHECK_FUNCTION_EXISTS=pthread_create /Zi /Ob0 /Od /RTC1 -MDd /showIncludes /FoCMakeFiles\\cmTC_c1cae.dir\\CheckFunctionExists.c.obj /FdCMakeFiles\\cmTC_c1cae.dir\\ /FS -c C:\\Users\\Fam\\Documents\\GitHub\\RappFF\\build\\vcpkg-debug\\CMakeFiles\\CMakeScratch\\TryCompile-rhe5qx\\CheckFunctionExists.c
+        [2/2] C:\\Windows\\system32\\cmd.exe /C "cd . && "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe" -E vs_link_exe --msvc-ver=1950 --intdir=CMakeFiles\\cmTC_c1cae.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_c1cae.dir\\CheckFunctionExists.c.obj  /out:cmTC_c1cae.exe /implib:cmTC_c1cae.lib /pdb:cmTC_c1cae.pdb /version:0.0 /machine:x64 /debug /INCREMENTAL /subsystem:console  pthreads.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
+        FAILED: cmTC_c1cae.exe 
+        C:\\Windows\\system32\\cmd.exe /C "cd . && "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe" -E vs_link_exe --msvc-ver=1950 --intdir=CMakeFiles\\cmTC_c1cae.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_c1cae.dir\\CheckFunctionExists.c.obj  /out:cmTC_c1cae.exe /implib:cmTC_c1cae.lib /pdb:cmTC_c1cae.pdb /version:0.0 /machine:x64 /debug /INCREMENTAL /subsystem:console  pthreads.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
+        LINK Pass 1: command "C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_c1cae.dir\\CheckFunctionExists.c.obj /out:cmTC_c1cae.exe /implib:cmTC_c1cae.lib /pdb:cmTC_c1cae.pdb /version:0.0 /machine:x64 /debug /INCREMENTAL /subsystem:console pthreads.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTFILE:CMakeFiles\\cmTC_c1cae.dir/intermediate.manifest CMakeFiles\\cmTC_c1cae.dir/manifest.res" failed (exit code 1104) with the following output:\x0d
         LINK : fatal error LNK1104: cannot open file 'pthreads.lib'\x0d\x0d
         ninja: build stopped: subcommand failed.
         
@@ -4972,8 +5099,8 @@ events:
     checks:
       - "Looking for pthread_create in pthread"
     directories:
-      source: "C:/RappFF/build/vcpkg-debug/CMakeFiles/CMakeScratch/TryCompile-oe0264"
-      binary: "C:/RappFF/build/vcpkg-debug/CMakeFiles/CMakeScratch/TryCompile-oe0264"
+      source: "C:/Users/Fam/Documents/GitHub/RappFF/build/vcpkg-debug/CMakeFiles/CMakeScratch/TryCompile-dd9xw2"
+      binary: "C:/Users/Fam/Documents/GitHub/RappFF/build/vcpkg-debug/CMakeFiles/CMakeScratch/TryCompile-dd9xw2"
     cmakeVariables:
       CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS"
       CMAKE_C_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
@@ -4986,14 +5113,14 @@ events:
       variable: "CMAKE_HAVE_PTHREAD_CREATE"
       cached: true
       stdout: |
-        Change Dir: 'C:/RappFF/build/vcpkg-debug/CMakeFiles/CMakeScratch/TryCompile-oe0264'
+        Change Dir: 'C:/Users/Fam/Documents/GitHub/RappFF/build/vcpkg-debug/CMakeFiles/CMakeScratch/TryCompile-dd9xw2'
         
-        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe" -v cmTC_538ab
-        [1/2] C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\cl.exe  /nologo   /DWIN32 /D_WINDOWS -DCHECK_FUNCTION_EXISTS=pthread_create /Zi /Ob0 /Od /RTC1 -MDd /showIncludes /FoCMakeFiles\\cmTC_538ab.dir\\CheckFunctionExists.c.obj /FdCMakeFiles\\cmTC_538ab.dir\\ /FS -c C:\\RappFF\\build\\vcpkg-debug\\CMakeFiles\\CMakeScratch\\TryCompile-oe0264\\CheckFunctionExists.c
-        [2/2] C:\\Windows\\system32\\cmd.exe /C "cd . && "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe" -E vs_link_exe --msvc-ver=1950 --intdir=CMakeFiles\\cmTC_538ab.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_538ab.dir\\CheckFunctionExists.c.obj  /out:cmTC_538ab.exe /implib:cmTC_538ab.lib /pdb:cmTC_538ab.pdb /version:0.0 /machine:x64 /debug /INCREMENTAL /subsystem:console  pthread.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
-        FAILED: cmTC_538ab.exe 
-        C:\\Windows\\system32\\cmd.exe /C "cd . && "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe" -E vs_link_exe --msvc-ver=1950 --intdir=CMakeFiles\\cmTC_538ab.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_538ab.dir\\CheckFunctionExists.c.obj  /out:cmTC_538ab.exe /implib:cmTC_538ab.lib /pdb:cmTC_538ab.pdb /version:0.0 /machine:x64 /debug /INCREMENTAL /subsystem:console  pthread.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
-        LINK Pass 1: command "C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_538ab.dir\\CheckFunctionExists.c.obj /out:cmTC_538ab.exe /implib:cmTC_538ab.lib /pdb:cmTC_538ab.pdb /version:0.0 /machine:x64 /debug /INCREMENTAL /subsystem:console pthread.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTFILE:CMakeFiles\\cmTC_538ab.dir/intermediate.manifest CMakeFiles\\cmTC_538ab.dir/manifest.res" failed (exit code 1104) with the following output:\x0d
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe" -v cmTC_5a344
+        [1/2] C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\cl.exe  /nologo   /DWIN32 /D_WINDOWS -DCHECK_FUNCTION_EXISTS=pthread_create /Zi /Ob0 /Od /RTC1 -MDd /showIncludes /FoCMakeFiles\\cmTC_5a344.dir\\CheckFunctionExists.c.obj /FdCMakeFiles\\cmTC_5a344.dir\\ /FS -c C:\\Users\\Fam\\Documents\\GitHub\\RappFF\\build\\vcpkg-debug\\CMakeFiles\\CMakeScratch\\TryCompile-dd9xw2\\CheckFunctionExists.c
+        [2/2] C:\\Windows\\system32\\cmd.exe /C "cd . && "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe" -E vs_link_exe --msvc-ver=1950 --intdir=CMakeFiles\\cmTC_5a344.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_5a344.dir\\CheckFunctionExists.c.obj  /out:cmTC_5a344.exe /implib:cmTC_5a344.lib /pdb:cmTC_5a344.pdb /version:0.0 /machine:x64 /debug /INCREMENTAL /subsystem:console  pthread.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
+        FAILED: cmTC_5a344.exe 
+        C:\\Windows\\system32\\cmd.exe /C "cd . && "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe" -E vs_link_exe --msvc-ver=1950 --intdir=CMakeFiles\\cmTC_5a344.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_5a344.dir\\CheckFunctionExists.c.obj  /out:cmTC_5a344.exe /implib:cmTC_5a344.lib /pdb:cmTC_5a344.pdb /version:0.0 /machine:x64 /debug /INCREMENTAL /subsystem:console  pthread.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
+        LINK Pass 1: command "C:\\PROGRA~1\\MICROS~3\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_5a344.dir\\CheckFunctionExists.c.obj /out:cmTC_5a344.exe /implib:cmTC_5a344.lib /pdb:cmTC_5a344.pdb /version:0.0 /machine:x64 /debug /INCREMENTAL /subsystem:console pthread.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTFILE:CMakeFiles\\cmTC_5a344.dir/intermediate.manifest CMakeFiles\\cmTC_5a344.dir/manifest.res" failed (exit code 1104) with the following output:\x0d
         LINK : fatal error LNK1104: cannot open file 'pthread.lib'\x0d\x0d
         ninja: build stopped: subcommand failed.
         
@@ -5093,6 +5220,7 @@ events:
         - "C:\\dev\\vcpkg"
         - "C:\\Users\\Fam\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\Fam\\.dotnet\\tools"
+        - "C:\\Users\\Fam\\AppData\\Local\\GitHubDesktop\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\PrivateAssemblies\\runtimes\\win-x64\\native"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
@@ -5200,6 +5328,7 @@ events:
         - "C:\\dev\\vcpkg"
         - "C:\\Users\\Fam\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\Fam\\.dotnet\\tools"
+        - "C:\\Users\\Fam\\AppData\\Local\\GitHubDesktop\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\PrivateAssemblies\\runtimes\\win-x64\\native"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
@@ -5273,6 +5402,7 @@ events:
         - "C:\\dev\\vcpkg"
         - "C:\\Users\\Fam\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\Fam\\.dotnet\\tools"
+        - "C:\\Users\\Fam\\AppData\\Local\\GitHubDesktop\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\PrivateAssemblies\\runtimes\\win-x64\\native"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
@@ -5360,6 +5490,7 @@ events:
         - "C:\\dev\\vcpkg"
         - "C:\\Users\\Fam\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\Fam\\.dotnet\\tools"
+        - "C:\\Users\\Fam\\AppData\\Local\\GitHubDesktop\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\PrivateAssemblies\\runtimes\\win-x64\\native"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
@@ -5445,6 +5576,7 @@ events:
         - "C:\\dev\\vcpkg"
         - "C:\\Users\\Fam\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\Fam\\.dotnet\\tools"
+        - "C:\\Users\\Fam\\AppData\\Local\\GitHubDesktop\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\PrivateAssemblies\\runtimes\\win-x64\\native"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
@@ -5567,6 +5699,7 @@ events:
         - "C:\\dev\\vcpkg"
         - "C:\\Users\\Fam\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\Fam\\.dotnet\\tools"
+        - "C:\\Users\\Fam\\AppData\\Local\\GitHubDesktop\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\PrivateAssemblies\\runtimes\\win-x64\\native"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
@@ -5634,6 +5767,7 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/debug/dev/vcpkg/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/Microsoft/WindowsApps/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -5686,6 +5820,7 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/dev/vcpkg/"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/Microsoft/WindowsApps/"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -5738,6 +5873,7 @@ events:
       - "C:/dev/vcpkg/"
       - "C:/Users/Fam/AppData/Local/Microsoft/WindowsApps/"
       - "C:/Users/Fam/.dotnet/tools/"
+      - "C:/Users/Fam/AppData/Local/GitHubDesktop/bin/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -5861,6 +5997,9 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/pwsh.com"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/pwsh.exe"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/pwsh"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/pwsh.com"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/pwsh.exe"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/pwsh"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/pwsh.com"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/pwsh.exe"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/pwsh"
@@ -6017,6 +6156,9 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/pwsh.com"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/pwsh.exe"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/pwsh"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/pwsh.com"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/pwsh.exe"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/pwsh"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/pwsh.com"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/pwsh.exe"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/pwsh"
@@ -6173,6 +6315,9 @@ events:
       - "C:/Users/Fam/.dotnet/tools/pwsh.com"
       - "C:/Users/Fam/.dotnet/tools/pwsh.exe"
       - "C:/Users/Fam/.dotnet/tools/pwsh"
+      - "C:/Users/Fam/AppData/Local/GitHubDesktop/bin/pwsh.com"
+      - "C:/Users/Fam/AppData/Local/GitHubDesktop/bin/pwsh.exe"
+      - "C:/Users/Fam/AppData/Local/GitHubDesktop/bin/pwsh"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/pwsh.com"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/pwsh.exe"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/pwsh"
@@ -6260,6 +6405,7 @@ events:
         - "C:\\dev\\vcpkg"
         - "C:\\Users\\Fam\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\Fam\\.dotnet\\tools"
+        - "C:\\Users\\Fam\\AppData\\Local\\GitHubDesktop\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\PrivateAssemblies\\runtimes\\win-x64\\native"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
@@ -6327,6 +6473,7 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/debug/dev/vcpkg/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/Microsoft/WindowsApps/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -6379,6 +6526,7 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/dev/vcpkg/"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/Microsoft/WindowsApps/"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -6431,6 +6579,7 @@ events:
       - "C:/dev/vcpkg/"
       - "C:/Users/Fam/AppData/Local/Microsoft/WindowsApps/"
       - "C:/Users/Fam/.dotnet/tools/"
+      - "C:/Users/Fam/AppData/Local/GitHubDesktop/bin/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -6554,6 +6703,9 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/powershell.com"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/powershell.exe"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/.dotnet/tools/powershell"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/powershell.com"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/powershell.exe"
+      - "C:/dev/vcpkg/installed/x64-windows/debug/Users/Fam/AppData/Local/GitHubDesktop/bin/powershell"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/powershell.com"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/powershell.exe"
       - "C:/dev/vcpkg/installed/x64-windows/debug/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/powershell"
@@ -6710,6 +6862,9 @@ events:
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/powershell.com"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/powershell.exe"
       - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/.dotnet/tools/powershell"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/powershell.com"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/powershell.exe"
+      - "C:/dev/vcpkg/installed/x64-windows/Users/Fam/AppData/Local/GitHubDesktop/bin/powershell"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/powershell.com"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/powershell.exe"
       - "C:/dev/vcpkg/installed/x64-windows/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/powershell"
@@ -6876,6 +7031,7 @@ events:
         - "C:\\dev\\vcpkg"
         - "C:\\Users\\Fam\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\Fam\\.dotnet\\tools"
+        - "C:\\Users\\Fam\\AppData\\Local\\GitHubDesktop\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\PrivateAssemblies\\runtimes\\win-x64\\native"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin"
         - "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"

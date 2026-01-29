@@ -39,7 +39,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "c:/RappFF/build/vcpkg-debug"
+			"value" : "c:/Users/Fam/Documents/GitHub/RappFF/build/vcpkg-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -495,7 +495,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/RappFF/build/vcpkg-debug/CMakeFiles/pkgRedirects"
+			"value" : "C:/Users/Fam/Documents/GitHub/RappFF/build/vcpkg-debug/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -591,7 +591,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/RappFF"
+			"value" : "C:/Users/Fam/Documents/GitHub/RappFF"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -1207,7 +1207,7 @@
 				},
 				{
 					"name" : "HELPSTRING",
-					"value" : "The CMake toolchain file"
+					"value" : "No help, variable specified on the command line."
 				}
 			],
 			"type" : "FILEPATH",
@@ -1307,7 +1307,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/RappFF/build/vcpkg-debug"
+			"value" : "C:/Users/Fam/Documents/GitHub/RappFF/build/vcpkg-debug"
 		},
 		{
 			"name" : "RappFF_IS_TOP_LEVEL",
@@ -1331,7 +1331,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/RappFF"
+			"value" : "C:/Users/Fam/Documents/GitHub/RappFF"
 		},
 		{
 			"name" : "VCPKG_APPLOCAL_DEPS",
