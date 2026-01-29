@@ -1,0 +1,12 @@
+{
+  "OutputFoldersPerTargetSystem": {
+    "Local Machine": [
+      "build\\vcpkg-debug"
+    ]
+  },
+  "ExpandedNodes": [
+    "",
+    "\\tests"
+  ],
+  "PreviewInSolutionExplorer": false
+}

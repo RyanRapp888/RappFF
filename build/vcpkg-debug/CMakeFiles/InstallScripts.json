@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"C:/RappFF/build/vcpkg-debug/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

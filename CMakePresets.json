@@ -1,0 +1,16 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": { "major": 3, "minor": 23, "patch": 0 },
+  "configurePresets": [
+  {
+    "name": "vcpkg-debug",
+    "toolchainFile": "C:/dev/vcpkg/scripts/buildsystems/vcpkg.cmake",
+    "generator": "Ninja",
+    "binaryDir": "${sourceDir}/build/${presetName}",
+    "cacheVariables": {
+      "CMAKE_BUILD_TYPE": "Debug",
+      "CMAKE_CXX_STANDARD": "20"
+    }
+  }
+]
+}

@@ -1,0 +1,3 @@
+C:/RappFF/build/vcpkg-debug/CMakeFiles/RappFF.dir
+C:/RappFF/build/vcpkg-debug/CMakeFiles/edit_cache.dir
+C:/RappFF/build/vcpkg-debug/CMakeFiles/rebuild_cache.dir

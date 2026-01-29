@@ -1,0 +1,15 @@
+starttypes
+character : char_name str : char_type str : charlocx int : charlocy int
+weapon : weap_name str : weap_attack int
+endtypes
+
+startdata
+character Blerb MAINCHAR 130 5
+character Slerb OCTOPUS 132 5
+character Nurb MERMAID 134 5
+character Donkafair FAIRY 136 5
+character Emmy EMMY 120 38
+character Bella JELLYBEAN 120 45
+character Maddy MERMAID 128 19
+weapon sword 15
+enddata
